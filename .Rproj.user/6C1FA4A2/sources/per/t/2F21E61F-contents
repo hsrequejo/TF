@@ -1,0 +1,515 @@
+---
+title: "Relatório de atividades do trabalho de formatura - Julho"
+author: "Henrique S Requejo"
+date: "24/07/2020"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    number_sections: true
+    fig_caption: yes
+    includes:
+            in_header: preamble.tex
+citation_package: biblatex
+bibliography: references.bib
+biblio-style: apalike
+csl: apa.csl
+urlcolor: blue
+linkcolor: black
+mainfont: Garamond
+fontsize: 12pt
+---
+<!--
+
+Este código usa o arquivo bats.RData e ants.RData para gerar o documento.
+Estes dois arquivos devem estar no mesmo diretório deste .Rmd
+
+Variaveis presentes no .RData:
+
+gammas = vetor com os gammas que foram analisados
+vec_W = vetor com os valores de omega utilizados
+iterations = numero de iteracoes usados
+partitions_of_omega = numero de perticoes de omega (TODO: da pra ser extraido de Vec_W)
+links = dataframe dos links, convertido do csv no script motor
+nodes = dataframe dos nodes, convertido de um csv no script motor
+layout = layout da disposicao da rede, calculado no script motor
+seq_Gnorm_gamma_mean = Dataframe com as informaçãoes de Gnorm medio em relacao a omega e gamma
+G_norm_mean = Os valores médios de Gnorm do ensaio na mesma ordem de entrada (alfabetico pelo nome do noh)
+G_norm_mean_ordered = Os valores médios de Gnorm do ensaio ordenados
+net_name = string com o nome da rede
+bib_ref = Referencia bibliografica da rede como no biblatex
+
+-->
+
+<!-- As opcoes message = FALSE e warning = FALSE servem para não mostrar As mensagens do console e Warnings no PDF -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 'H', fig.align="center")
+
+```
+
+```{r bibliotecas_e_funcoes_auxiliares}
+
+library(multinet)
+library(igraph)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+library(kableExtra)
+library(akima)
+library(plot3D)
+
+source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido ao acentos nos plots
+
+
+```
+<!-- Sem numero de pagina -->
+\pagenumbering{gobble}
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+<!-- Começa a numeracao de pagina -->
+\pagenumbering{arabic} 
+
+# Resumo
+
+Os principais objetivos deste mês eram entender como o R Markdown funciona, avaliar a rede de formigas-plantas, entender como o parâmetro de resolução $\gamma$ da modularidade multicamada afeta as curvas de decaimento de $\overline{G}$ por $\omega$ e tentar visualizar o motivo de os valores de $G$ estarem aumentando com $\omega$ para alguns nós. O último objetivo não foi cumprido ainda, pois foquei em aprender R Markdown, o que foi muito bom, pois esta é uma ferramenta que gostei muito e acredito que irei escrever meu TF inteiro nela. Este documento foi todo feito no R Markdown usando as redes morcego-planta e a rede de formigas-plantas . Acredito que este documento e seus códigos possam servir como exemplo e ajudar outras pessoas a entender o funcionamento do R Markdown e como gerar um relatório automatizado das suas análises em PDF, pois aqui estão contidos formulas matemáticas no estilo Latex, figuras simples, figuras múltiplas, tabelas e citações. As curvas de decaimento de $\overline{G}$ por $\omega$ foram extraídas para diferentes valores de $\gamma$, gerando agora uma família de curvas para cada espécie da rede. Isso faz com que a forma de calcular o valor de $G_{norm}$ seja levemente alterada para considerar as variações de $G_{norm}$ em relação a $\gamma$. Apesar de algumas variações, como esperado, a maioria das espécies que haviam sido selecionadas como boas conectoras entre camadas (permanecem em mais de um módulo mesmo aumentando a força do acoplamento entre camadas) com $\gamma$ constante também foram selecionadas quando variamos $\gamma$. Neste documento também estão algumas formas diferentes de visualizar as famílias de curvas geradas, pois não tenho certeza qual a melhor forma de apresentar a família de curvas.
+
+\pagebreak
+
+# O que é o R Markdown e como foi meu workflow para gerar esse documento
+
+## Sobre o R Markdown e onde começar
+
+R Markdown é um formato de arquivo para gerar documentos dinâmicos com o R. Um documento R Markdown é escrito em Markdown e contém pedaços de códigos do R [@RM_Intro], ou seja, é um editor de texto em que você pode rodar pedaços de códigos R e usar suas saídas para produzir figuras, tabelas ou mesmo mostrar variáveis dentro do próprio texto, muito prático! O R Markdown suporta vários formatos estáticos de saída, como HTML, MS Word, ODT, PDF, entre outros. Para o caso de PDF, o R Markdown utiliza o motor Latex para gerar os documentos. Isso é muito bom, pois podemos utilizar quase todas (talvez todas?) as funcionalidades e praticidades da escrita em Latex. Utilizei sempre o R Studio para realizar as compilações. O [site oficial do R Markdown](https://rmarkdown.rstudio.com/) ^[https://rmarkdown.rstudio.com/] e o livro R Markdown: The Definitive Guide [@xie2019], que é gratuito para [ler online]([https://bookdown.org/yihui/rmarkdown/) ^[https://bookdown.org/yihui/rmarkdown/] são muito bons para aprender e foram as fontes que mais consultei durante a elaboração deste relatório.
+
+Um pequeno problema que tive foi que não consegui compilar o documento RMarkdown utilizando diretamente um diretório sincronizado na nuvem (google drive). Ocorre um problema quando o R Studio tenta acessar um arquivo que está sendo sincronizado, impedindo o documento de ser gerado. Tive que trabalhar em um diretório local.
+
+## Workflow
+
+Fui aprendendo com tentativa e erro a melhor forma de gerar o documento. Primeiro, comecei como sugerido na maioria das minhas buscas, usando o código diretamente dentro do documento R Markdown. Isso funcionou perfeitamente, e a grande vantagem de utilizar essa arquitetura de código diretamente dentro do R Markdown é que o documento fica 100% reprodutível, basta fazer o "knit" (como é conhecida a compilação do documento R Markdown) do documento e os resultados vão ser idênticos em todas as compilações. A grande desvantagem disso é que se o código levar muito tempo para ser executado, o documento também levará muito tempo para ser gerado, pois teremos que rodar todo o código R novamente para gerar o documento. Isso é um problema quando o código demora para rodar e precisamos ver o resultado da edição do documento rapidamente (ex: verificar como ficou disposta uma figura ou se o código Latex que usamos está correto).
+
+Para contornar esse problema, usei uma arquitetura para apenas acessar as variáveis globais da sessão R. As variáveis globais usadas no documento são geradas pelo script fonte, dessa forma podemos separar a parte "pesada" do código, e depois acessá-las pelo documento R Markdown apenas para gerar gráficos, tabela e texto. A vantagem dessa arquitetura é que podemos rodar o código "pesado" apenas uma vez para obtermos os dados necessários para construção do documento, depois editar o documento com boa agilidade de compilação, já que "o grosso" do processamento já está feito. Encontrei duas desvantagens nessa arquitetura, a menor delas é que não podemos compilar o documento via o botão "knit", apenas por linha de comando, o que na verdade as vezes é mais prático e, até mesmo, preferível. A segunda, e maior, desvantagem é que as variáveis globais são sobrescritas toda vez que rodamos o script fonte, isso impede que rodemos o script duas vezes para duas entradas diferentes. Por exemplo, no meu caso tenho um script que faz a análise e gera gráficos da curva de decaimento $\overline{G}$ em relação a $\omega$ e $\gamma$ para uma dada rede multicamada. Se precisar gerar um documento com a análise de duas ou mais redes, terei que rodar o código novamente toda vez que precisar editar o documento, já que as variáveis globais serão sobrescritas para a última rede de entrada utilizada.
+
+Finalmente, mudei para uma arquitetura onde salvamos as variáveis em um arquivo tipo .RData e depois carregamos este arquivo no documento R Markdown. Esta foi a melhor arquitetura que utilizei neste documento, pois podemos rodar o R Markdown pelo botão "Knit" ou linha de comando, precisamos rodar as análises apenas uma vez para cada entrada, salvando os dados de saída em seus respectivos arquivos .RDAta e depois carregando os mesmos no documento R Markdown, e, principalmente, o documento é gerado rapidamente pois o carregamento do arquivo .RData é rápido, possibilitando uma edição mais ágil, o que faz muita diferença.
+
+Portanto, o workflow utilizado para gerar esse documento no R Markdown foi:
+
+\begin{enumerate}
+	\item Rodar o script R para gerar as análises necessárias para a primeira rede, no caso morcego-plantas.
+  \item Salvar as variáveis que pretendo usar no documento R Markdown em uma arquivo .RData (ex: bats-plants.RData). Também é possível salvar a imagem inteira da sessão se optar por praticidade.
+  \item Rodar novamente o script R para gerar as análises necessárias para a segunda rede, no caso formigas-plantas.
+  \item Salvar as variáveis que pretendo usar no documento R Markdown em uma arquivo .RData (ex: ants-plants.RData).
+  \item Proceder com a edição normal do documento R Markdown, lembrando de adicionar uma linha de comando para carregar o arquivo .RData (ex: \texttt{load("bats.RData")}) antes das respectivas sessões em que os dados serão usados.
+\end{enumerate}
+
+Para este documento gerado em PDF e com refêrencias bibliográficas, foram precisos dois arquivos de texto, um chamado preamble.tex para definir pacotes e preferências do Latex, e um arquivo references.bib, com as referências no estilo biblatex. Estes arquivos devem estar referenciados no YAML (cabeçalho) do documento R markdown.
+
+Algo que senti bastante falta é que o RStudio não faz o "autocomplete" para comandos e códigos Latex. Para escrever intensamente em Latex, sugiro usar um editor Latex para uma maior praticidade e depois colar o texto no documento R Markdown. Ele irá rodar normalmente caso os pacotes e configurações presentes no preamble.tex sejam os mesmos que foram usados no editor Latex.
+
+# Relembrando sobre a modularidade multicamada e entendendo a variável $G$
+
+## Modularidade multicamada
+
+Os dois parâmetros que são variados nesse relatório são o parâmetro de acoplamento $\omega$ e o parâmetro de resolução $\gamma$. Estes parâmetros fazem parte da generalização multicamada da modularidade[@Mucha2010]:
+
+\begin{equation} \label{eq:1}
+Q^{M} = \frac{1}{\mu} \sum_{ij\alpha\beta} \left[ \left(A_{i\alpha,j\alpha} - \gamma_{\alpha} \frac{k_{i\alpha} k_{j\alpha}}{2m_\alpha} \right) \delta_{\alpha,\beta} + \omega A_{i\alpha,j\beta} \delta_{ij} \right] \delta(c_{i\alpha}, c_{j \beta})
+\end{equation}
+
+Onde $\delta$ é o delta de kronecker, que retorna o valor 1 caso $c_{i\alpha} = c_{j \beta}$ e zero caso contrário; a variável $m$ representa a soma de do grau de cada nó na camada $\alpha$; $A_{i\alpha,j\alpha}$ é a matriz de adjacência na camada $\alpha$; $A_{i\alpha,j\beta}$ é a matriz de adjacência entre camadas; $k_{i\alpha}$ representa o grau do nó $i$ na camada $\alpha$ e $\mu = \sum_{i,j, \alpha}A_{i\alpha,j\alpha} + \omega \sum_{i,\alpha,\beta} A_{i\alpha,j\beta}$. Note que se utilizarmos $\omega = 0$ e $\gamma = 1$, a equação de modularidade generalizada (eq. \ref{eq:1}) é proporcional a média da modularidade monocamada [@Newman2004a; @Newman2004b] de cada camada. Isto também está descrito em @Bianconi2018, pg. 147-148:
+
+\begin{equation} \label{eq:2}
+Q^{M} = \frac{1}{\mu} \sum_{\alpha} \frac{1}{2m_\alpha} \sum_{ij} \left(A_{i\alpha,j\alpha} - \gamma_{\alpha} \frac{k_{i\alpha} k_{j\alpha}}{2m_\alpha} \right) \delta(c_{i\alpha}, c_{j\alpha}) \end{equation}
+
+O parâmetro $\omega$ está contido no intervalo (0,1), onde zero representa o desacoplamento total das camadas, onde cada camada é tratada como uma rede individual (desacoplamento total) e a modularidade final é a média da modularidade de cada camada (eq. \ref{eq:2}), e 1 representa o acoplamento máximo (funciona como uma rede monocamada agregada de todas as camadas).
+
+A consequência para os nós da rede é que com $\omega$ = 0 temos que todos os nós pertencem a diferentes módulos em diferentes camadas, já que as camadas estão sendo analisadas individualmente. Ao aumentarmos o parâmetro $\omega$, os nós tendem a se tornar parte de apenas um módulo em camadas diferentes, sobrando cada vez menos nós que pertencem a diferentes módulos em diferentes camadas. Finalmente, se atingirmos o valor de $\omega$ = 1, nenhum nó estará presente em mais de um módulo, exatamente como ocorre ao utilizarmos o algoritmo Louvain em redes monocamada.
+
+O parâmetro de resolução foi introduzido por @Reichardt2006 para avaliar redes monocamada e foi propagado para a modularidade generalizada multicamada [@Mucha2010], funcionando da mesma forma. De uma forma geral, se $\gamma_2 > \gamma_1$, os módulos encontrados com $\gamma_2$ possuem menos nós (módulos menores) e são mais numerosos (maior quantidade de módulos). Os módulos encontrados com $\gamma_2$ podem ser submódulos dos obtidos usando $\gamma_1$, mas nem sempre é o caso [@Reichardt2006].
+
+Preciso explorar um pouco mais esse parâmetro de resolução $\gamma$ para entendê-lo melhor. Entender bem o @Reichardt2006 será fundamental.
+
+## Variável G
+
+A variável G representa o número de módulos que um determinado nó pertence. Como o algoritmo Louvain não permite que um mesmo nó participe de mais de um módulo dentro de uma mesma camada, G é uma variável discreta inteira que possui o mínimo de 1 e o máximo igual ao número de camadas da rede estudada. G possui valores bem definidos nos extremos, se $\omega = 0 \Rightarrow G = 1$ e se $\omega = 0 \Rightarrow G = \text{ número total de camadas da rede}$. Entre estes valores de $\omega$ o comportamento de G é variado, mas tende a cair conforme a força de acoplamento $\omega$ aumenta. O comportamento do decaimento de G em relação a $\omega$ é diferente para cada nó da rede, alguns nós resistem e permanecem em mais de um módulo ao aumentarmos $\omega$, já outros rapidamente passam a pertencer a apenas um módulo ao aumentarmos $\omega$. A figura \ref{fig:Figura_G} ilustra o comportamento de diferentes nós ao aumentarmos $\omega$. A figura \ref{fig:Exemplo_decai} mostra um exemplo de curva de decaimento de G em relação a $\omega$.
+
+\begin{figure}[H] 
+\centering
+\includegraphics[width=0.8\textwidth]{./Figuras/Figura_G.png}
+\caption{Esquema ilustrativo do que ocorre com alguns nós ao aumentarmos o parâmetro $\omega$. Para valores de $\omega$ baixos, vemos que os nós A e B estão em módulos diferentes em camadas diferentes. Ao aumentarmos a força de acoplamento $\omega$, o nó A passa a pertencer ao módulo verde tanto na camada superior como na camada inferior, já o nó B resiste e permanece no módulo azul na camada superior e no módulo verde na camada inferior. Se aumentarmos ainda mais a força de acoplamento $\omega$, em algum momento o nó B acaba cedendo e passa a pertencer a apenas um módulo nas duas camadas.}
+\label{fig:Figura_G}
+\end{figure}
+
+\begin{figure}[H] 
+\centering
+\includegraphics[width=0.5\textwidth]{./Figuras/Exemplo_decai.png}
+\caption{Exemplo hipotético de decaimentos de G (módulos que o nó pertence em diferentes camadas) em relação ao parâmetro $\omega$ (constante de acoplamento) esperados. O nó representado pela cor vermelha possui um decaimento rápido de G, portanto, representa uma espécie pouco conectiva do ponto de vista da rede multicamada como um todo. O contrário ocorre com a espécie representada pelo nó azul.}
+\label{fig:Exemplo_decai}
+\end{figure}
+
+Como o algoritmo Louvain não é determinístico (pode retornar diferentes resultados a cada compilação) e a variável G é inteira e discreta, para termos uma maior confiabilidade precisamos repetir o processo várias vezes para cada valor de $\omega$ e extrair uma média de G para cada nó. Assim o valor médio de G é dado por:
+
+\begin{equation} \label{eq:3}
+    \overline{G_{\omega}} = \frac{1}{I} \sum_{i=1}^{I} G_{i}
+\end{equation}
+
+Onde $I$ se refere ao número de iterações.
+
+Repetindo isso para diferentes valores de $\omega$, teremos uma curva de decaimento $\overline{G}$ por $\omega$.
+
+Podemos agora repetir esse processo para diferentes valores de $\gamma$, assim vamos obter diferentes curvas $\overline{G}$ por $\omega$ para cada valor de $\gamma$.
+
+## Variável G$_{norm}$
+
+Para facilitar a classificação dos nós de acordo com sua curva $\overline{G}$ por $\omega$ por $\gamma$, toda a família de curvas será resumida em uma única variável para cada nó, normalizada pela média. Chamaremos essa variável de $G_{norm}$, definida na equação \ref{eq:4}.
+
+\begin{equation} \label{eq:4}
+    G_{norm} = \frac{\sum_{j=1}^{P_2} \sum_{i = 1}^{P_1} \overline{G}_{i,j}}{\frac{1}{N} \sum_{k=1}^{N} \sum_{j=1}^{P_2} \sum_{i = 1}^{P_1} \overline{G}_{i,j,k}}
+\end{equation}
+
+Onde $P_1$, $P_2$ são o número de partições de $\omega$ e $\gamma$; $N$ é u número de nós na rede; $i$, $j$ são os índices de $\overline{G}$ dentro de $\omega$, $\gamma$; e $k$ é o índice do nó na rede (número de identificação do nó).
+
+
+```{r leitura_dos_dados_morcego}
+load("./RDatas/bats.RData")
+```
+
+<!-- modifcar o 'net_x' para corresponder com as figuras -->
+# Visão geral da rede `r net_name`
+
+<!-- Usa as variaveis nodes e links para gerar a tabela comk os numeros da rede -->
+```{r Propriedades_Rede}
+
+net_multinet = Convert_to_Multinet(nodes, links)
+
+lnum = num_layers_ml(net_multinet) #numero de camadas da rede
+
+# serve para juntar toas as camadas em uma string soh. Bom para usar como texto
+lnames = layers_ml(net_multinet)
+lnames2 = ""
+for (i in 1:lnum) {
+  if (i==1) {
+    lnames2 = paste(lnames[i])
+  }
+  else if (i==lnum) {
+    lnames2 = paste(lnames2, " e ", lnames[i])
+  }
+  else{
+    lnames2 = paste(lnames2, ", ", lnames[i])
+  }
+}
+
+nnum = num_actors_ml(net_multinet, layers = character(0))
+
+cnum = num_edges_ml(net_multinet)
+
+#Monta a coluna de valores e nome da propriedade para montar o df propriedades_da_rede
+numbers = c(lnum, lnames2, nnum, cnum)
+
+labels = c("Número de Camadas", "Tipo de conexões", "Número de nós", "Número de conexões")
+
+#Monta a tabela de prorpiedades da rede
+propriedades_rede = data.frame(labels, numbers)
+names(propriedades_rede) = c("Propriedade", "Valor")
+
+```
+
+<!-- Usa as variavei geradas no code chunk acima para preencher o texto -->
+A rede `r net_name` [@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1} apresenta uma visão geral da rede.
+
+```{r Tabela_Prop_Rede, col.names = NULL}
+kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1}Propriedades da rede ", net_name)) %>% kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+<!-- links, nodes e layout sao variaveis vindas do .RData -->
+```{r Figura_Overview, fig.cap=paste(fig.cap="\\label{fig:fig1}Visão geral da rede ", net_name, ".")}
+#calcula um layout (igraph) e plota o grafo usando a funcao aux CustomPlot----
+Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3) # TODO: melhorar o custom plot depois
+```
+
+
+# Resultados da rede `r net_name`
+## Distribuição de $\mathbf{G_{norm}}$
+
+A variável $G$ foi calculada para `r partitions_of_omega` partições de $\omega$, ou seja, o tamanho do passo dado dentro de $\omega$ foi de `r 1/partitions_of_omega`. O processo foi repetido para `r length(gammas)` partições de $\gamma$, com $\gamma$ começando em `r min(gammas)`, com passos de `r (gammas[2] - gammas[1])` até um $\gamma$ máximo de `r max(gammas)`. O cálculo de $\overline{G}$ foi feito usando `r iterations` iterações. A tabela \ref{tab:2} resume os parâmetros de execução do código e a figura \ref{fig:fig2} mostra a distribuição dos valores de $G_{norm}$ médio obtidos.
+
+```{r Parametros_Execucao}
+numbers = c(iterations, partitions_of_omega)
+
+labels = c("Iterações", "Partições de omega")
+
+propriedades_rede = data.frame(labels, numbers)
+names(propriedades_rede) = c("Parâmetro", "Valor")
+kable(propriedades_rede, "latex", booktabs = T, caption = "\\label{tab:2}Parâmetros de execucao") %>% kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+
+```{r Distribuicao_Gnorm, fig.cap=paste(fig.cap="\\label{fig:fig2}Distribuição de $G_{norm}$ médio da rede ", net_name, ".")}
+G_norm_dristrib_plot(G_norm_mean_ordered)
+```
+
+## Variação de $\mathbf{\overline{G}}$ por $\boldsymbol{\omega}$
+
+Como temos dados em 3 dimensões ($\overline{G}$, $\omega$, $\gamma$) temos algumas formas diferentes para apresentar os valores de $\overline{G}$ em relação a $\omega$ e $\gamma$, não sei dizer se devemos usar uma delas, as três ou alguma outra. A figura \ref{fig:1a} mostra curvas de decaimento de $\overline{G}$ por $\omega$ para diferentes nós com diferentes valores de $G_{norm}$ e para diferentes valores de $\gamma$. A figura \ref{fig:1a.1} mostra a superfície 3D formada por $\overline{G}$ em relação a $\omega$ e $\gamma$. A figura \ref{fig:1a.2} mostra a mesma superfície da figura \ref{fig:1a.1} mas no formato de mapa de calor.
+
+```{r select_exemple_nodes}
+#seleciona quatro noh e guarda suas curvas de decaimento G em relacao a w e gamma usando funcao auxiliar
+selection = Select_Example_Nodes(G_norm_mean_ordered)
+plots_2D = list() #armazena os plots 2D que serao plotados
+for (i in 1:length(selection)) {
+  #plota a familia de curvas G para cada gamma de um no escolhido----
+  chosen_node = names(selection[i])
+  plots_2D[[i]] = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
+
+```{r decaimentos_ilustrativos, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a}Exemplos de curvas do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Curvas de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Curvas de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
+
+for (i in 1:length(selection)) {
+  print(plots_2D[[i]])
+}
+```
+
+
+```{r decaimentos_ilustrativos_sup_3D, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.1}Exemplos de superfícies do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Superfície de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Superfície de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
+
+for (i in 1:length(selection)) {
+  chosen_node = names(selection[i])
+  Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
+
+
+```{r decaimentos_ilustrativos_heatmap, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.2}Exemplos de mapas de calor do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Mapa de calor de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Mapa de calor de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
+
+for (i in 1:length(selection)) {
+  chosen_node = names(selection[i])
+  Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
+
+## Seleção das espécies com maior $\mathbf{G_{norm}}$.
+
+```{r define_Gnorm_treshold}
+G_threshold = 1.35
+size1 = 3 #tamanho dos nos abixo do G_threshold
+size2 = 3*size1 #tamanho dos valores acima de G_threshold
+
+```
+
+
+A figura \ref{fig:2a} e a tabela \ref{tab:3} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`.
+
+```{r define_aspecto}
+if (lnum < 4) {
+  asp = 0.6
+}else{
+  asp = 1
+}
+```
+
+
+```{r fig-sub2, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:2a}Espécies com G$_{norm}$ maiores que ", G_threshold, "em destaque de tamanho e cor."), fig.asp=asp, nrow = 1, ncol = 3}
+
+Custom_plot2D_destaque_palette(G_norm_mean, links, nodes, layout, size1, size2)
+
+```
+
+
+```{r, tabela_decimento_lento}
+selected_nodes = sort(G_norm_mean[which(G_norm_mean > G_threshold)], decreasing = TRUE)
+selected_nodes_df = data.frame(names(selected_nodes), format(round(selected_nodes, 3), nsmall = 3))
+names(selected_nodes_df) = c("Espécie", "$G_{norm}$")
+rownames(selected_nodes_df) = NULL
+
+kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3}Espécies com valores de $G_{norm}$ maiores que", G_threshold), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+
+```{r leitura_dos_dados_formigas}
+load("./RDatas/ants.RData")
+```
+
+\pagebreak
+
+<!-- modifcar o 'net_x' para corresponder com as figuras -->
+# Visão geral da rede `r net_name`
+
+<!-- Usa as variaveis nodes e links para gerar a tabela comk os numeros da rede -->
+```{r Propriedades_Rede_b}
+
+net_multinet = Convert_to_Multinet(nodes, links)
+
+lnum = num_layers_ml(net_multinet) #numero de camadas da rede
+
+# serve para juntar toas as camadas em uma string soh. Bom para usar como texto
+lnames = layers_ml(net_multinet)
+lnames2 = ""
+for (i in 1:lnum) {
+  if (i==1) {
+    lnames2 = paste(lnames[i])
+  }
+  else if (i==lnum) {
+    lnames2 = paste(lnames2, " e ", lnames[i])
+  }
+  else{
+    lnames2 = paste(lnames2, ", ", lnames[i])
+  }
+}
+
+nnum = num_actors_ml(net_multinet, layers = character(0))
+
+cnum = num_edges_ml(net_multinet)
+
+#Monta a coluna de valores e nome da propriedade para montar o df propriedades_da_rede
+numbers = c(lnum, lnames2, nnum, cnum)
+
+labels = c("Número de Camadas", "Tipo de conexões", "Número de nós", "Número de conexões")
+
+#Monta a tabela de prorpiedades da rede
+propriedades_rede = data.frame(labels, numbers)
+names(propriedades_rede) = c("Propriedade", "Valor")
+
+```
+
+<!-- Usa as variavei geradas no code chunk acima para preencher o texto -->
+A rede `r net_name` [@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1a} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1a} apresenta uma visão geral da rede.
+
+```{r Tabela_Prop_Rede_b, col.names = NULL}
+kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1a}Propriedades da rede ", net_name)) %>% kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+<!-- links, nodes e layout sao variaveis vindas do .RData -->
+```{r Figura_Overview_b, fig.cap=paste(fig.cap="\\label{fig:fig1a}Visão geral da rede ", net_name, ".")}
+#calcula um layout (igraph) e plota o grafo usando a funcao aux CustomPlot----
+Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3) # TODO: melhorar o custom plot depois
+```
+
+
+# Resultados da rede `r net_name`
+## Distribuição de $\mathbf{G_{norm}}$
+
+A variável $G$ foi calculada para `r partitions_of_omega` partições de $\omega$, ou seja, o tamanho do passo dado dentro de $\omega$ foi de `r 1/partitions_of_omega`. O processo foi repetido para `r length(gammas)` partições de $\gamma$, com $\gamma$ começando em `r min(gammas)`, com passos de `r (gammas[2] - gammas[3])` até um $\gamma$ máximo de `r max(gammas)`. O cálculo de $\overline{G}$ foi feito usando `r iterations` iterações. A tabela \ref{tab:2a} resume os parâmetros de execução do código e a figura \ref{fig:fig2a} mostra a distribuição dos valores de $G_{norm}$ médio obtidos.
+
+```{r Parametros_Execucao_b}
+numbers = c(iterations, partitions_of_omega)
+
+labels = c("Iterações", "Partições de omega")
+
+propriedades_rede = data.frame(labels, numbers)
+names(propriedades_rede) = c("Parâmetro", "Valor")
+kable(propriedades_rede, "latex", booktabs = T, caption = "\\label{tab:2a}Parâmetros de execucao") %>% kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+
+```{r Distribuicao_Gnorm_b, fig.cap=paste(fig.cap="\\label{fig:fig2a}Distribuição de $G_{norm}$ médio da rede ", net_name, ".")}
+G_norm_dristrib_plot(G_norm_mean_ordered)
+```
+
+## Variação de $\mathbf{\overline{G}}$ por $\boldsymbol{\omega}$
+
+Como temos dados em 3 dimensões ($\overline{G}$, $\omega$, $\gamma$) temos algumas formas diferentes para apresentar os valores de $\overline{G}$ em relação a $\omega$ e $\gamma$, não sei dizer se devemos usar uma delas, as três ou alguma outra. A figura \ref{fig:1b} mostra curvas de decaimento de $\overline{G}$ por $\omega$ para diferentes nós com diferentes valores de $G_{norm}$ e para diferentes valores de $\gamma$. A figura \ref{fig:1b.1} mostra a superfície 3D formada por $\overline{G}$ em relação a $\omega$ e $\gamma$. A figura \ref{fig:1b.2} mostra a mesma superfície da figura \ref{fig:1b.1} mas no formato de mapa de calor.
+
+```{r select_exemple_nodes_b}
+#seleciona quatro noh e guarda suas curvas de decaimento G em relacao a w e gamma usando funcao auxiliar
+selection = Select_Example_Nodes(G_norm_mean_ordered)
+plots_2D = list() #armazena os plots 2D que serao plotados
+for (i in 1:length(selection)) {
+  #plota a familia de curvas G para cada gamma de um no escolhido----
+  chosen_node = names(selection[i])
+  plots_2D[[i]] = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
+
+```{r decaimentos_ilustrativos_b, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1b}Exemplos de curvas do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Curvas de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Curvas de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
+
+for (i in 1:length(selection)) {
+  print(plots_2D[[i]])
+}
+```
+
+
+```{r decaimentos_ilustrativos_sup_3D_b, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1b.1}Exemplos de superfícies do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Superfície de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Superfície de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
+
+for (i in 1:length(selection)) {
+  chosen_node = names(selection[i])
+  Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
+
+
+```{r decaimentos_ilustrativos_heatmap_b, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1b.2}Exemplos de mapas de calor do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Mapa de calor de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Mapa de calor de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
+
+for (i in 1:length(selection)) {
+  chosen_node = names(selection[i])
+  Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
+
+## Seleção das espécies com maior $\mathbf{G_{norm}}$.
+
+```{r define_Gnorm_treshold_b}
+G_threshold = 1.21
+size1 = 3 #tamanho dos nos abixo do G_threshold
+size2 = 4*size1 #tamanho dos valores acima de G_threshold
+
+```
+
+
+A figura \ref{fig:2b} e a tabela \ref{tab:3a} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`.
+
+```{r define_aspecto_b}
+if (lnum < 4) {
+  asp = 0.6
+}else{
+  asp = 1
+}
+```
+
+
+```{r fig-sub2_b, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:2b}Espécies com G$_{norm}$ maiores que ", G_threshold, "em destaque de tamanho e cor."), fig.asp=asp, nrow = 1, ncol = 3}
+
+Custom_plot2D_destaque_palette(G_norm_mean, links, nodes, layout, size1, size2)
+
+```
+
+
+```{r, tabela_decimento_lento_b}
+selected_nodes = sort(G_norm_mean[which(G_norm_mean > G_threshold)], decreasing = TRUE)
+selected_nodes_df = data.frame(names(selected_nodes), format(round(selected_nodes, 3), nsmall = 3))
+names(selected_nodes_df) = c("Espécie", "$G_{norm}$")
+rownames(selected_nodes_df) = NULL
+
+kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3a}Espécies com valores de $G_{norm}$ maiores que", G_threshold), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+# Discussão
+
+A variação de resolução $\gamma$ não parece influenciar G de forma tão intenssa quanto a variação no acoplamento $\omega$, mas ela existe e com certeza é mais robustos selecionar nós com alto G$_{norm}$ como candidatos a centrais considerando a variação em $\gamma$ também, pois assim minizamos a probabilidade de estarmos observando uma exceção.
+
+Devido a essa variação de G$_{norm}$ em relação a $\gamma$, podemos tentar identificar espécies que sejam boas conectoras entre camadas dentro de módulos menores (submódulos?) que fazem parte de módulos maiores, sendo importantes para a manutenção deste módulo maior de que fazem parte.
+
+# Próximas etapas
+
+## Agosto
+\begin{itemize}
+	\item Compreender melhor o parâmetro de acoplamento $\gamma$ com visualização.
+	\item Buscar uma boa forma de visualizar os módulos para rastrear a situação de um nó. Acredito que assim será possível entender melhor como estão posicionados os nós de maior G$_{norm}$ em relação aos módulos ao variarmos $\omega$ e $\gamma$. Acredito que isso ajuadrá no insight do que significa na prática essa variável G$_{norm}$ alta que apenas alguns nós possuem.
+\end{itemize}
+
+## Setembro
+\begin{itemize}
+	\item Validar ou desvalidar G$_{norm}$ como forma de localizar espécies que são boas conectoras entre camadas usando diversas redes sintéticas (usar simulação do Rafael Pinheiro) para verificar se o comportamento de G$_{norm}$ é consistente, e compará-lo como outras métricas.
+	\item Começar a escrita oficial do TCC.
+\end{itemize}
+
+
+\clearpage
+
+# Referências
+
+<div id="refs"></div>

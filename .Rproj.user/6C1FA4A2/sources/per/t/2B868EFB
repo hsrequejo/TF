@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1595618985824.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1566920347",
+    "id" : "2B868EFB",
+    "lastKnownWriteTime" : 1595628722,
+    "last_content_update" : 1595628722809,
+    "path" : "C:/Users/Henrique/Google Drive/TF/Report_07/Relatorio_Mes7_RMarkdown/Check_Install_Packages.R",
+    "project_path" : "Check_Install_Packages.R",
+    "properties" : {
+        "cursorPosition" : "27,15",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

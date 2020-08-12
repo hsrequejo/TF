@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1595518386844.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2914012204",
+    "id" : "50C45265",
+    "lastKnownWriteTime" : 1595522558,
+    "last_content_update" : 1595522558630,
+    "path" : "C:/Users/Henrique/Google Drive/TF/Report_07/Relatorio_Mes7_RMarkdown/G_analysis.R",
+    "project_path" : "G_analysis.R",
+    "properties" : {
+        "cursorPosition" : "33,15",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

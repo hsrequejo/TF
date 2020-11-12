@@ -7,16 +7,15 @@
 ###############################################################
 
 # Uncoment abaixo para instalar----------------------------------
-# install.packages("multinet", dependencies = TRUE)
-# install.packages("igraph")
-# install.packages("dplyr")
-# install.packages("ggplot2")
-# install.packages('RColorBrewer')
+# install.packages('multinet', dependencies = TRUE)
+# install.packages('igraph')
 # install.packages('plyr')
-# install.packages("plotly")
-# install.packages("akima")
-# install.packages("akima")
-# install.packages(plot3D)
+# install.packages('dplyr')
+# install.packages('ggplot2')
+# install.packages('RColorBrewer')
+# install.packages('kableExtra')
+# install.packages('akima')
+# install.packages('plot3D')
 
 #----
 
@@ -42,7 +41,8 @@ source("Aux_functions.R", encoding="utf-8")
 
 # Client
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))# informa o R que o diretório de trabalho é o do documento atual
+# informa o R que o diretório de trabalho é o do documento atual
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 # Entradas. Nao esquecer de alterar o net_name, bib_ref e file_to_save, pois serao usadas no RMarkdown----
 #comentar/descomentar (ctrl+shift+c) para escolher qual rede usar como entrada ou mudar o caminho manualmente
@@ -83,6 +83,7 @@ seq_G = Create_seq_G_Merged(net_multinet, partitions_of_omega)
 vec_W = Create_vec_W(partitions_of_omega)
 #----
 
+
 # variaveis para inicializar o vetor de gammas
 gamma_min = 0.25
 gamma_max = 4
@@ -93,20 +94,30 @@ Seq_G_Mean_gamma_list = list() #guarda os diferentes datasets de Seq_G_Mean
 G_norm_ordered_list = list() #guarda os diferentes nohs selecionados para plot
 G_norm_list = list()
 
+cont_perc = 1 # usado apenas para mostrar a porcentagem de conclusao
+
 for (gamma_index in 1:length(gammas)) {
   #gerar uma sequencia de banco de dados seqG----
   seq_G_list = list()
-  iterations = 50
+  iterations = 100
   for (i in 1:iterations) {
     seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, partitions_of_omega, gamma = gammas[gamma_index])
-    cat(i*100/iterations, "%  ")
+    cat(cont_perc*100/(iterations*length(gammas)), "%  ")
+    cont_perc = cont_perc + 1
   }
   #----
+   #Remove os nomes da primeira coluna do SeqG list. Tendo problemas para somar deviso a essas strings
+  seq_G_list_no_names = list()
+  for (i in 1:length(seq_G_list)) {
+    seq_G_list_temp = seq_G_list[[i]]
+    seq_G_list_temp[,1] = 1
+    seq_G_list_no_names[[i]] = seq_G_list_temp
+  }
   
   #soma todos os dataframes em seq_G_list em um df----
-  seq_G_sum = seq_G_list[[1]]
+  seq_G_sum = seq_G_list_no_names[[1]]
   for (i in 2:length(seq_G_list)) {
-    seq_G_sum = seq_G_sum + seq_G_list[[i]]
+    seq_G_sum = seq_G_sum + seq_G_list_no_names[[i]]
   }
   seq_G_sum
   #----
@@ -162,3 +173,20 @@ for (i in 1:length(selection)) {
 save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, layout, Seq_G_Mean_gamma_list,
      seq_Gnorm_gamma_mean, G_norm_mean, G_norm_mean_ordered, net_name, bib_ref, file = file_to_save)
 #----
+
+#Em construcao
+
+models <- c(evolution_er_ml(20), evolution_er_ml(20), evolution_er_ml(20), evolution_er_ml(20), evolution_er_ml(20))
+pr_external <- c(.25,.25,.25,.25,.25)
+pr_internal <- c(.25,.25,.25,.25,.25)
+dependency <- matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),5,5)
+teste = grow_ml(20, 100, models, pr_internal, pr_external, dependency)
+teste
+
+write_ml(teste, file = "teste_write_output.txt", format = "multilayer", layers = character(0),
+         sep = ',', merge.actors = TRUE, all.actors = FALSE)
+
+
+
+
+teste_igraph = as.igraph(teste, layers = NULL, merge.actors = TRUE, all.actors = FALSE)

@@ -95,8 +95,8 @@ Custom_plot2D = function(links, nodes, layout = NULL, colorCategory = 1, vertex_
   net_igraph = graph_from_data_frame(d = links, vertices = nodes, directed = F)
   V(net_igraph)$color = colorCategory
   
-  if (is.null(layout)) { #caso o layout seja null, calcula um layout aqui dentro (layout_nicely do igraph)
-    links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] # retira os duplicados para n?o influenciar no layout
+  if (is.null(layout)) { #caso o layout seja null, calcula um layout (layout_nicely do igraph)
+    links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] # retira os duplicados para nao influenciar no layout
     net_layout = graph_from_data_frame(d = links_no_dupl, vertices = nodes, directed = F)
     layout = layout_nicely(net_layout)
   }

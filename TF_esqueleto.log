@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  16 NOV 2020 11:36
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  16 NOV 2020 15:38
 entering extended mode
 **./TF_esqueleto.tex
 (TF_esqueleto.tex
@@ -1207,8 +1207,8 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
  ) 
 Here is how much of TeX's memory you used:
  22281 strings out of 412249
- 392900 string characters out of 2855680
- 928873 words of memory out of 3000000
+ 392891 string characters out of 2855680
+ 928864 words of memory out of 3000000
  41333 multiletter control sequences out of 15000+200000
  548465 words of font info for 132 fonts, out of 3000000 for 9000
  1348 hyphenation exceptions out of 8191

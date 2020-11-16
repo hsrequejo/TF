@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  12 NOV 2020 14:03
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  16 NOV 2020 11:19
 entering extended mode
 **./W_Gama_Visu.tex
 (W_Gama_Visu.tex
@@ -1064,10 +1064,10 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 ] (W_Gama_Visu.aux) ) 
 Here is how much of TeX's memory you used:
- 22754 strings out of 412249
- 387079 string characters out of 2855680
- 922923 words of memory out of 3000000
- 41864 multiletter control sequences out of 15000+200000
+ 22753 strings out of 412249
+ 387056 string characters out of 2855680
+ 924923 words of memory out of 3000000
+ 41863 multiletter control sequences out of 15000+200000
  544490 words of font info for 97 fonts, out of 3000000 for 9000
  1348 hyphenation exceptions out of 8191
  84i,7n,118p,518b,441s stack positions out of 5000i,500n,10000p,200000b,50000s

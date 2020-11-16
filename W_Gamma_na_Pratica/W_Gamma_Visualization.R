@@ -171,7 +171,8 @@ Custom_plot2D_clusters = function(links, nodes, layout = NULL, colorCategory = 1
 # informa o R que o diretório de trabalho é o do documento atual
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-#Recomendo deixar como FALSE. Mudar para TRUE caso queira padronizar os modulos. Puramente visual, possui bugs.
+#Recomendo deixar como FALSE. Mudar para TRUE caso queira padronizar os modulos (mantem a mesma cor do poligono de acordo com a similaridade)
+#Puramente visual, possui bugs.
 standarize_modules = FALSE
 
 #Caso TRUE, gera as figuras JPG de cada um dos ensaios de omega e gamma.

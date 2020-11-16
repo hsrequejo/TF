@@ -1,7 +1,7 @@
 ---
-title: "Relatório de atividades do trabalho de formatura - Outubro"
+title: "Esqueleto do TF"
 author: "Henrique S Requejo"
-date: "15/10/2020"
+date: "16/11/2020"
 header-includes:
     \AtBeginDocument{\let\maketitle\relax}
 output:
@@ -177,13 +177,56 @@ Onde $\delta$ é o delta de kronecker, que retorna o valor 1 caso $c_{i\alpha} =
 \begin{equation} \label{eq:2}
 Q^{M} = \frac{1}{\mu} \sum_{\alpha} \frac{1}{2m_\alpha} \sum_{ij} \left(A_{i\alpha,j\alpha} - \gamma_{\alpha} \frac{k_{i\alpha} k_{j\alpha}}{2m_\alpha} \right) \delta(c_{i\alpha}, c_{j\alpha}) \end{equation}
 
-O parâmetro $\omega$ está contido no intervalo (0,1), onde zero representa o desacoplamento total das camadas, onde cada camada é tratada como uma rede individual (desacoplamento total) e a modularidade final é a média da modularidade de cada camada (eq. \ref{eq:2}), e 1 representa o acoplamento máximo (funciona como uma rede monocamada agregada de todas as camadas).
+# Parâmetros de acoplamento ($\omega$) e resolução ($\gamma$) na prática
 
-A consequência para os nós da rede é que com $\omega$ = 0 temos que todos os nós pertencem a diferentes módulos em diferentes camadas, já que as camadas estão sendo analisadas individualmente. Ao aumentarmos o parâmetro $\omega$, os nós tendem a se tornar parte de apenas um módulo em camadas diferentes, sobrando cada vez menos nós que pertencem a diferentes módulos em diferentes camadas. Finalmente, se atingirmos o valor de $\omega$ = 1, nenhum nó estará presente em mais de um módulo, exatamente como ocorre ao utilizarmos o algoritmo Louvain em redes monocamada.
+Como a escolha dos parâmetros de resolução e acoplamento é arbitrária, ficam as perguntas: qual o melhor valor para aplicar na minha rede? Existe apenas um único melhor valor ou depende do que estou querendo enxergar? Quais são os efeitos na prática quando variamos $\gamma$ e $\omega$? Com o objetivo de responder essas perguntas e auxiliar na escolha dos valores de $\gamma$ e $\omega$, vamos analisar o que ocorre quando variamos esses parâmetros.
 
-O parâmetro de resolução foi introduzido por @Reichardt2006 para avaliar redes monocamada e foi propagado para a modularidade generalizada multicamada [@Mucha2010], funcionando da mesma forma. De uma forma geral, se $\gamma_2 > \gamma_1$, os módulos encontrados com $\gamma_2$ possuem menos nós (módulos menores) e são mais numerosos (maior quantidade de módulos). Os módulos encontrados com $\gamma_2$ podem ser submódulos dos obtidos usando $\gamma_1$, mas nem sempre é o caso [@Reichardt2006].
+O parâmetro $\omega$ está contido no intervalo (0,1), onde zero representa o desacoplamento total das camadas (cada camada é tratada como uma rede individual) e a modularidade final é a média da modularidade de cada camada, e 1 representa o acoplamento máximo, o que faz com que a rede multiplex se comporte como uma rede monocamada. Na prática, isso significa que, quando aumentamos os valores da constante de acoplamento $\omega$, aumentamos o peso das conexões intercamada [@Mucha2010], isso faz com que as camadas tenham maior influência umas sobre as outras, favorecendo a formação de módulos multicamada. Quando diminuímos $\omega$, o contrário ocorre, o que favorece a formação de módulos monocamada.
 
-**Observação:** Preciso explorar um pouco mais esse parâmetro de resolução $\gamma$ para entendê-lo melhor. Entender bem o @Reichardt2006 será fundamental.
+O parâmetro de resolução foi introduzido por @Reichardt2006 para avaliar redes monocamada e foi propagado para a modularidade generalizada multicamada [@Mucha2010], funcionando da mesma forma. De uma forma geral, se $\gamma_2 > \gamma_1$, os módulos encontrados com $\gamma_2$ possuem menos nós (módulos menores) e são mais numerosos (maior quantidade de módulos). Os módulos encontrados com $\gamma_2$ podem ser submódulos dos obtidos usando $\gamma_1$, mas nem sempre é o caso [@Reichardt2006]. Lembrando que $0 \leq \gamma \leq \infty$. Porém, não faz sentido aumentarmos $\gamma$ para valores muito altos, já que existe um limite onde os módulos se tornam tão pequenos que cada módulo passa a ter apenas um nó.
+
+Vamos usar a rede multiplex Famílias de Florença [@Kent1978] para ilustrar graficamente o que ocorre quando variamos os parâmetros $\omega$ e $\gamma$. Essa rede foi escolhida por ser uma rede multiplex pequena, o que facilita a visualização. A figura \ref{fig:Mosaico1} mostra a distribuição visual dos módulos sobre as duas camadas da rede para diferentes valores de $\omega$ e $\gamma$.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{./Figuras/Mosaico_edit.png}
+    \caption{Módulos formados usando diferentes valores de acoplamento $\omega$ e resolução $\gamma$. Valores de $\omega$ variam no eixo y e valores de $\gamma$ variam no eixo x.}
+    \label{fig:Mosaico1}
+\end{figure}
+
+\pagebreak
+
+Quanto maiores o os valores de $\gamma$ e menores os valores de $\omega$, menores e mais numerosos são os módulos e vice-versa. A figura \ref{fig:Mosaico2} mostra o número de módulos para a rede exemplo Famílias de Florença, onde podemos ver que ocorre o previsto na teoria.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{./Figuras/Mosaico_numero_de_modulos_edit.png}
+    \caption{Número de módulos totais da rede para diferentes valores de acoplamento $\omega$ e resolução $\gamma$. Valores de $\omega$ variam no eixo y e valores de $\gamma$ variam no eixo x.}
+    \label{fig:Mosaico2}
+\end{figure}
+
+\pagebreak
+
+Mas afinal, quais valores devo escolher para os parâmetros? A resposta mais correta é: depende. Depende do queremos enxergar e qual insigth queremos obter. Por exemplo, se quisermos verificar quais são os “grandes módulos” da rede devemos usar um valor de $\gamma$ mais baixo, caso quisermos encontrar módulos menores (mais “íntimos”) ou submódulos dos “grandes módulos” obtidos com um $\gamma$ mais baixo, um $\gamma$ maior seria o mais indicado.
+
+Se quisermos que as conexões de uma camada influenciem mais sobre a outra camada, devemos usar um $\omega$ mais alto, coso contrário, melhor usar um $\omega$ mais baixo. Por exemplo, na rede de morcegos-planta [@Mello2019], onde existem duas camadas, uma de nectarívoria e outra de frugívoria. Se quisermos encontrar módulos onde existam morcegos com dietas similares no geral, um $\omega$ mais alto é recomendado, pois, temos a frugívoria e nectarívoria com alta influência uma sobre a outra no cálculo dos módulos. Caso quisermos separar morcegos com uma preferência maior por flores, por frutos ou que tenham uma dieta equilibrada, podemos usar um $\omega$ menor, já que assim existe a tendência dos módulos se formarem pesando mais as interações dentro de cada camada da rede, fazendo com que os morcegos estejam em grupos que priorizam mais a nectarívoria ou a frugivoría ou até mesmo que possuem interações equilibradas entre camadas (estão em dois grupos em camadas diferentes).
+
+Interpretação, conhecimento específico da área que a rede representa e saber o que queremos enxergar são os fatores principais para a escolha dos valores de $\omega$ e $\gamma$
+
+Caso quisermos apenas obter uma distribuição de módulos confiável sem a necessidade de interpretação, podemos escolher um valor de $\omega$ e $\gamma$ que maximiza a modularidade. Os valores de $\omega$ e $\gamma$ que maximizam a modularidade diferem para cada rede. A figura \ref{fig:Mosaico3} mostra os valores da modularidade para diferentes valores de $\omega$ e $\gamma$ da rede exemplo Famílias de Florença.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{./Figuras/Mosaico_modularidade_edit.png}
+    \caption{Valor da modularidade para diferentes valores de acoplamento $\omega$ e resolução $\gamma$. Valores de $\omega$ variam no eixo y e valores de $\gamma$ variam no eixo x.}
+    \label{fig:Mosaico3}
+\end{figure}
+
+Com a resolução do ensaio feito, os valores mais indicados para a rede famílias de florença seriam $\omega = 0.75$ e $\gamma = 1.5$. Para valores mais precisos, basta aumentar as partições de $\gamma$ e $\omega$ ou refinar os valores de $\gamma$ e $\omega$ em torno dos máximos obtidos no ensaio anterior.
+
+Também existe a possibilidade de que os valores de modularidade fiquem muito próximos uns dos outros. Nesse caso, é comum que os módulos fiquem muito similares entre si, então, é possível escolher qualquer um dos valores de $\omega$ e $\gamma$. Caso os módulos fiquem muito diferentes entre si (um caso mais raro), uma interpretação de um especialista na área que a rede está retratando é fundamental.
+
+\clearpage
 
 
 # Variável $G$ e $G_{norm}$

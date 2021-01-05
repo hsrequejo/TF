@@ -33,7 +33,7 @@ library(akima)
 library(plot3D)
 #-------------------
 
-#Funcoes auxiliares---------------------------------------------------------------------------------------------
+#Funcoes auxiliares-------------------------------------------------
 
 source("Aux_functions.R", encoding="utf-8")
 
@@ -46,19 +46,21 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 # Entradas. Nao esquecer de alterar o net_name, bib_ref e file_to_save, pois serao usadas no RMarkdown----
 #comentar/descomentar (ctrl+shift+c) para escolher qual rede usar como entrada ou mudar o caminho manualmente
-nodes = read.csv("./Network_Inputs/bat-plant_nodes.csv", header=T, as.is=T)
-links = read.csv("./Network_Inputs/bat-plant_links.csv", header=T, as.is=T)
+# nodes = read.csv("./Network_Inputs/bat-plant_nodes.csv", header=T, as.is=T)
+# links = read.csv("./Network_Inputs/bat-plant_links.csv", header=T, as.is=T)
 # nodes = read.csv("./Network_Inputs/ant-plant_nodes.csv", header=T, as.is=T)
 # links = read.csv("./Network_Inputs/ant-plant_links.csv", header=T, as.is=T)
+nodes = read.csv("./Network_Inputs/Flo_nodes.csv", header=T, as.is=T)
+links = read.csv("./Network_Inputs/Flo.csv", header=T, as.is=T)
 
 # Pra ser usado no corpo do texto do documento R Markdown
-net_name = "Morcegos-plantas"
+net_name = "Florentine Families"
 
 #string com o referencia no arquivo .bib, e.g. "Mello2019". Usada para fazer a citação no R Markdown
-bib_ref = "Mello2019"
+bib_ref = "Kent1978"
 
 #Caminho onde deve ser salvo o .RData. Lembrar de mudar o nome para nao sobreescrever o antigo
-file_to_save = "./RDatas/bats.RData"
+file_to_save = "./RDatas/flo.RData"
 #----
 
 

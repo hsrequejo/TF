@@ -15,8 +15,8 @@ source("Aux_functions.R", encoding="utf-8")
 # informa o R que o diretório de trabalho é o do documento atual
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-nodes = read.csv("./Network_Inputs/ant-plant_nodes.csv", header=T, as.is=T)
-links = read.csv("./Network_Inputs/ant-plant_links.csv", header=T, as.is=T)
+nodes = read.csv("./Network_Inputs/bat-plant_nodes.csv", header=T, as.is=T)
+links = read.csv("./Network_Inputs/bat-plant_links.csv", header=T, as.is=T)
 
 #ordena os nos. Importante para referenciar os nos corretamente
 nodes = nodes[order(nodes$name),] 
@@ -50,7 +50,7 @@ names(deg_formated) = names(clo)
 #part = part_coeff(net_mono)
 
 # Faz a leitura do .Rdata que contém o G_norm dos nohs do script G_Analysis
-load("./RDatas/ants.RData")
+load("./RDatas/bats.RData")
 Gnorm = G_norm_mean
 
 clo
@@ -59,5 +59,5 @@ eig_formated
 deg_formated
 Gnorm
 
-save(clo, btw, eig_formated, deg_formated, Gnorm, file = "ants_allCentr.RData")
+save(clo, btw, eig_formated, deg_formated, Gnorm, file = "bats_allCentr.RData")
 

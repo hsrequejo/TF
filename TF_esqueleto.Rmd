@@ -592,6 +592,94 @@ rownames(selected_nodes_df) = NULL
 kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3a}Espécies com valores de $G_{norm}$ maiores que", G_threshold), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
+\pagebreak
+
+# Comparação entre nós com alto $\mathbf{G_{norm}}$ com nós centrais da rede agregada
+
+Os nós que possuem maiores valores de G$_{norm}$ parecem ser nós que posuem uma importância diferenciada dentro da rede, pois, ao permanecerem em diferentes grupos em diferentes camadas, mesmo após o aumento do acoplamento, mostra que os nós posuem uma relação mais igualitária entre diferentes grupos em camadas diferentes, o que os tornam nós com potencial de bons conectores entre diferentes grupos em camadas diferentes da rede.
+
+Uma outra métrica que busca classificar as espécies mais importantes dentro de uma rede é a centralidade [ref?]. Se compararmos os nós mais centrais de uma rede com os nós com maior G$_{norm}$, podemos verificar a relação entre as métricas.
+
+Existem vários tipos de centralidade diferentes, calculadas usando diferentes parâmetros como base. Neste trabalho vamos comparar quatro delas com os nós que possuem alto G$_{norm}$. São elas: \textit{Closeness} [ref?], \textit{Betweeness} [ref?], \textit{Eigen Vector} [ref?] e \textit{Degree}. Estas centralidades são calculadas sobre a rede multicamada agregada mantendo os links duplos, caso existam.
+
+Duas formas de comparação foram usadas. Uma que se trata apenas de uma comparação binária, levando em conta apenas o número de nós em comum entre as centralidades e alto G$_{norm}$. Outra que leva em conta a distância entre rankings (posições) dos nós selecionados entre os mais centrais e altos valores de G$_{norm}$.
+
+A similaridade binária é bastante trivial e seu indíce é calculado da seguinte forma:
+
+\begin{equation} \label{eq:sim_bin}
+Sim_{bin} = \frac{\sum{j}^N\sum_{i}^N\delta(c_j, g_i)}{N}
+\end{equation}
+
+Onde $\delta(c_j, g_i)$ é o delta de kronecker; $N$ é o ranking de corte escolhido, e.g $N=5$ no caso de escolhermos avaliar os cinco nós melhores ranqueados de cada métrica; $c_j$ e $g_i$ são os vetores ordenadas por ranking dos nós mais centrais e com maiores valores de $G_{norm}$ respectivamente. Os valores da similaridade variam entre 0 (nenhum nó em comum) e 1 (todos os nós em comum).
+
+Além da comparação binária, podemos avaliar a similaridade levando em conta ranking do nó dentro do conjunto de corte escolhido. Para isso basta adicionarmos um fator de peso que é proporcional ao inverso da distância entre os nós dentro da equação \ref{eq:sim_bin}.
+
+\begin{equation} \label{eq:sim_dist}
+Sim_{dist} = \frac{\sum{j}^{N}\sum_{i}^{N}\frac{1}{1+|i-j|}\delta(c_j, g_i)}{N}
+\end{equation}
+
+Onde o valor absoluto de $i-j$ é equivalente a distância entre os rankings dos nós $g_i$ e $c_j$. Os valores de $Sim_{dist}$ variam entre 0 e 1, onde 0 corresponde a nenhum nó em comum entre os métodos e 1 corresponde a todos os nós em comum e com o mesmo ranking.
+
+## Comparação das centralidades com alto $\mathbf{G_{norm}}$ para a rede Morcegos-Plantas
+\begin{table}[!h]
+\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para e rede de Morcegos-plantas.}\label{table:centr_raw_bats}
+\footnotesize
+\begin{tabular}{cccccccccc}
+\multicolumn{10}{l}{ \textbf{Closeness} } \\
+\hline
+Artjam & Carper & Cecobt & Cecpel & Artlit & Mactin & Manind & Manzap & Piparb & Carpap \\
+0.000822 & 0.000792 & 0.000787 & 0.000767 & 0.000765 & 0.000755 & 0.000746 & 0.000743 & 0.000740 & 0.000737 \\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Betweeness} } \\
+\hline
+Artjam & Carper & Artlit & Glosor & Stulil & Lepcur & Ceipen & Anocau & Syzjam & Stulud \\
+0.3035 & 0.2642 & 0.1523 & 0.1441 & 0.1334 & 0.0803 & 0.0700 & 0.0697 & 0.0555 & 0.0552 \\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Eigen Vector} } \\
+\hline
+Artjam & Carper & Artlit & Stulil & Cecpel & Glosor & Carcas & Cecobt & Manzap & Ficins \\
+1.0000 & 0.8626 & 0.8017 & 0.3961 & 0.3685 & 0.3119 & 0.2744 & 0.2690 & 0.2664 & 0.2603 \\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Degree} } \\
+\hline
+Artjam & Carper & Artlit & Stulil & Glosor & Carcas & Lepcur & Phyhas & Anocau & Carbre \\
+149 & 138 & 112 & 72 & 65 & 44 & 43 & 40 & 30 & 29 \\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Gnorm} } \\
+\hline
+Artjam & Syzjam & Artlit & Urobil & Stulil & Ingver & Carcas & Cecpel & Carbre & Artcon \\
+1.5483 & 1.5385 & 1.5092 & 1.4877 & 1.4692 & 1.4321 & 1.4014 & 1.4010 & 1.3917 & 1.3908 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!h]
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade.}\label{table:centr_sim_bin_bats}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree\\
+0.3 & 0.4 & 0.5 & 0.5\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade.}\label{table:centr_sim_dist_bats}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree \\
+0.153 & 0.313 & 0.375 & 0.350 \\
+\hline
+\end{tabular}
+\end{table}
+
+\pagebreak
 # Discussão preliminar
 
 Nas duas redes reais estudadas, a distribuição dos valores de G$_{norm}$ está como esperado, poucas espécies acima da média da rede e muitas espécies próximas da média ou abaixo dela. Isso mostra que apenas poucas espécies atingem valores altos de G$_{norm}$, sendo essa uma caractrística não comun entre nós da rede, assim como altos valores de centralidade

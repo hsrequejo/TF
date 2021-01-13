@@ -1,6 +1,6 @@
 # Compara os nos mais centrais da rede monocamada com os noh obtidos traves de Gnorm
 
-load("ants_allCentr.RData")
+load("bats_allCentr.RData")
 
 clo
 btw
@@ -15,7 +15,7 @@ centr_list = list(clo, btw, eig, deg, Gnorm)
 
 #separa os nohs mais centrais
 most_central_list = list()
-ranking_cutoff = 8
+ranking_cutoff = 10
 for (i in 1:length(centr_list)) {
   centr_temp = centr_list[[i]]
   centr_temp = sort(centr_temp, decreasing = TRUE)
@@ -50,18 +50,18 @@ similarity_string_list
 Gnorm_most_central = most_central_list[[5]]
 similarity_dist = rep(0, length(most_central_list))
 names(similarity_dist) = c("clo", "btw", "eig", "deg", "Gnorm")
-similarity_string_list = list()
 for (i in 1:(length(most_central_list))) {
   list_temp = list()
   for (j in 1:ranking_cutoff) {
     for (k in 1:ranking_cutoff) {
       if (names(Gnorm_most_central[j]) == names(most_central_list[[i]][k])) {
-        similarity_dist[i] = similarity_dist[i] + abs(j-k)
+        similarity_dist[i] = similarity_dist[i] + (1/(1+abs(j-k)))
       }
     }
   }
 }
 similarity_bin
-similarity_dist = 1-((similarity_dist + (((1-similarity_bin)*ranking_cutoff)*ranking_cutoff))/(ranking_cutoff^2))
+#similarity_dist = 1-((similarity_dist + (((1-similarity_bin)*ranking_cutoff)*ranking_cutoff))/(ranking_cutoff^2))
+similarity_dist = similarity_dist/ranking_cutoff
 similarity_dist
 most_central_list

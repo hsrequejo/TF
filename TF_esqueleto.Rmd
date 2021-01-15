@@ -596,85 +596,186 @@ kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3a}
 
 # Comparação entre nós com alto $\mathbf{G_{norm}}$ com nós centrais da rede agregada
 
-Os nós que possuem maiores valores de G$_{norm}$ parecem ser nós que posuem uma importância diferenciada dentro da rede, pois, ao permanecerem em diferentes grupos em diferentes camadas, mesmo após o aumento do acoplamento, mostra que os nós posuem uma relação mais igualitária entre diferentes grupos em camadas diferentes, o que os tornam nós com potencial de bons conectores entre diferentes grupos em camadas diferentes da rede.
+Os nós que possuem maiores valores de G$_{norm}$ parecem ser nós que possuem uma importância diferenciada dentro da rede, pois, ao permanecerem em diferentes grupos em diferentes camadas, mesmo após o aumento do acoplamento, mostra que os nós possuem uma relação mais igualitária entre diferentes grupos em camadas diferentes, o que os tornam nós com potencial de bons conectores entre diferentes grupos em camadas diferentes da rede.
 
 Uma outra métrica que busca classificar as espécies mais importantes dentro de uma rede é a centralidade [ref?]. Se compararmos os nós mais centrais de uma rede com os nós com maior G$_{norm}$, podemos verificar a relação entre as métricas.
 
-Existem vários tipos de centralidade diferentes, calculadas usando diferentes parâmetros como base. Neste trabalho vamos comparar quatro delas com os nós que possuem alto G$_{norm}$. São elas: \textit{Closeness} [ref?], \textit{Betweeness} [ref?], \textit{Eigen Vector} [ref?] e \textit{Degree}. Estas centralidades são calculadas sobre a rede multicamada agregada mantendo os links duplos, caso existam.
+Existem vários tipos de centralidade diferentes, calculadas usando diferentes parâmetros como base. Neste trabalho vamos comparar quatro delas com os nós que possuem alto G$_{norm}$. São elas: \textit{Closeness} [ref?], \textit{Betweeness} [ref?], \textit{Eigen Vector} [ref?] e \textit{Degree} [ref?]. Estas centralidades são calculadas sobre a rede multicamada agregada mantendo os links duplos, caso existam.
 
 Duas formas de comparação foram usadas. Uma que se trata apenas de uma comparação binária, levando em conta apenas o número de nós em comum entre as centralidades e alto G$_{norm}$. Outra que leva em conta a distância entre rankings (posições) dos nós selecionados entre os mais centrais e altos valores de G$_{norm}$.
 
-A similaridade binária é bastante trivial e seu indíce é calculado da seguinte forma:
+A similaridade binária é bastante trivial e seu índice pode ser calculado da seguinte forma:
 
 \begin{equation} \label{eq:sim_bin}
-Sim_{bin} = \frac{\sum{j}^N\sum_{i}^N\delta(c_j, g_i)}{N}
+Sim_{bin} = \frac{\sum_{j}^N\sum_{i}^N\delta(c_j, g_i)}{N}
 \end{equation}
 
-Onde $\delta(c_j, g_i)$ é o delta de kronecker; $N$ é o ranking de corte escolhido, e.g $N=5$ no caso de escolhermos avaliar os cinco nós melhores ranqueados de cada métrica; $c_j$ e $g_i$ são os vetores ordenadas por ranking dos nós mais centrais e com maiores valores de $G_{norm}$ respectivamente. Os valores da similaridade variam entre 0 (nenhum nó em comum) e 1 (todos os nós em comum).
+Onde $\delta(c_j, g_i)$ é o delta de kronecker; $N$ é o ranking de corte escolhido (e.g $N=5$ no caso de escolhermos avaliar os cinco nós melhores ranqueados de cada métrica); $c_j$ e $g_i$ são os vetores ordenadas por ranking dos nós mais centrais e com maiores valores de $G_{norm}$ respectivamente. Os valores da similaridade variam entre 0 (nenhum nó em comum) e 1 (todos os nós em comum).
 
-Além da comparação binária, podemos avaliar a similaridade levando em conta ranking do nó dentro do conjunto de corte escolhido. Para isso basta adicionarmos um fator de peso que é proporcional ao inverso da distância entre os nós dentro da equação \ref{eq:sim_bin}.
+Além da comparação binária, podemos avaliar a similaridade levando em conta ranking do nó dentro do conjunto de corte escolhido. Para isso basta adicionarmos um fator de peso que é proporcional ao inverso da distância entre nós dentro da equação \ref{eq:sim_bin}.
 
 \begin{equation} \label{eq:sim_dist}
-Sim_{dist} = \frac{\sum{j}^{N}\sum_{i}^{N}\frac{1}{1+|i-j|}\delta(c_j, g_i)}{N}
+Sim_{dist} = \frac{\sum_{j}^{N}\sum_{i}^{N}\frac{1}{1+|i-j|}\delta(c_j, g_i)}{N}
 \end{equation}
 
 Onde o valor absoluto de $i-j$ é equivalente a distância entre os rankings dos nós $g_i$ e $c_j$. Os valores de $Sim_{dist}$ variam entre 0 e 1, onde 0 corresponde a nenhum nó em comum entre os métodos e 1 corresponde a todos os nós em comum e com o mesmo ranking.
 
 ## Comparação das centralidades com alto $\mathbf{G_{norm}}$ para a rede Morcegos-Plantas
-\begin{table}[!h]
-\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para e rede de Morcegos-plantas.}\label{table:centr_raw_bats}
+
+Comparando as 10 espécies melhores ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 melhores ranqueadas segundo os valores de $G_{norm}$ vimos que existem 7 espécies que também estão presentes em ao menos uma das centralidades avaliadas. Três espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ e não estavam presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_bats} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum e únicas.
+
+\begin{table}[!ht]
+\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para e rede de Morcegos-plantas. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_bats}
 \footnotesize
 \begin{tabular}{cccccccccc}
 \multicolumn{10}{l}{ \textbf{Closeness} } \\
 \hline
-Artjam & Carper & Cecobt & Cecpel & Artlit & Mactin & Manind & Manzap & Piparb & Carpap \\
+\textbf{Artjam} & Carper & Cecobt & \textbf{Cecpel} & \textbf{Artlit} & Mactin & Manind & Manzap & Piparb & Carpap \\
+\hline
+\hline
 0.000822 & 0.000792 & 0.000787 & 0.000767 & 0.000765 & 0.000755 & 0.000746 & 0.000743 & 0.000740 & 0.000737 \\
 \hline
 & & & & & & & & & \\
 \multicolumn{10}{l}{ \textbf{Betweeness} } \\
 \hline
-Artjam & Carper & Artlit & Glosor & Stulil & Lepcur & Ceipen & Anocau & Syzjam & Stulud \\
+\textbf{Artjam} & Carper & \textbf{Artlit} & Glosor & \textbf{Stulil} & Lepcur & Ceipen & Anocau & \textbf{Syzjam} & Stulud \\
+\hline
+\hline
 0.3035 & 0.2642 & 0.1523 & 0.1441 & 0.1334 & 0.0803 & 0.0700 & 0.0697 & 0.0555 & 0.0552 \\
 \hline
 & & & & & & & & & \\
 \multicolumn{10}{l}{ \textbf{Eigen Vector} } \\
 \hline
-Artjam & Carper & Artlit & Stulil & Cecpel & Glosor & Carcas & Cecobt & Manzap & Ficins \\
+\textbf{Artjam} & Carper & Artlit & \textbf{Stulil} & \textbf{Cecpel} & Glosor & \textbf{Carcas} & Cecobt & Manzap & Ficins \\
+\hline
+\hline
 1.0000 & 0.8626 & 0.8017 & 0.3961 & 0.3685 & 0.3119 & 0.2744 & 0.2690 & 0.2664 & 0.2603 \\
 \hline
 & & & & & & & & & \\
 \multicolumn{10}{l}{ \textbf{Degree} } \\
 \hline
-Artjam & Carper & Artlit & Stulil & Glosor & Carcas & Lepcur & Phyhas & Anocau & Carbre \\
+\textbf{Artjam} & Carper & \textbf{Artlit} & \textbf{Stulil} & Glosor & \textbf{Carcas} & Lepcur & Phyhas & Anocau & \textbf{Carbre} \\
+\hline
+\hline
 149 & 138 & 112 & 72 & 65 & 44 & 43 & 40 & 30 & 29 \\
 \hline
 & & & & & & & & & \\
 \multicolumn{10}{l}{ \textbf{Gnorm} } \\
 \hline
-Artjam & Syzjam & Artlit & Urobil & Stulil & Ingver & Carcas & Cecpel & Carbre & Artcon \\
+\textbf{Artjam} & \textbf{Syzjam} & \textbf{Artlit} & \textit{Urobil} & \textbf{Stulil} & \textit{Ingver} & \textbf{Carcas} & \textbf{Cecpel} & \textbf{Carbre} & \textit{Artcon} \\
+\hline
+\hline
 1.5483 & 1.5385 & 1.5092 & 1.4877 & 1.4692 & 1.4321 & 1.4014 & 1.4010 & 1.3917 & 1.3908 \\
 \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[!h]
-\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade.}\label{table:centr_sim_bin_bats}
+A similaridade binária entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ e as 10 melhores ranqueadas pelas centralidades avaliadas ficou entre 30% e 50%, ficando menos similar à centralidade \textit{Closeness} e mais similar às centralidades \textit{Eigen Vector} e \textit{Degree} (tabela \ref{table:centr_sim_bin_bats}).
+
+Levando em conta a distância entre os rankings para calcular a similaridade, tivemos resultados parecidos, com menor similaridade entre $G_{norm}$ e à centralidade \textit{Closeness} ($Sim_{dist} = 0.153$), e mais similar às centralidades \textit{Eigen Vector} ($Sim_{dist} = 0.375$)  e \textit{Degree} ($Sim_{dist} = 0.350$) (tabela \ref{table:centr_sim_dist_bats}).
+
+\begin{table}[!ht]
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para a rede de Morcegos-Plantas.}\label{table:centr_sim_bin_bats}
 \centering
 \begin{tabular}{cccc}
 \hline
 Closeness & Betweeness & Eigen Vector & Degree\\
+\hline
+\hline
 0.3 & 0.4 & 0.5 & 0.5\\
 \hline
 \end{tabular}
 \end{table}
 
-\begin{table}
-\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade.}\label{table:centr_sim_dist_bats}
+\begin{table}[!ht]
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para a rede de Morcegos-Plantas.}\label{table:centr_sim_dist_bats}
 \centering
 \begin{tabular}{cccc}
 \hline
 Closeness & Betweeness & Eigen Vector & Degree \\
+\hline
+\hline
 0.153 & 0.313 & 0.375 & 0.350 \\
+\hline
+\end{tabular}
+\end{table}
+
+## Comparação das centralidades com alto G norm para a rede Formigas-Plantas
+
+Comparando as 10 espécies melhores ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 melhores ranqueadas segundo os valores de $G_{norm}$ vimos que existem 4 espécies que também estão presentes em ao menos uma das centralidades avaliadas. Seis espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ e não estavam presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_ants} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum e únicas.
+
+\begin{table}[!ht]
+\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para e rede de Formigas-plantas. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_ants}
+\footnotesize
+\begin{tabular}{cccccccccc}
+\multicolumn{10}{l}{ \textbf{Closeness} } \\
+\hline
+\textbf{Ceppus} & Camruf & \textbf{Baccon} & Velniv & Barfla & Velcor & Symret & Chapap & Bracor & Myrmon \\
+\hline
+\hline
+0.005208 & 0.004464 & 0.004425 & 0.004425 & 0.004386 & 0.004386 & 0.004348 & 0.004274 & 0.004237 & 0.004237\\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Betweeness} } \\
+\hline
+\textbf{Ceppus} & Bracor & \textbf{Camcra} & Symret & \textbf{Brapic} & Camruf & Velniv & Chapap & \textbf{Baccon} & Myrmon \\
+\hline
+\hline
+0.534950 & 0.128619 & 0.122119 & 0.097949 & 0.083113 & 0.077501 & 0.077331 & 0.070075 & 0.065702 & 0.063788\\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Eigen Vector} } \\
+\hline
+\textbf{Ceppus} & Chapap & Symret & Barfla & \textbf{Baccon} & Bracor & Myrmon & \textbf{Byrsp1} & Velniv & Crosp1\\
+\hline
+\hline
+1.000000 & 0.455778 & 0.414024 & 0.390773 & 0.334106 & 0.319351 & 0.305372 & 0.254429 & 0.248246 & 0.242607\\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Degree} } \\
+\hline
+\textbf{Ceppus} & Bracor & Camruf & \textbf{Camcra} & Symret & Chapap & \textbf{Baccon} & Velniv & Barfla & Myrmon\\
+\hline
+\hline
+294 & 94 & 81 & 80 & 60 & 58 & 47 & 47 & 46 & 46\\
+\hline
+& & & & & & & & & \\
+\multicolumn{10}{l}{ \textbf{Gnorm} } \\
+\hline
+\textbf{Baccon} & \textbf{Camcra} & \textit{Brapic} & \textit{Vocthy} & \textbf{Ceppus} & \textit{Camley} & \textit{Dorgoe} & \textit{Remfer} & \textbf{Byrsp1} & \textit{Brasp1} \\
+\hline
+\hline
+1.386172 & 1.354869 & 1.340810 & 1.235132 & 1.221853 & 1.200063 & 1.192447 & 1.189014 & 1.180905 & 1.152569\\
+\hline
+\end{tabular}
+\end{table}
+
+A similaridade binária entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ e as 10 melhores ranqueadas pelas centralidades avaliadas ficou entre 20% e 40%, ficando menos similar à centralidade \textit{Closeness} e mais similar à centralidade \textit{Betweeness} (tabela \ref{table:centr_sim_bin_bats}).
+
+Levando em conta a distância entre os rankings para calcular a similaridade, tivemos resultados parecidos, com menor similaridade entre $G_{norm}$ e à centralidade \textit{Closeness} ($Sim_{dist} = 0.053$), e mais similar à centralidade \textit{Betweeness} ($Sim_{dist} = 0.114$) (tabela \ref{table:centr_sim_dist_bats}).
+
+\begin{table}[!ht]
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para a rede de Formigas-Plantas.}\label{table:centr_sim_bin_ants}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree\\
+\hline
+\hline
+0.2 & 0.4 & 0.3 & 0.3\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!ht]
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para a rede de Formigas-Plantas.}\label{table:centr_sim_dist_ants}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree \\
+\hline
+\hline
+0.053 & 0.114 & 0.090 & 0.068\\
 \hline
 \end{tabular}
 \end{table}
@@ -682,28 +783,23 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \pagebreak
 # Discussão preliminar
 
-Nas duas redes reais estudadas, a distribuição dos valores de G$_{norm}$ está como esperado, poucas espécies acima da média da rede e muitas espécies próximas da média ou abaixo dela. Isso mostra que apenas poucas espécies atingem valores altos de G$_{norm}$, sendo essa uma caractrística não comun entre nós da rede, assim como altos valores de centralidade
+Nas duas redes reais estudadas, a distribuição dos valores de G$_{norm}$ está como esperado, poucas espécies acima da média da rede e muitas espécies próximas da média ou abaixo dela. Isso mostra que apenas poucas espécies atingem valores altos de G$_{norm}$, sendo essa uma característica não comum entre nós da rede, assim como altos valores de centralidade
 
-A variação de resolução $\gamma$ não parece influenciar G de forma tão intensa quanto a variação no acoplamento $\omega$, mas ela existe e com certeza é mais robusto selecionar nós com alto G$_{norm}$ como candidatos a centrais considerando a variação em $\gamma$ também, pois assim minizamos a probabilidade de estarmos observando uma exceção dentro de um grande universo de parâmetros de resolução além de obter as espécies-chave de uma forma mais generalizada.
+A variação de resolução $\gamma$ não parece influenciar G de forma tão intensa quanto a variação no acoplamento $\omega$, mas ela existe e com certeza é mais robusto selecionar nós com alto G$_{norm}$ como candidatos a centrais considerando a variação em $\gamma$ também, pois assim minimizamos a probabilidade de estarmos observando uma exceção dentro de um grande universo de parâmetros de resolução além de obter as espécies-chave de uma forma mais generalizada.
 
-Caso exista uma variação significativa de G$_{norm}$ em relação a $\gamma$, podemos concluir que as espécies-chave detectadas por G$_{norm}$  possuem centralidade relativa a resolução, ou seja, espécies podem ter sua centralidade aumentada ou diminuida caso estejamos interessados em grupos maiores ou menores. \textbf[Realizar testes com redes sintéticas para verificar se isso ocorre muito]
+Caso exista uma variação significativa de G$_{norm}$ em relação a $\gamma$, podemos concluir que as espécies-chave detectadas por G$_{norm}$ possuem centralidade relativa a resolução, ou seja, espécies podem ter sua centralidade aumentada ou diminuída caso estejamos interessados em grupos maiores ou menores. \textbf[Realizar testes com redes sintéticas para verificar se isso ocorre muito]
 
-As espécies com maior G$_{norm}$ selecionadas possuem boa intersecção com as espécies centrais descritas em @Mello2019 e @Costa2016. Isto é interessante, já que o ranqueamento das espécies foi feito levando em conta a resistência de cada espécie ao parâmetro de acoplamento entre camadas $\omega$, algo muito diferente dos métodos de centralidade tradicionais. No entanto, ainda preciso comparar numericamente valores de centralidade usando a rede agregada binária e com peso de aresta igual a quantidade de interações em cada camada.
+Quando avaliamos as 10 espécies mais bem ranqueadas das redes Morcegos-Planta e Formigas-Planta, vimos que as espécies com altos valores de G$_{norm}$ possuem uma intersecção razoável com as espécies centrais das redes de Formigas-Plantas (20% - 40%) e Morcegos-Plantas (30% - 50%). Isto é interessante, já que o ranqueamento das espécies foi feito levando em conta a resistência de cada espécie ao parâmetro de acoplamento entre camadas $\omega$, algo muito diferente dos métodos de centralidade tradicionais. Apesar das diferenças, era esperado de certa forma que os parâmetros que regem as métricas de centralidade, como grau, caminho mais curtos entre dois nós, entre outros, também influenciassem o ranqueamento dos nós pelos valores de $G_{norm}$, pois nós com atributos centrais possuem mais chances de serem bons conectores entre camadas naturalmente.
+
+Algo ainda mais interessante que a similaridade entre as melhores ranqueadas entre centralidades e $G_{norm}$, são as diferenças. As espécies selecionadas apenas pelos valores de $G_{norm}$ e que não foram selecionadas pelas centralidades estudadas podem ser espécies que possuem certo tipo de importância dentro da rede e não foram detectadas pelas métricas de centralidades avaliadas nesse trabalho. Caso essas espécies sejam realmente importantes, isso pode reforçar a importância de usarmos redes multicamadas, pois essa métrica só existe avaliando a rede multicamada. \textbf{[As espécies que são unicamente selecionadas pelo $G_{norm}$ possuem características especiais/únicas? Possuem importância significativa na rede? Espécies ponte?]}  
 
 \pagebreak
 
 # Próximas etapas
 
-## Outubro
 \begin{itemize}
-	\item Compreender melhor o parâmetro de acoplamento $\gamma$ com visualização.
-	\item Buscar uma boa forma de visualizar os módulos para rastrear a situação de um nó. Acredito que assim será possível entender melhor como estão posicionados os nós de maior G$_{norm}$ em relação aos módulos ao variarmos $\omega$ e $\gamma$. Acredito que isso ajuadará no insight do que significa na prática essa variável G$_{norm}$ alta que apenas alguns nós possuem.
-\end{itemize}
-
-## Novembro
-\begin{itemize}
-	\item Validar ou desvalidar G$_{norm}$ como forma de localizar espécies que são boas conectoras entre camadas ou centrais de uma forma geral usando diversas redes sintéticas (usar simulação do Rafael Pinheiro) para verificar se o comportamento de G$_{norm}$ é consistente, e compará-lo como outras métricas.
-	\item Começar a escrita oficial do TCC.
+	\item Avaliar várias redes sintéticas variando o número de nós, conexões e camadas para verificar se existe algum padrão dos altos valores de $G_{norm}$ com relação a sua distribuição e similaridade com as centralidades.
+	\item Quais camadas o nó conecta.
 \end{itemize}
 
 

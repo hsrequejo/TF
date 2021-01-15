@@ -1,6 +1,6 @@
 # Compara os nos mais centrais da rede monocamada com os noh obtidos traves de Gnorm
 
-load("bats_allCentr.RData")
+load("ants_allCentr.RData")
 
 clo
 btw

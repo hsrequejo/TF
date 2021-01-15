@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  13 JAN 2021 18:19
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  15 JAN 2021 17:20
 entering extended mode
 **./TF_esqueleto.tex
 (TF_esqueleto.tex
@@ -1199,24 +1199,29 @@ File: TF_esqueleto_files/figure-latex/fig-sub2_b-1.pdf Graphic file (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [29] [30]
-Overfull \hbox (28.04497pt too wide) in paragraph at lines 974--1005
+Overfull \hbox (28.04497pt too wide) in paragraph at lines 985--1026
 [][] 
  []
 
-[31] [32] [33] [34
+[31]
+Overfull \hbox (31.46497pt too wide) in paragraph at lines 1085--1126
+[][] 
+ []
 
-] [35] (TF_esqueleto.aux (Capa.aux))
+[32] [33] [34] [35] [36] [37
+
+] [38] (TF_esqueleto.aux (Capa.aux))
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 22290 strings out of 412249
- 393180 string characters out of 2855680
- 934031 words of memory out of 3000000
- 41342 multiletter control sequences out of 15000+200000
- 548465 words of font info for 132 fonts, out of 3000000 for 9000
+ 22299 strings out of 412249
+ 393474 string characters out of 2855680
+ 946072 words of memory out of 3000000
+ 41349 multiletter control sequences out of 15000+200000
+ 548473 words of font info for 133 fonts, out of 3000000 for 9000
  1348 hyphenation exceptions out of 8191
  84i,11n,118p,913b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on TF_esqueleto.pdf (38 pages).
+Output written on TF_esqueleto.pdf (41 pages).

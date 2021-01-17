@@ -50,19 +50,24 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 # links = read.csv("./Network_Inputs/bat-plant_links.csv", header=T, as.is=T)
 # nodes = read.csv("./Network_Inputs/ant-plant_nodes.csv", header=T, as.is=T)
 # links = read.csv("./Network_Inputs/ant-plant_links.csv", header=T, as.is=T)
-nodes = read.csv("./Network_Inputs/Flo_nodes.csv", header=T, as.is=T)
-links = read.csv("./Network_Inputs/Flo.csv", header=T, as.is=T)
+# nodes = read.csv("./Network_Inputs/Flo_nodes.csv", header=T, as.is=T)
+# links = read.csv("./Network_Inputs/Flo.csv", header=T, as.is=T)
+nodes = read.csv("./Network_Inputs/rand_ml_2_100_30_nodes.csv", header=T, as.is=T)
+links = read.csv("./Network_Inputs/rand_ml_2_100_30_links.csv", header=T, as.is=T)
 
 # Pra ser usado no corpo do texto do documento R Markdown
-net_name = "Florentine Families"
+net_name = "rand_ml_2_100_30"
 
 #string com o referencia no arquivo .bib, e.g. "Mello2019". Usada para fazer a citação no R Markdown
-bib_ref = "Kent1978"
+bib_ref = "vazio"
 
 #Caminho onde deve ser salvo o .RData. Lembrar de mudar o nome para nao sobreescrever o antigo
-file_to_save = "./RDatas/flo.RData"
+file_to_save = paste("./RDatas/", net_name, ".RData", sep="")
 #----
 
+for (i in 1:length(nodes$name)) {
+  nodes$name[i] = toString(nodes$name[i])
+}
 
 #ordena os nos. Importante para referenciar os nos corretamente
 nodes = nodes[order(nodes$name),] 
@@ -174,7 +179,23 @@ for (i in 1:length(selection)) {
 #Salva as as variaveis que são usadas no R Markdown em um arquivo .RData
 save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, layout, Seq_G_Mean_gamma_list,
      seq_Gnorm_gamma_mean, G_norm_mean, G_norm_mean_ordered, net_name, bib_ref, file = file_to_save)
+
+gammas
+vec_W
+iterations
+partitions_of_omega
+links
+nodes
+layout
+Seq_G_Mean_gamma_list
+seq_Gnorm_gamma_mean
+G_norm_mean
+G_norm_mean_ordered
+net_name
+bib_ref
 #----
+
+Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
 
 #Em construcao
 
@@ -192,3 +213,5 @@ write_ml(teste, file = "teste_write_output.txt", format = "multilayer", layers =
 
 
 teste_igraph = as.igraph(teste, layers = NULL, merge.actors = TRUE, all.actors = FALSE)
+
+

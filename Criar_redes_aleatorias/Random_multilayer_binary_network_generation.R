@@ -4,13 +4,19 @@
 # para marcar o tempo de execucao
 a = Sys.time()
 
-
+Create_random_ML = function(number_of_layers, number_of_conections, number_of_nodes){
+  
+}
 
 number_of_layers = 2
-number_of_conections = 500
-number_of_nodes = 150
+number_of_conections = 100
+number_of_nodes = 30
 
 nodes_ID = seq(from = 1, to = number_of_nodes, by = 1)
+
+for (i in 1:number_of_nodes) {
+  nodes_ID[i] = paste("node", nodes_ID[i], sep="")
+}
 
 links_df = data.frame(from = numeric(0), to = numeric(0), layer = numeric(0))
 pair_temp = sample(sample(nodes_ID, 2, replace = FALSE))
@@ -78,14 +84,28 @@ for (i in 1:length(links_df[,1])) {
 #removes dual links entirely
 links_df = links_df[!seq_len(nrow(links_df)) %in% duals[,1], ]
 
-#extract the nodes list from links_df
-nodes_raw = links_df[,1]
-nodes_raw = append(nodes_raw, links_df[,1])
-nodes_raw
-nodes_df = unique(nodes_raw)
-nodes_df = sort(nodes_df)
+#extract the nodes list
+nodes_df = nodes_ID
+# nodes_raw = links_df[,1]
+# nodes_raw = append(nodes_raw, links_df[,1])
+# nodes_raw
+# nodes_df = unique(nodes_raw)
+# nodes_df = sort(nodes_df)
+# nodes_df = cbind(nodes_df, rep("filler", length(nodes_df)))
+# colnames(nodes_df) = c("name", "enchimento")
 nodes_df
 links_df
 
 b = Sys.time()    
 paste0(round(as.numeric(difftime(time1 = b, time2 = a, units = "secs")), 3), " Seconds")
+
+
+#gera uma string com o nome do arquivo csv da seguinte forma: camadas_conexoes_nos
+file_name_links = paste("rand_ml_",number_of_layers, "_", number_of_conections, "_", number_of_nodes, "_links.csv", sep ="")
+file_name_nodes = paste("rand_ml_",number_of_layers, "_", number_of_conections, "_", number_of_nodes, "_nodes.csv", sep ="")
+
+#creates a csv file for the nodes_df and links_df using the file name on the directory of this R script
+dirname(rstudioapi::getActiveDocumentContext()$path)
+write.csv(links_df, file_name_links, row.names = FALSE, quote = FALSE)
+write.csv(nodes_df, file_name_nodes, row.names = FALSE, quote = FALSE)
+

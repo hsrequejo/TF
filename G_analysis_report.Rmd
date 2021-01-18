@@ -1,7 +1,7 @@
 ---
-title: "G_Analysis_Report"
+title: "G Analysis Report"
 author: "Henrique S Requejo"
-date: "16/11/2020"
+date: ""
 header-includes:
     \AtBeginDocument{\let\maketitle\relax}
 output:
@@ -69,8 +69,6 @@ source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido 
 <!-- Sem numero de pagina -->
 \pagenumbering{gobble}
 
-\include{Capa.tex}
-
 \pagebreak
 
 \tableofcontents
@@ -88,7 +86,7 @@ size2 = 3*size1 #tamanho dos valores acima de G_threshold
 ```
 
 ```{r leitura_dos_dados_morcego}
-load("./RDatas/rand_ml_2_100_30.RData")
+load("./RDatas/teste.RData")
 ```
 
 <!-- modifcar o 'net_x' para corresponder com as figuras -->
@@ -180,30 +178,29 @@ for (i in 1:length(selection)) {
 }
 ```
 
-<!-- ```{r decaimentos_ilustrativos, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a}Exemplos de curvas do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Curvas de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Curvas de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2} -->
+```{r decaimentos_ilustrativos, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a}Exemplos de curvas do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Curvas de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Curvas de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
 
-<!-- for (i in 1:length(selection)) { -->
-<!--   print(plots_2D[[i]]) -->
-<!-- } -->
-<!-- ``` -->
+for (i in 1:length(selection)) {
+  print(plots_2D[[i]])
+}
+```
+
+```{r decaimentos_ilustrativos_sup_3D, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.1}Exemplos de superfícies do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Superfície de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Superfície de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
+
+for (i in 1:length(selection)) {
+  chosen_node = names(selection[i])
+  Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
 
 
-<!-- ```{r decaimentos_ilustrativos_sup_3D, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.1}Exemplos de superfícies do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Superfície de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Superfície de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2} -->
+```{r decaimentos_ilustrativos_heatmap, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.2}Exemplos de mapas de calor do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Mapa de calor de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Mapa de calor de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
 
-<!-- for (i in 1:length(selection)) { -->
-<!--   chosen_node = names(selection[i]) -->
-<!--   Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas) -->
-<!-- } -->
-<!-- ``` -->
-
-
-<!-- ```{r decaimentos_ilustrativos_heatmap, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.2}Exemplos de mapas de calor do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Mapa de calor de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Mapa de calor de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2} -->
-
-<!-- for (i in 1:length(selection)) { -->
-<!--   chosen_node = names(selection[i]) -->
-<!--   Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas) -->
-<!-- } -->
-<!-- ``` -->
+for (i in 1:length(selection)) {
+  chosen_node = names(selection[i])
+  Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+}
+```
 
 ## Seleção das espécies com maior $\mathbf{G_{norm}}$.
 

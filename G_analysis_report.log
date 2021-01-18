@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  17 JAN 2021 20:03
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  18 JAN 2021 20:07
 entering extended mode
 **./G_analysis_report.tex
 (G_analysis_report.tex
@@ -578,7 +578,7 @@ Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 Package: setspace 2011/12/19 v6.7a set line spacing
 ) ("C:\Program Files\MiKTeX\tex/latex/tools\indentfirst.sty"
 Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
-) (G_analysis_report.aux (Capa.aux))
+) (G_analysis_report.aux)
 \openout1 = `G_analysis_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 117.
@@ -934,17 +934,7 @@ Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
 Package caption Info: threeparttable package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\openout2 = `Capa.aux'.
-
-(Capa.tex
-
-LaTeX Font Warning: Font shape `TU/lmr/bx/sc' undefined
-(Font)              using `TU/lmr/bx/n' instead on input line 4.
-
-[1
-
-
-]) [2] (G_analysis_report.toc
+(G_analysis_report.toc
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
 (Font)              scaled to size 8.4pt on input line 4.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
@@ -1000,106 +990,129 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
 \tf@toc=\write3
 \openout3 = `G_analysis_report.toc'.
 
-[3
-
+[1
 
 ]
 File: G_analysis_report_files/figure-latex/Figura_Overview-1.pdf Graphic file (
 type pdf)
 <use G_analysis_report_files/figure-latex/Figura_Overview-1.pdf>
-
-Overfull \hbox (2.87245pt too wide) in paragraph at lines 161--162
- []\TU/lmr/m/n/12 {[] 
- []
-
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 14.4pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 10.0pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 7.0pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 14.4013pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 10.00092pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 7.00064pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 14.39845pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 9.99893pt on input line 167.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 6.99925pt on input line 167.
 [1]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 14.4pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 14.4013pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 14.39845pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 175.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 175.
 File: G_analysis_report_files/figure-latex/Distribuicao_Gnorm-1.pdf Graphic fil
 e (type pdf)
 <use G_analysis_report_files/figure-latex/Distribuicao_Gnorm-1.pdf>
-
-Overfull \hbox (2.87245pt too wide) in paragraph at lines 201--202
- []\TU/lmr/m/n/12 {[] 
- []
-
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 10.95pt on input line 197.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 8.0pt on input line 197.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 10.95099pt on input line 197.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 8.00073pt on input line 197.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 10.94882pt on input line 197.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 7.99915pt on input line 197.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 14.4pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 10.0pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 7.0pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 14.4013pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 10.00092pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 7.00064pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 14.39845pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 9.99893pt on input line 202.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 6.99925pt on input line 202.
 [2]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
-(Font)              scaled to size 14.4pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
-(Font)              scaled to size 7.0pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
-(Font)              scaled to size 14.4013pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
-(Font)              scaled to size 10.00092pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
-(Font)              scaled to size 7.00064pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
-(Font)              scaled to size 14.39845pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
-(Font)              scaled to size 9.99893pt on input line 211.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
-(Font)              scaled to size 6.99925pt on input line 211.
-
-LaTeX Warning: Reference `fig:1a' on page 3 undefined on input line 217.
-
-
-LaTeX Warning: Reference `fig:1a.1' on page 3 undefined on input line 219.
-
-
-LaTeX Warning: Reference `fig:1a.2' on page 3 undefined on input line 221.
-
-
-LaTeX Warning: Reference `fig:1a.1' on page 3 undefined on input line 222.
-
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos-1.pdf Graph
+ic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos-1.pdf>
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.0pt on input line 217.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.00046pt on input line 217.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 4.99947pt on input line 217.
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos-2.pdf Graph
+ic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos-2.pdf>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos-3.pdf Graph
+ic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos-3.pdf>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos-4.pdf Graph
+ic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos-4.pdf>
+[3]
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-1.pd
+f Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-1.pdf
+>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-2.pd
+f Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-2.pdf
+>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-3.pd
+f Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-3.pdf
+>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-4.pd
+f Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-4.pdf
+>
+[4]
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-1.p
+df Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-1.pd
+f>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-2.p
+df Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-2.pd
+f>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-3.p
+df Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-3.pd
+f>
+File: G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-4.p
+df Graphic file (type pdf)
+<use G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-4.pd
+f>
+[5]
 File: G_analysis_report_files/figure-latex/fig-sub2-1.pdf Graphic file (type pd
 f)
 <use G_analysis_report_files/figure-latex/fig-sub2-1.pdf>
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.95pt on input line 238.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 238.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.95099pt on input line 238.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 238.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.94882pt on input line 238.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 238.
-[3] [4] (G_analysis_report.aux (Capa.aux))
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-
-LaTeX Warning: There were undefined references.
-
- ) 
+[6] [7] (G_analysis_report.aux) ) 
 Here is how much of TeX's memory you used:
- 21884 strings out of 412249
- 374850 string characters out of 2855680
- 902763 words of memory out of 3000000
- 40988 multiletter control sequences out of 15000+200000
- 546505 words of font info for 116 fonts, out of 3000000 for 9000
+ 22002 strings out of 412249
+ 382187 string characters out of 2855680
+ 908616 words of memory out of 3000000
+ 41095 multiletter control sequences out of 15000+200000
+ 547472 words of font info for 122 fonts, out of 3000000 for 9000
  1348 hyphenation exceptions out of 8191
- 84i,11n,118p,524b,396s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 84i,11n,118p,924b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on G_analysis_report.pdf (7 pages).
+Output written on G_analysis_report.pdf (8 pages).

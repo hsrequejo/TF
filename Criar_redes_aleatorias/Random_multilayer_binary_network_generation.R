@@ -85,14 +85,13 @@ for (i in 1:length(links_df[,1])) {
 links_df = links_df[!seq_len(nrow(links_df)) %in% duals[,1], ]
 
 #extract the nodes list
-nodes_df = nodes_ID
-# nodes_raw = links_df[,1]
-# nodes_raw = append(nodes_raw, links_df[,1])
-# nodes_raw
-# nodes_df = unique(nodes_raw)
-# nodes_df = sort(nodes_df)
-# nodes_df = cbind(nodes_df, rep("filler", length(nodes_df)))
-# colnames(nodes_df) = c("name", "enchimento")
+nodes_raw = links_df[,1]
+nodes_raw = append(nodes_raw, links_df[,2])
+nodes_raw
+nodes_df = unique(nodes_raw)
+nodes_df = sort(nodes_df)
+nodes_df = cbind(nodes_df, rep("filler", length(nodes_df)))
+colnames(nodes_df) = c("name", "enchimento")
 nodes_df
 links_df
 

@@ -85,8 +85,13 @@ size2 = 3*size1 #tamanho dos valores acima de G_threshold
 
 ```
 
-```{r leitura_dos_dados_morcego}
-load("./RDatas/teste.RData")
+```{r leitura_dos_dados}
+load("./RDatas/rand_ml_2_100_30_nodes3.RData")
+```
+
+```{r remove underlines do net_name}
+# Eh preciso remover os underlines pois ocorre algum problema com eles quando chamamos o net_name
+net_name = gsub("_", "-", net_name)
 ```
 
 <!-- modifcar o 'net_x' para corresponder com as figuras -->
@@ -130,7 +135,7 @@ names(propriedades_rede) = c("Propriedade", "Valor")
 ```
 
 <!-- Usa as variaveis geradas no code chunk acima para preencher o texto -->
-A rede `r net_name` [@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1} apresenta uma visão geral da rede.
+A rede `r net_name` possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1} apresenta uma visão geral da rede.
 
 ```{r Tabela_Prop_Rede, col.names = NULL}
 kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1}Propriedades da rede ", net_name)) %>% kable_styling(latex_options = c("striped", "hold_position"))

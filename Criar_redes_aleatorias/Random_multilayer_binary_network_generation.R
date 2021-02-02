@@ -1,5 +1,4 @@
 # Gera redes aleatorias dados o numero de camadas, conexoes e nos (em construcao)
-#TODO: save both nodes_df and links_df as csv with variable names
 
 # Cria uma rede aleatória osando o numero de camadas e numero de conexoes, numero de nos e
 # quantas redes aleatorias devem ser geradas e um sufixo para o nome do arquivo caso necessario
@@ -101,10 +100,10 @@ Create_random_ML = function(number_of_layers, number_of_conections, number_of_no
   write.csv(nodes_df, file_name_nodes, row.names = FALSE, quote = FALSE)
 }
 
-Create_random_ML(3, 200, 100)
+#Create_random_ML(3, 100, 20)
 
-layers = c(2,5)
-conections = c(100, 250, 500)
+layers = c(2, 3, 5)
+conections = c(250)
 nodes_proportion = c(0.2, 0.3, 0.5)
 number_of_duplicate_networks = 10
 

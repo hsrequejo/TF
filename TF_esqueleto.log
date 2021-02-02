@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  17 JAN 2021 16:13
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  2 FEB 2021 15:34
 entering extended mode
 **./TF_esqueleto.tex
 (TF_esqueleto.tex
@@ -578,8 +578,7 @@ Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 Package: setspace 2011/12/19 v6.7a set line spacing
 ) ("C:\Program Files\MiKTeX\tex/latex/tools\indentfirst.sty"
 Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
-)
-No file TF_esqueleto.aux.
+) (TF_esqueleto.aux (Capa.aux))
 \openout1 = `TF_esqueleto.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 117.
@@ -892,9 +891,6 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 117.
 LaTeX Info: Redefining \pageref on input line 117.
 LaTeX Info: Redefining \nameref on input line 117.
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
-
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
 * driver: pdftex
@@ -948,64 +944,69 @@ LaTeX Font Warning: Font shape `TU/lmr/bx/sc' undefined
 [1
 
 
-]) [2]
+]) [2] (TF_esqueleto.toc
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 8.4pt on input line 6.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 6.0pt on input line 6.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 6
+.
+("C:\Program Files\MiKTeX\tex/latex/lm\omllmm.fd"
+File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 12.0011pt on input line 6.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 8.40076pt on input line 6.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 6.00055pt on input line 6.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 11.99872pt on input line 6.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 8.3991pt on input line 6.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 5.99936pt on input line 6.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 6.
+("C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd"
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+) ("C:\Program Files\MiKTeX\tex/latex/microtype\mt-msa.cfg"
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 6.
+("C:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd"
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) ("C:\Program Files\MiKTeX\tex/latex/microtype\mt-msb.cfg"
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 12.0pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 8.4pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 6.0pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 12.0011pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 8.40076pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 6.00055pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 11.99872pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 8.3991pt on input line 13.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 5.99936pt on input line 13.
+)
 \tf@toc=\write3
 \openout3 = `TF_esqueleto.toc'.
 
 [3
 
 
-] [1]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.4pt on input line 202.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 202.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-02.
-("C:\Program Files\MiKTeX\tex/latex/lm\omllmm.fd"
-File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.0011pt on input line 202.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.40076pt on input line 202.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 202.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 202.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.3991pt on input line 202.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 202.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 202
-.
-("C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd"
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-) ("C:\Program Files\MiKTeX\tex/latex/microtype\mt-msa.cfg"
-File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 202
-.
-("C:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd"
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) ("C:\Program Files\MiKTeX\tex/latex/microtype\mt-msb.cfg"
-File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) [2] [3]
-
-LaTeX Warning: Reference `fig:algoritmo_Louvain' on page 4 undefined on input l
-ine 276.
-
+] [1] [2] [3]
 File: ./Figuras/Algoritmo_Louvain.png Graphic file (type bmp)
 <./Figuras/Algoritmo_Louvain.png>
-[4]
-
-LaTeX Warning: Reference `tab:tabela_blondel' on page 5 undefined on input line
- 289.
-
-[5] [6]
-
-LaTeX Warning: Reference `eq:1' on page 7 undefined on input line 379.
-
+[4] [5] [6]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
 (Font)              scaled to size 17.28pt on input line 389.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
@@ -1019,9 +1020,6 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 9.99893pt on input line 389.
 [7]
-
-LaTeX Warning: Reference `fig:Mosaico1' on page 8 undefined on input line 428.
-
 File: ./Figuras/Mosaico_edit.png Graphic file (type bmp)
 <./Figuras/Mosaico_edit.png>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
@@ -1040,30 +1038,15 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [8]
-
-LaTeX Warning: Reference `fig:Mosaico2' on page 9 undefined on input line 443.
-
 File: ./Figuras/Mosaico_numero_de_modulos_edit.png Graphic file (type bmp)
 <./Figuras/Mosaico_numero_de_modulos_edit.png>
 [9] [10]
-
-LaTeX Warning: Reference `fig:Mosaico3' on page 11 undefined on input line 488.
-
-
 File: ./Figuras/Mosaico_modularidade_edit.png Graphic file (type bmp)
 <./Figuras/Mosaico_modularidade_edit.png>
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [11] [12]
-
-LaTeX Warning: Reference `fig:Figura_G' on page 13 undefined on input line 533.
-
-
-
-LaTeX Warning: Reference `fig:Exemplo_decai' on page 13 undefined on input line
- 534.
-
 File: ./Figuras/Figura_G.png Graphic file (type bmp)
 <./Figuras/Figura_G.png>
 File: ./Figuras/Exemplo_decai.png Graphic file (type bmp)
@@ -1083,25 +1066,10 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 14.39845pt on input line 574.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 6.99925pt on input line 574.
-
-LaTeX Warning: Reference `eq:4' on page 14 undefined on input line 580.
-
 [14] [15]
-
-LaTeX Warning: Reference `tab:1' on page 16 undefined on input line 599.
-
-
-LaTeX Warning: Reference `fig:fig1' on page 16 undefined on input line 600.
-
 File: TF_esqueleto_files/figure-latex/Figura_Overview-1.pdf Graphic file (type 
 pdf)
 <use TF_esqueleto_files/figure-latex/Figura_Overview-1.pdf>
-
-LaTeX Warning: Reference `tab:2' on page 16 undefined on input line 639.
-
-
-LaTeX Warning: Reference `fig:fig2' on page 16 undefined on input line 640.
-
 [16]
 File: TF_esqueleto_files/figure-latex/Distribuicao_Gnorm-1.pdf Graphic file (ty
 pe pdf)
@@ -1124,18 +1092,6 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
 (Font)              scaled to size 9.99893pt on input line 668.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
 (Font)              scaled to size 6.99925pt on input line 668.
-
-LaTeX Warning: Reference `fig:1a' on page 17 undefined on input line 674.
-
-
-LaTeX Warning: Reference `fig:1a.1' on page 17 undefined on input line 676.
-
-
-LaTeX Warning: Reference `fig:1a.2' on page 17 undefined on input line 678.
-
-
-LaTeX Warning: Reference `fig:1a.1' on page 17 undefined on input line 679.
-
 [17]
 File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos-1.pdf Graphic fi
 le (type pdf)
@@ -1182,12 +1138,6 @@ File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap-4.pdf Gr
 aphic file (type pdf)
 <use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap-4.pdf>
 [20]
-
-LaTeX Warning: Reference `fig:2a' on page 21 undefined on input line 712.
-
-
-LaTeX Warning: Reference `tab:3' on page 21 undefined on input line 712.
-
 File: TF_esqueleto_files/figure-latex/fig-sub2-1.pdf Graphic file (type pdf)
 <use TF_esqueleto_files/figure-latex/fig-sub2-1.pdf>
 [21]
@@ -1195,64 +1145,151 @@ File: TF_esqueleto_files/figure-latex/fig-sub2-1.pdf Graphic file (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [22]
-
-LaTeX Warning: Reference `tab:1a' on page 23 undefined on input line 760.
-
-
-LaTeX Warning: Reference `fig:fig1a' on page 23 undefined on input line 761.
-
 File: TF_esqueleto_files/figure-latex/Figura_Overview_b-1.pdf Graphic file (typ
 e pdf)
 <use TF_esqueleto_files/figure-latex/Figura_Overview_b-1.pdf>
-
-Overfull \hbox (2.87245pt too wide) in paragraph at lines 784--785
- []\TU/lmr/m/n/12 {[] 
- []
-
 [23]
-
-LaTeX Warning: Reference `tab:2a' on page 24 undefined on input line 804.
-
-
-LaTeX Warning: Reference `fig:fig2a' on page 24 undefined on input line 805.
-
-[24]
 File: TF_esqueleto_files/figure-latex/Distribuicao_Gnorm_b-1.pdf Graphic file (
 type pdf)
 <use TF_esqueleto_files/figure-latex/Distribuicao_Gnorm_b-1.pdf>
+[24]
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-1.pdf Graphic 
+file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-1.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-2.pdf Graphic 
+file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-2.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-3.pdf Graphic 
+file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-3.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-4.pdf Graphic 
+file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_b-4.pdf>
+[25]
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-1.pdf G
+raphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-1.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-2.pdf G
+raphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-2.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-3.pdf G
+raphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-3.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-4.pdf G
+raphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_sup_3D_b-4.pdf>
+[26]
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-1.pdf 
+Graphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-1.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-2.pdf 
+Graphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-2.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-3.pdf 
+Graphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-3.pdf>
+File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-4.pdf 
+Graphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos_heatmap_b-4.pdf>
+[27]
+File: TF_esqueleto_files/figure-latex/fig-sub2_b-1.pdf Graphic file (type pdf)
+<use TF_esqueleto_files/figure-latex/fig-sub2_b-1.pdf>
+[28]
 
-Overfull \hbox (2.87245pt too wide) in paragraph at lines 824--825
- []\TU/lmr/m/n/12 {[] 
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[29]
+File: TF_esqueleto_files/figure-latex/histograma_2cam-1.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_2cam-1.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_2cam-2.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_2cam-2.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_2cam-3.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_2cam-3.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_2cam-4.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_2cam-4.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_2cam-5.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_2cam-5.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_2cam-6.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_2cam-6.pdf>
+[30]
+Overfull \vbox (9.34465pt too high) has occurred while \output is active []
+
+[31]
+File: TF_esqueleto_files/figure-latex/histograma_3cam-1.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_3cam-1.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_3cam-2.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_3cam-2.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_3cam-3.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_3cam-3.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_3cam-4.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_3cam-4.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_3cam-5.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_3cam-5.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_3cam-6.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_3cam-6.pdf>
+
+Overfull \vbox (9.34465pt too high) has occurred while \output is active []
+
+[32]
+File: TF_esqueleto_files/figure-latex/histograma_5cam-1.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_5cam-1.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_5cam-2.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_5cam-2.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_5cam-3.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_5cam-3.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_5cam-4.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_5cam-4.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_5cam-5.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_5cam-5.pdf>
+File: TF_esqueleto_files/figure-latex/histograma_5cam-6.pdf Graphic file (type 
+pdf)
+<use TF_esqueleto_files/figure-latex/histograma_5cam-6.pdf>
+
+Overfull \vbox (9.34465pt too high) has occurred while \output is active []
+
+[33] [34]
+Overfull \hbox (28.04497pt too wide) in paragraph at lines 1063--1104
+[][] 
  []
 
+[35]
+Overfull \hbox (31.46497pt too wide) in paragraph at lines 1163--1204
+[][] 
+ []
 
-LaTeX Warning: Reference `fig:1b' on page 25 undefined on input line 840.
+[36] [37] [38
 
+] [39] [40] [41
 
-LaTeX Warning: Reference `fig:1b.1' on page 25 undefined on input line 842.
+] [42] (TF_esqueleto.aux (Capa.aux))
 
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-LaTeX Warning: Reference `fig:1b.2' on page 25 undefined on input line 844.
-
-
-LaTeX Warning: Reference `fig:1b.1' on page 25 undefined on input line 845.
-
-
-! LaTeX Error: \subfloat outside float.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.849 \{\centering \subfloat
-                            [24 . $G_{norm} =$ 1.161\label{fig:decaimentos_i...
- 
+ ) 
 Here is how much of TeX's memory you used:
- 22046 strings out of 412249
- 382417 string characters out of 2855680
- 910541 words of memory out of 3000000
- 41126 multiletter control sequences out of 15000+200000
- 547005 words of font info for 123 fonts, out of 3000000 for 9000
+ 22438 strings out of 412249
+ 400326 string characters out of 2855680
+ 937973 words of memory out of 3000000
+ 41468 multiletter control sequences out of 15000+200000
+ 548481 words of font info for 134 fonts, out of 3000000 for 9000
  1348 hyphenation exceptions out of 8191
- 84i,11n,118p,895b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
-Output written on TF_esqueleto.pdf (27 pages).
+ 84i,11n,118p,913b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on TF_esqueleto.pdf (45 pages).

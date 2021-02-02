@@ -58,6 +58,7 @@ library(RColorBrewer)
 library(kableExtra)
 library(akima)
 library(plot3D)
+library(fs)
 
 source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido ao acentos nos plots
 
@@ -593,6 +594,138 @@ kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3a}
 ```
 
 \pagebreak
+# Distribuição de $\mathbf{G_{norm}}$ para redes aleatórias
+
+A distribuição dos valores de G$_{norm}$ também foi testada para algumas redes binárias puramente aleatórias, variando o número de camadas, conexões totais e número de nós. O universo de redes analisadas é apresentado na tabela \ref{table:univ_redes_aleat}. Foram geradas 10 redes aleatórias para cada combinação de camadas, conexões e nós, um total de 180 redes aleatórias foram analisadas[*Aumentar o número de redes analisadas para dar mais robustez para o resultado quando fizer o texto final, caso essas análises sejam realmente incluídas no texto final, este é apenas um teste].
+
+\begin{table}[!ht]
+\caption{Universo de redes aleatórias analisadas. Foram geradas e analisadas dez amostras de cada uma das combinações de camada, conexões e nós.}
+\label{table:univ_redes_aleat}
+\centering
+\begin{tabular}{ccc}
+\hline
+\textbf{Camadas} & \textbf{Conexões} & \textbf{Nós} \\
+\hline
+\hline
+2 & 100 & 20 (20\% das conexões) \\
+2 & 100 & 30 (30\% das conexões) \\
+2 & 100 & 50 (50\% das conexões) \\
+2 & 250 & 50 (20\% das conexões) \\
+2 & 250 & 75 (30\% das conexões) \\
+2 & 250 & 125 (50\% das conexões) \\
+3 & 100 & 20 (20\% das conexões) \\
+3 & 100 & 30 (30\% das conexões) \\
+3 & 100 & 50 (50\% das conexões) \\
+3 & 250 & 50 (20\% das conexões) \\
+3 & 250 & 75 (30\% das conexões) \\
+3 & 250 & 125 (50\% das conexões) \\
+5 & 100 & 20 (20\% das conexões) \\
+5 & 100 & 30 (30\% das conexões) \\
+5 & 100 & 50 (50\% das conexões) \\
+5 & 250 & 50 (20\% das conexões) \\
+5 & 250 & 75 (30\% das conexões) \\
+5 & 250 & 125 (50\% das conexões) \\
+\hline
+\end{tabular}
+\end{table}
+
+As figuras \ref{fig:hist_2cam}, \ref{fig:hist_3cam} e \ref{fig:hist_5cam} mostram as distribuições de Gnorm obtidas.
+
+<!-- Inserir os histogramas de distribuição de Gnorm -->
+```{r, histograma_2cam, echo = FALSE, fig.show = "hold", fig.cap=paste(fig.cap="\\label{fig:hist_2cam}Distribuição de $G_{norm}$ para o grupo de redes de duas camadas."), out.width='.45\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 3}
+
+dir_to_plot = c("RDatas_2_100_20", "RDatas_2_250_50", "RDatas_2_100_30", "RDatas_2_250_75", "RDatas_2_100_50", "RDatas_2_250_125")
+layers_set = c(2,2,2,2,2,2)
+links_set = c(100, 250, 100, 250, 100, 250)
+nodes_set = c(20, 50, 30, 75, 50, 125)
+# par(mfrow=c(3, 3))
+for (j in 1:length(dir_to_plot)) {
+  
+  # Gera uma lista com os caminhos dos RDatas do Gnorm
+  rData_AllGnorm_path_list <- dir_ls(paste("./Analise_em_massa/", dir_to_plot[j], sep = ""), glob = "*.RData")
+
+  load(rData_AllGnorm_path_list[[1]])
+  allGnorm = G_norm_mean
+  for (i in 2:length(rData_AllGnorm_path_list)) {
+    load(rData_AllGnorm_path_list[[i]])
+    allGnorm = append(allGnorm, G_norm_mean, after = length(allGnorm))
+    allGnorm
+  }
+
+  plt = ggplot() + aes(allGnorm)+ geom_histogram(binwidth=0.1, colour="black", fill="#5195B8") +
+  ggtitle(paste("Camadas = ", layers_set[j], " Conexões = ", links_set[j]," Nós = ", nodes_set[j], sep = "")) +
+  #coord_cartesian(ylim = c(0,50)) +
+  xlab("G") +
+  labs(x=expression(G["norm"]), y=("Frequência")) +
+  theme(axis.title.x = element_text(size = 18), axis.title.y = element_text(size = 18), plot.title = element_text(size = 22))
+  plot(plt)
+}
+
+```
+
+```{r, histograma_3cam, echo = FALSE, fig.show = "hold", fig.cap=paste(fig.cap="\\label{fig:hist_3cam}Distribuição de $G_{norm}$ para o grupo de redes de três camadas."), out.width='.45\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 3}
+
+dir_to_plot = c("RDatas_3_100_20", "RDatas_3_250_50", "RDatas_3_100_30", "RDatas_3_250_75", "RDatas_3_100_50", "RDatas_3_250_125")
+layers_set = c(3,3,3,3,3,3)
+links_set = c(100, 250, 100, 250, 100, 250)
+nodes_set = c(20, 50, 30, 75, 50, 125)
+# par(mfrow=c(3, 3))
+for (j in 1:length(dir_to_plot)) {
+  
+  # Gera uma lista com os caminhos dos RDatas do Gnorm
+  rData_AllGnorm_path_list <- dir_ls(paste("./Analise_em_massa/", dir_to_plot[j], sep = ""), glob = "*.RData")
+
+  load(rData_AllGnorm_path_list[[1]])
+  allGnorm = G_norm_mean
+  for (i in 2:length(rData_AllGnorm_path_list)) {
+    load(rData_AllGnorm_path_list[[i]])
+    allGnorm = append(allGnorm, G_norm_mean, after = length(allGnorm))
+    allGnorm
+  }
+
+  plt = ggplot() + aes(allGnorm)+ geom_histogram(binwidth=0.1, colour="black", fill="#5195B8") +
+  ggtitle(paste("Camadas = ", layers_set[j], " Conexões = ", links_set[j]," Nós = ", nodes_set[j], sep = "")) +
+  #coord_cartesian(ylim = c(0,50)) +
+  xlab("G") +
+  labs(x=expression(G["norm"]), y=("Frequência")) +
+  theme(axis.title.x = element_text(size = 18), axis.title.y = element_text(size = 18), plot.title = element_text(size = 22))
+  plot(plt)
+}
+
+```
+
+```{r, histograma_5cam, echo = FALSE, fig.show = "hold", fig.cap=paste(fig.cap="\\label{fig:hist_5cam}Distribuição de $G_{norm}$ para o grupo de redes de cinco camadas."), out.width='.45\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 3}
+
+dir_to_plot = c("RDatas_5_100_20", "RDatas_5_250_50", "RDatas_5_100_30", "RDatas_5_250_75", "RDatas_5_100_50", "RDatas_5_250_125")
+layers_set = c(5,5,5,5,5,5)
+links_set = c(100, 250, 100, 250, 100, 250)
+nodes_set = c(20, 50, 30, 75, 50, 125)
+# par(mfrow=c(3, 3))
+for (j in 1:length(dir_to_plot)) {
+  
+  # Gera uma lista com os caminhos dos RDatas do Gnorm
+  rData_AllGnorm_path_list <- dir_ls(paste("./Analise_em_massa/", dir_to_plot[j], sep = ""), glob = "*.RData")
+
+  load(rData_AllGnorm_path_list[[1]])
+  allGnorm = G_norm_mean
+  for (i in 2:length(rData_AllGnorm_path_list)) {
+    load(rData_AllGnorm_path_list[[i]])
+    allGnorm = append(allGnorm, G_norm_mean, after = length(allGnorm))
+    allGnorm
+  }
+
+  plt = ggplot() + aes(allGnorm)+ geom_histogram(binwidth=0.1, colour="black", fill="#5195B8") +
+  ggtitle(paste("Camadas = ", layers_set[j], " Conexões = ", links_set[j]," Nós = ", nodes_set[j], sep = "")) +
+  #coord_cartesian(ylim = c(0,50)) +
+  xlab("G") +
+  labs(x=expression(G["norm"]), y=("Frequência")) +
+  theme(axis.title.x = element_text(size = 18), axis.title.y = element_text(size = 18), plot.title = element_text(size = 22))
+  plot(plt)
+}
+
+```
+
+\pagebreak
 
 # Comparação entre nós com alto $\mathbf{G_{norm}}$ com nós centrais da rede agregada
 
@@ -780,26 +913,30 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \end{tabular}
 \end{table}
 
+\clearpage
 \pagebreak
 # Discussão preliminar
 
-Nas duas redes reais estudadas, a distribuição dos valores de G$_{norm}$ está como esperado, poucas espécies acima da média da rede e muitas espécies próximas da média ou abaixo dela. Isso mostra que apenas poucas espécies atingem valores altos de G$_{norm}$, sendo essa uma característica não comum entre nós da rede, assim como altos valores de centralidade
+Nas duas redes reais estudadas, a distribuição dos valores de G$_{norm}$ está como esperado, poucas espécies acima da média da rede e muitas espécies próximas da média ou abaixo dela. Isso mostra que apenas poucas espécies atingem valores altos de G$_{norm}$, sendo essa uma característica não comum entre nós das redes ecológicas estudadas, assim como altos valores de centralidade.
 
-A variação de resolução $\gamma$ não parece influenciar G de forma tão intensa quanto a variação no acoplamento $\omega$, mas ela existe e com certeza é mais robusto selecionar nós com alto G$_{norm}$ como candidatos a centrais considerando a variação em $\gamma$ também, pois assim minimizamos a probabilidade de estarmos observando uma exceção dentro de um grande universo de parâmetros de resolução além de obter as espécies-chave de uma forma mais generalizada.
+A distribuição de G$_{norm}$ para redes puramente aleatórias não apresentou a mesma forma de distribuição que a observada para as redes Morcegos-Plantas e Formigas-Plantas, especialmente para redes de duas camadas (figura \ref{fig:hist_2cam}). [\textit{\textbf{Obs: Suspeito que seja devido a alguma propriedade das redes ecológicas, já que uma rede puramente aleatória não reflete necessáriamente a estrutura de uma rede ecológica}}] Mas parece existir uma tendência de a distribuição de G$_{norm}$ convergir para uma distribuição mais similar a distribuição vista nas redes ecológicas estudadas ao aumentarmos o número de camadas e nós. [\textit{\textbf{Suspeito que isto ocorra devido ao fato de que quando aumentamos o número de camadas, naturalmente os valores de Gnorm aumentem, pois existe a possibilidade de um nó conectar mais camadas ao mesmo tempo, porém, esses valores mais altos possíveis também se tornam raros, fazendo com que a distribuição tenda para um número pequeno de altos valores de Gnorm}}] 
 
-Caso exista uma variação significativa de G$_{norm}$ em relação a $\gamma$, podemos concluir que as espécies-chave detectadas por G$_{norm}$ possuem centralidade relativa a resolução, ou seja, espécies podem ter sua centralidade aumentada ou diminuída caso estejamos interessados em grupos maiores ou menores. \textbf[Realizar testes com redes sintéticas para verificar se isso ocorre muito]
+A variação de resolução $\gamma$ não parece influenciar G de forma tão intensa quanto a variação no acoplamento $\omega$, mas ela existe e com certeza é mais robusto selecionar nós com alto G$_{norm}$ como candidatos a centrais considerando a variação em $\gamma$ também, pois assim minimizamos a probabilidade de estarmos observando uma exceção dentro de um grande universo de parâmetros de resolução, além de obter as espécies importantes de uma forma mais generalizada.
+
+Caso exista uma variação significativa de G$_{norm}$ em relação a $\gamma$, podemos concluir que as espéciescom alto G$_{norm}$ possuem importância relativa a resolução, ou seja, espécies podem ter sua centralidade aumentada ou diminuída caso estejamos interessados em grupos maiores ou menores.
 
 Quando avaliamos as 10 espécies mais bem ranqueadas das redes Morcegos-Planta e Formigas-Planta, vimos que as espécies com altos valores de G$_{norm}$ possuem uma intersecção razoável com as espécies centrais das redes de Formigas-Plantas (20% - 40%) e Morcegos-Plantas (30% - 50%). Isto é interessante, já que o ranqueamento das espécies foi feito levando em conta a resistência de cada espécie ao parâmetro de acoplamento entre camadas $\omega$, algo muito diferente dos métodos de centralidade tradicionais. Apesar das diferenças, era esperado de certa forma que os parâmetros que regem as métricas de centralidade, como grau, caminho mais curtos entre dois nós, entre outros, também influenciassem o ranqueamento dos nós pelos valores de $G_{norm}$, pois nós com atributos centrais possuem mais chances de serem bons conectores entre camadas naturalmente.
 
-Algo ainda mais interessante que a similaridade entre as melhores ranqueadas entre centralidades e $G_{norm}$, são as diferenças. As espécies selecionadas apenas pelos valores de $G_{norm}$ e que não foram selecionadas pelas centralidades estudadas podem ser espécies que possuem certo tipo de importância dentro da rede e não foram detectadas pelas métricas de centralidades avaliadas nesse trabalho. Caso essas espécies sejam realmente importantes, isso pode reforçar a importância de usarmos redes multicamadas, pois essa métrica só existe avaliando a rede multicamada. \textbf{[As espécies que são unicamente selecionadas pelo $G_{norm}$ possuem características especiais/únicas? Possuem importância significativa na rede? Espécies ponte?]}  
+Algo ainda mais interessante que a similaridade entre as melhores ranqueadas entre centralidades e $G_{norm}$, são as diferenças. As espécies selecionadas apenas pelos valores de $G_{norm}$ e que não foram selecionadas pelas centralidades estudadas podem ser espécies que possuem certo tipo de importância dentro da rede e não foram detectadas pelas métricas de centralidades avaliadas nesse trabalho. Caso essas espécies sejam realmente importantes, isso pode reforçar a importância de usarmos redes multicamadas, pois essa métrica só existe avaliando a rede multicamada. \textbf{\textit{[As espécies que são unicamente selecionadas pelo $G_{norm}$ possuem características especiais/únicas? Possuem importância significativa na rede? Espécies ponte?]}}  
 
 \pagebreak
 
 # Próximas etapas
 
 \begin{itemize}
-	\item Avaliar várias redes sintéticas variando o número de nós, conexões e camadas para verificar se existe algum padrão dos altos valores de $G_{norm}$ com relação a sua distribuição e similaridade com as centralidades.
+	\item Avaliar redes geradas pelo código do Rafael Pinheiro, pois elas refletem melhor a estrutura de uma rede ecológica real.
 	\item Quais camadas o nó conecta.
+	\item Interpretar se as espécies com alto G$_{norm}$ mas não detectadas nas outras centralidades possuem alguma caracteírstica que seja importante na área de conexão entre camadas (é esperado que essas espécies tenham uma relação mais equilibrada entre as duas camadas, para que a configuração de conexões permita a permanência em grupos diferentes em camadas diferentes)
 \end{itemize}
 
 

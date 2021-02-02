@@ -81,13 +81,12 @@ net_names_list
 # Gera uma lista com os caminhos dos RDatas do Gnorm
 rData_Gnorm_path_list <- dir_ls("./RDatas_Gnorm", glob = "*.RData")
 
+
+progression = winProgressBar(title = "Progress bar", min = 0,max = length(net_names_list) , width = 300)
 for (i in 1:length(net_names_list)) {
   AllCentr(nodes_path = list_nodes_path[[i]], links_path = list_links_path[[i]],
            rData_Gnorm_path = rData_Gnorm_path_list[[i]],
            rData_to_save_name = paste("./RDatas_AllCentr/", net_names_list[[i]], "_allCentr.RData", sep = ""))
+  setWinProgressBar(progression, i, title=paste(round(i*100/length(net_names_list) , digits = 2),"% done  - ", net_names_list[[i]]))
 }
-
-AllCentr(nodes_path = "./Input/rand_ml_2_100_20_nodes8.csv", links_path = "./Input/rand_ml_2_100_20_links8.csv",
-                 rData_Gnorm_path = "./RDatas_Gnorm/rand_ml_2_100_20_nodes8.RData",
-         rData_to_save_name = "./RDatas_AllCentr/rand_ml_2_100_20_nodes8_allCentr.RData")
 

@@ -26,7 +26,7 @@ G_Analisys = function(nodes_path, links_path, network_name, partitions_of_omega 
   net_name = network_name
   
   #Caminho onde deve ser salvo o .RData. Lembrar de mudar o nome para nao sobreescrever o antigo
-  file_to_save = paste("./RDatas/", net_name, ".RData", sep="")
+  file_to_save = paste("./RDatas_Gnorm/", net_name, ".RData", sep="")
   #----
   
   #ordena os nos. Importante para referenciar os nos corretamente

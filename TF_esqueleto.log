@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  2 FEB 2021 15:34
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  3 FEB 2021 15:28
 entering extended mode
 **./TF_esqueleto.tex
 (TF_esqueleto.tex
@@ -1003,7 +1003,7 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
 [3
 
 
-] [1] [2] [3]
+] [4] [1] [2] [3]
 File: ./Figuras/Algoritmo_Louvain.png Graphic file (type bmp)
 <./Figuras/Algoritmo_Louvain.png>
 [4] [5] [6]
@@ -1270,26 +1270,33 @@ Overfull \hbox (28.04497pt too wide) in paragraph at lines 1063--1104
  []
 
 [35]
-Overfull \hbox (31.46497pt too wide) in paragraph at lines 1163--1204
+Overfull \hbox (31.46497pt too wide) in paragraph at lines 1164--1205
 [][] 
  []
 
-[36] [37] [38
+[36]
 
-] [39] [40] [41
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-] [42] (TF_esqueleto.aux (Capa.aux))
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[37] [38] [39
+
+] [40] [41] [42
+
+] [43] (TF_esqueleto.aux (Capa.aux))
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 22438 strings out of 412249
- 400326 string characters out of 2855680
- 937973 words of memory out of 3000000
- 41468 multiletter control sequences out of 15000+200000
+ 22444 strings out of 412249
+ 400513 string characters out of 2855680
+ 940677 words of memory out of 3000000
+ 41474 multiletter control sequences out of 15000+200000
  548481 words of font info for 134 fonts, out of 3000000 for 9000
  1348 hyphenation exceptions out of 8191
  84i,11n,118p,913b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on TF_esqueleto.pdf (45 pages).
+Output written on TF_esqueleto.pdf (47 pages).

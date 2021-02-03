@@ -60,6 +60,8 @@ library(akima)
 library(plot3D)
 library(fs)
 
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
 source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido ao acentos nos plots
 
 
@@ -833,7 +835,7 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \end{tabular}
 \end{table}
 
-## Comparação das centralidades com alto G norm para a rede Formigas-Plantas
+## Comparação das centralidades com alto $\mathbf{G_{norm}}$ para a rede Formigas-Plantas
 
 Comparando as 10 espécies melhores ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 melhores ranqueadas segundo os valores de $G_{norm}$ vimos que existem 4 espécies que também estão presentes em ao menos uma das centralidades avaliadas. Seis espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ e não estavam presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_ants} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum e únicas.
 
@@ -913,6 +915,27 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \end{tabular}
 \end{table}
 
+## Comparação das centralidades com alto $\mathbf{G_{norm}}$ para as redes aleatórias
+
+As tabelas \ref{tab:simil_bin_all} e \ref{tab:simil_dist_all} mostram a comparação de similaridade binária e de distância entre os nós centrais e com alto G$_{norm}$ para todo o grupo de redes aleatórias estudadas (tabela \ref{table:univ_redes_aleat}), considerando os 10 nós mais bem ranqueados. Diferente das redes ecológicas estudadas, os nós selecionados por G$_{norm}$ e pelas métricas de centralidade não apresentaram boa similaridade nas redes aleatórias, ficando dentro do esperado ao coletarmos de forma aleatória 10 nós dentro de cada rede.
+
+
+```{r, tabela_centr_comp37}
+
+load("./Analise_em_massa/RDatas_similaridade/allNets_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_all}média da similaridade binária para todas as redes aleatórias"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp38}
+
+load("./Analise_em_massa/RDatas_similaridade/allNets_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_dist_all}média da similaridade levando em conta a distância para todas as redes aleatórias"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
 \clearpage
 \pagebreak
 # Discussão preliminar
@@ -925,9 +948,11 @@ A variação de resolução $\gamma$ não parece influenciar G de forma tão int
 
 Caso exista uma variação significativa de G$_{norm}$ em relação a $\gamma$, podemos concluir que as espéciescom alto G$_{norm}$ possuem importância relativa a resolução, ou seja, espécies podem ter sua centralidade aumentada ou diminuída caso estejamos interessados em grupos maiores ou menores.
 
-Quando avaliamos as 10 espécies mais bem ranqueadas das redes Morcegos-Planta e Formigas-Planta, vimos que as espécies com altos valores de G$_{norm}$ possuem uma intersecção razoável com as espécies centrais das redes de Formigas-Plantas (20% - 40%) e Morcegos-Plantas (30% - 50%). Isto é interessante, já que o ranqueamento das espécies foi feito levando em conta a resistência de cada espécie ao parâmetro de acoplamento entre camadas $\omega$, algo muito diferente dos métodos de centralidade tradicionais. Apesar das diferenças, era esperado de certa forma que os parâmetros que regem as métricas de centralidade, como grau, caminho mais curtos entre dois nós, entre outros, também influenciassem o ranqueamento dos nós pelos valores de $G_{norm}$, pois nós com atributos centrais possuem mais chances de serem bons conectores entre camadas naturalmente.
+Quando avaliamos as 10 espécies mais bem ranqueadas das redes Morcegos-Planta e Formigas-Planta, vimos que as espécies com altos valores de G$_{norm}$ possuem uma intersecção razoável com as espécies centrais das redes de Formigas-Plantas (20% - 40% dependendo da métrica) e Morcegos-Plantas (30% - 50% dependendo da métrica). Isto é interessante, já que o ranqueamento das espécies foi feito levando em conta a resistência de cada espécie ao parâmetro de acoplamento entre camadas $\omega$, algo muito diferente dos métodos de centralidade tradicionais.
 
-Algo ainda mais interessante que a similaridade entre as melhores ranqueadas entre centralidades e $G_{norm}$, são as diferenças. As espécies selecionadas apenas pelos valores de $G_{norm}$ e que não foram selecionadas pelas centralidades estudadas podem ser espécies que possuem certo tipo de importância dentro da rede e não foram detectadas pelas métricas de centralidades avaliadas nesse trabalho. Caso essas espécies sejam realmente importantes, isso pode reforçar a importância de usarmos redes multicamadas, pois essa métrica só existe avaliando a rede multicamada. \textbf{\textit{[As espécies que são unicamente selecionadas pelo $G_{norm}$ possuem características especiais/únicas? Possuem importância significativa na rede? Espécies ponte?]}}  
+Para as redes aleatórias, a similaridade entre os nós com alto G$_{norm}$ e as métricas de centralidade monocamada estudadas não foi significativa. Isto pode indicar que espécies com alto valor de G$_{norm}$ não são análogas a espécies com alta centralidade monocamada.
+
+Algo ainda mais interessante que a similaridade entre as melhores ranqueadas entre centralidades e $G_{norm}$, são as diferenças. As espécies selecionadas apenas pelos valores de $G_{norm}$ e que não foram selecionadas pelas centralidades estudadas podem ser espécies que possuem certo tipo de importância dentro da rede multicamada e não foram detectadas pelas métricas de centralidades avaliadas nesse trabalho. Caso essas espécies sejam realmente importantes, isso pode reforçar a importância de usarmos redes multicamadas, pois essa métrica de altos valores de G${_norm}$ só existe avaliando a rede multicamada. \textbf{\textit{[As espécies que são unicamente selecionadas pelo $G_{norm}$ possuem características especiais/únicas? Possuem importância significativa na rede? Espécies ponte entre camadas?]}}  
 
 \pagebreak
 

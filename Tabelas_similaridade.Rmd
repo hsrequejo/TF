@@ -1,0 +1,386 @@
+---
+title: "Esqueleto do TF"
+author: "Henrique S Requejo"
+date: "16/11/2020"
+header-includes:
+    \AtBeginDocument{\let\maketitle\relax}
+output:
+  pdf_document:
+    latex_engine: xelatex
+    number_sections: true
+    fig_caption: yes
+    includes:
+            in_header: preamble.tex
+citation_package: biblatex
+urlcolor: blue
+linkcolor: black
+fontsize: 12pt
+---
+<!--
+
+Este código usa o arquivo bats.RData e ants.RData para gerar o documento.
+Estes dois arquivos devem estar no mesmo diretório deste .Rmd
+
+Variaveis presentes no .RData:
+
+gammas = vetor com os gammas que foram analisados
+vec_W = vetor com os valores de omega utilizados
+iterations = numero de iteracoes usados
+partitions_of_omega = numero de perticoes de omega (TODO: da pra ser extraido de Vec_W)
+links = dataframe dos links, convertido do csv no script motor
+nodes = dataframe dos nodes, convertido de um csv no script motor
+layout = layout da disposicao da rede, calculado no script motor
+seq_Gnorm_gamma_mean = Dataframe com as informaçãoes de Gnorm medio em relacao a omega e gamma
+G_norm_mean = Os valores médios de Gnorm do ensaio na mesma ordem de entrada (alfabetico pelo nome do noh)
+G_norm_mean_ordered = Os valores médios de Gnorm do ensaio ordenados
+net_name = string com o nome da rede
+bib_ref = Referencia bibliografica da rede como no biblatex
+
+-->
+
+<!-- As opcoes message = FALSE e warning = FALSE servem para não mostrar As mensagens do console e Warnings no PDF -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 'H', fig.align="center")
+
+```
+
+```{r bibliotecas_e_funcoes_auxiliares}
+
+library(multinet)
+library(igraph)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+library(kableExtra)
+library(akima)
+library(plot3D)
+library(fs)
+
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido ao acentos nos plots
+
+
+```
+
+
+
+## Comparação das centralidades com alto $\mathbf{G_{norm}}$ para as redes aleatórias
+
+```{r, tabela_centr_comp1}
+
+load("./Analise_em_massa/RDatas_similaridade/2_100_20_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_100_20}média da similaridade binária para a rede aleatória de 2 camadas, 100 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp2}
+
+load("./Analise_em_massa/RDatas_similaridade/2_100_30_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_100_30}média da similaridade binária para a rede aleatória de 2 camadas, 100 conexões e 30 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp3}
+
+load("./Analise_em_massa/RDatas_similaridade/2_100_50_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_100_50}média da similaridade binária para a rede aleatória de 2 camadas, 100 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp4}
+
+load("./Analise_em_massa/RDatas_similaridade/2_250_50_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_250_50}média da similaridade binária para a rede aleatória de 2 camadas, 250 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp5}
+
+load("./Analise_em_massa/RDatas_similaridade/2_250_75_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_250_75}média da similaridade binária para a rede aleatória de 2 camadas, 250 conexões e 75 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp6}
+
+load("./Analise_em_massa/RDatas_similaridade/2_250_125_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_250_125}média da similaridade binária para a rede aleatória de 2 camadas, 250 conexões e 125 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp7}
+
+load("./Analise_em_massa/RDatas_similaridade/3_100_20_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_100_20}média da similaridade binária para a rede aleatória de 3 camadas, 100 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp8}
+
+load("./Analise_em_massa/RDatas_similaridade/3_100_30_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_100_30}média da similaridade binária para a rede aleatória de 3 camadas, 100 conexões e 30 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp9}
+
+load("./Analise_em_massa/RDatas_similaridade/3_100_50_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_100_50}média da similaridade binária para a rede aleatória de 3 camadas, 100 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp10}
+
+load("./Analise_em_massa/RDatas_similaridade/3_250_50_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_250_50}média da similaridade binária para a rede aleatória de 3 camadas, 250 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp11}
+
+load("./Analise_em_massa/RDatas_similaridade/3_250_75_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_250_75}média da similaridade binária para a rede aleatória de 3 camadas, 250 conexões e 75 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp12}
+
+load("./Analise_em_massa/RDatas_similaridade/3_250_125_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_250_125}média da similaridade binária para a rede aleatória de 3 camadas, 250 conexões e 125 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp13}
+
+load("./Analise_em_massa/RDatas_similaridade/5_100_20_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_100_20}média da similaridade binária para a rede aleatória de 5 camadas, 100 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp14}
+
+load("./Analise_em_massa/RDatas_similaridade/5_100_30_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_100_30}média da similaridade binária para a rede aleatória de 5 camadas, 100 conexões e 30 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp15}
+
+load("./Analise_em_massa/RDatas_similaridade/5_100_50_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_100_50}média da similaridade binária para a rede aleatória de 5 camadas, 100 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp16}
+
+load("./Analise_em_massa/RDatas_similaridade/5_250_50_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_50}média da similaridade binária para a rede aleatória de 5 camadas, 250 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp17}
+
+load("./Analise_em_massa/RDatas_similaridade/5_250_75_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_75}média da similaridade binária para a rede aleatória de 5 camadas, 250 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp18}
+
+load("./Analise_em_massa/RDatas_similaridade/5_250_125_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_125}média da similaridade binária para a rede aleatória de 5 camadas, 250 conexões e 125 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp19}
+
+load("./Analise_em_massa/RDatas_similaridade/2_100_20_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_100_20}média da similaridade levando em conta a distância para a rede aleatória de 2 camadas, 100 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp20}
+
+load("./Analise_em_massa/RDatas_similaridade/2_100_30_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_100_30}média da similaridade levando em conta a distância para a rede aleatória de 2 camadas, 100 conexões e 30 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp21}
+
+load("./Analise_em_massa/RDatas_similaridade/2_100_50_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_100_50}média da similaridade levando em conta a distância para a rede aleatória de 2 camadas, 100 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp22}
+
+load("./Analise_em_massa/RDatas_similaridade/2_250_50_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_250_50}média da similaridade levando em conta a distância para a rede aleatória de 2 camadas, 250 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp23}
+
+load("./Analise_em_massa/RDatas_similaridade/2_250_75_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_250_75}média da similaridade levando em conta a distância para a rede aleatória de 2 camadas, 250 conexões e 75 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp24}
+
+load("./Analise_em_massa/RDatas_similaridade/2_250_125_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_2_250_125}média da similaridade levando em conta a distância para a rede aleatória de 2 camadas, 250 conexões e 125 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp25}
+
+load("./Analise_em_massa/RDatas_similaridade/3_100_20_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_100_20}média da similaridade levando em conta a distância para a rede aleatória de 3 camadas, 100 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp26}
+
+load("./Analise_em_massa/RDatas_similaridade/3_100_30_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_100_30}média da similaridade levando em conta a distância para a rede aleatória de 3 camadas, 100 conexões e 30 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp27}
+
+load("./Analise_em_massa/RDatas_similaridade/3_100_50_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_100_50}média da similaridade levando em conta a distância para a rede aleatória de 3 camadas, 100 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+
+```{r, tabela_centr_comp28}
+
+load("./Analise_em_massa/RDatas_similaridade/3_250_50_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_250_50}média da similaridade levando em conta a distância para a rede aleatória de 3 camadas, 250 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp29}
+
+load("./Analise_em_massa/RDatas_similaridade/3_250_75_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_250_75}média da similaridade levando em conta a distância para a rede aleatória de 3 camadas, 250 conexões e 75 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp30}
+
+load("./Analise_em_massa/RDatas_similaridade/3_250_125_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_3_250_125}média da similaridade levando em conta a distância para a rede aleatória de 3 camadas, 250 conexões e 125 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp31}
+
+load("./Analise_em_massa/RDatas_similaridade/5_100_20_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_100_20}média da similaridade levando em conta a distância para a rede aleatória de 5 camadas, 100 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp32}
+
+load("./Analise_em_massa/RDatas_similaridade/5_100_30_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_100_30}média da similaridade levando em conta a distância para a rede aleatória de 5 camadas, 100 conexões e 30 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp33}
+
+load("./Analise_em_massa/RDatas_similaridade/5_100_50_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_100_50}média da similaridade levando em conta a distância para a rede aleatória de 5 camadas, 100 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp34}
+
+load("./Analise_em_massa/RDatas_similaridade/5_250_50_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_50}média da similaridade levando em conta a distância para a rede aleatória de 5 camadas, 250 conexões e 50 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp35}
+
+load("./Analise_em_massa/RDatas_similaridade/5_250_75_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_75}média da similaridade levando em conta a distância para a rede aleatória de 5 camadas, 250 conexões e 20 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp36}
+
+load("./Analise_em_massa/RDatas_similaridade/5_250_125_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_125}média da similaridade levando em conta a distância para a rede aleatória de 5 camadas, 250 conexões e 125 nós"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp37}
+
+load("./Analise_em_massa/RDatas_similaridade/allNets_Similaridade.RData")
+
+kable(simil_bin_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_125}média da similaridade binária para todas as redes aleatórias"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+
+```{r, tabela_centr_comp38}
+
+load("./Analise_em_massa/RDatas_similaridade/allNets_Similaridade.RData")
+
+kable(simil_dist_mean_sd, "latex", booktabs = T, caption = paste("\\label{tab:simil_bin_5_250_125}média da similaridade levando em conta a distância para todas as redes aleatórias"), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position", row_label_position = "c"))
+
+```
+

@@ -1,14 +1,14 @@
 # Compara os nos mais centrais da rede monocamada com os noh obtidos traves de Gnorm
 
-load("ants_allCentr.RData")
+load("./RDatas_allCentr_sep/bats_bats_allCentr.RData")
 
-clo
-btw
-eig = eig_formated
+clo = clo_bats
+btw = btw_bats
+eig = eig_bats
 eig
-deg = deg_formated
+deg = deg_bats
 deg
-Gnorm
+Gnorm = Gnorm_bats
 
 # 1=clo  2=btw   3=eig   4=deg   5=Gnorm
 centr_list = list(clo, btw, eig, deg, Gnorm)
@@ -60,8 +60,9 @@ for (i in 1:(length(most_central_list))) {
     }
   }
 }
-similarity_bin
+
 #similarity_dist = 1-((similarity_dist + (((1-similarity_bin)*ranking_cutoff)*ranking_cutoff))/(ranking_cutoff^2))
 similarity_dist = similarity_dist/ranking_cutoff
+similarity_bin
 similarity_dist
 most_central_list

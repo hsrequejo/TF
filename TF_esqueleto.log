@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  3 FEB 2021 15:28
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.7) (preloaded format=xelatex 2020.10.6)  25 FEB 2021 10:42
 entering extended mode
 **./TF_esqueleto.tex
 (TF_esqueleto.tex
@@ -1003,37 +1003,37 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
 [3
 
 
-] [4] [1] [2] [3]
+] [1] [2] [3]
 File: ./Figuras/Algoritmo_Louvain.png Graphic file (type bmp)
 <./Figuras/Algoritmo_Louvain.png>
 [4] [5] [6]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 17.28pt on input line 389.
+(Font)              scaled to size 17.28pt on input line 391.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 389.
+(Font)              scaled to size 10.0pt on input line 391.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 17.28157pt on input line 389.
+(Font)              scaled to size 17.28157pt on input line 391.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 389.
+(Font)              scaled to size 10.00092pt on input line 391.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 17.27815pt on input line 389.
+(Font)              scaled to size 17.27815pt on input line 391.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 389.
+(Font)              scaled to size 9.99893pt on input line 391.
 [7]
 File: ./Figuras/Mosaico_edit.png Graphic file (type bmp)
 <./Figuras/Mosaico_edit.png>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.95pt on input line 435.
+(Font)              scaled to size 10.95pt on input line 437.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 435.
+(Font)              scaled to size 8.0pt on input line 437.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.95099pt on input line 435.
+(Font)              scaled to size 10.95099pt on input line 437.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.00073pt on input line 435.
+(Font)              scaled to size 8.00073pt on input line 437.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.94882pt on input line 435.
+(Font)              scaled to size 10.94882pt on input line 437.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 435.
+(Font)              scaled to size 7.99915pt on input line 437.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1055,17 +1055,17 @@ File: ./Figuras/Exemplo_decai.png Graphic file (type bmp)
 
 ]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 14.4pt on input line 574.
+(Font)              scaled to size 14.4pt on input line 576.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 574.
+(Font)              scaled to size 7.0pt on input line 576.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 14.4013pt on input line 574.
+(Font)              scaled to size 14.4013pt on input line 576.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 574.
+(Font)              scaled to size 7.00064pt on input line 576.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 14.39845pt on input line 574.
+(Font)              scaled to size 14.39845pt on input line 576.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 574.
+(Font)              scaled to size 6.99925pt on input line 576.
 [14] [15]
 File: TF_esqueleto_files/figure-latex/Figura_Overview-1.pdf Graphic file (type 
 pdf)
@@ -1075,33 +1075,33 @@ File: TF_esqueleto_files/figure-latex/Distribuicao_Gnorm-1.pdf Graphic file (ty
 pe pdf)
 <use TF_esqueleto_files/figure-latex/Distribuicao_Gnorm-1.pdf>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
-(Font)              scaled to size 14.4pt on input line 668.
+(Font)              scaled to size 14.4pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 668.
+(Font)              scaled to size 10.0pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
-(Font)              scaled to size 7.0pt on input line 668.
+(Font)              scaled to size 7.0pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
-(Font)              scaled to size 14.4013pt on input line 668.
+(Font)              scaled to size 14.4013pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
-(Font)              scaled to size 10.00092pt on input line 668.
+(Font)              scaled to size 10.00092pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
-(Font)              scaled to size 7.00064pt on input line 668.
+(Font)              scaled to size 7.00064pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
-(Font)              scaled to size 14.39845pt on input line 668.
+(Font)              scaled to size 14.39845pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
-(Font)              scaled to size 9.99893pt on input line 668.
+(Font)              scaled to size 9.99893pt on input line 670.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
-(Font)              scaled to size 6.99925pt on input line 668.
+(Font)              scaled to size 6.99925pt on input line 670.
 [17]
 File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos-1.pdf Graphic fi
 le (type pdf)
 <use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos-1.pdf>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 683.
+(Font)              scaled to size 5.0pt on input line 685.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 683.
+(Font)              scaled to size 5.00046pt on input line 685.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 683.
+(Font)              scaled to size 4.99947pt on input line 685.
 File: TF_esqueleto_files/figure-latex/decaimentos_ilustrativos-2.pdf Graphic fi
 le (type pdf)
 <use TF_esqueleto_files/figure-latex/decaimentos_ilustrativos-2.pdf>
@@ -1265,38 +1265,70 @@ pdf)
 Overfull \vbox (9.34465pt too high) has occurred while \output is active []
 
 [33] [34]
-Overfull \hbox (28.04497pt too wide) in paragraph at lines 1063--1104
-[][] 
+Underfull \hbox (badness 1515) in paragraph at lines 1050--1050
+[]\TU/lmr/bx/n/14.4 Comparação das centralidades com $[]$ para a rede
  []
 
 [35]
-Overfull \hbox (31.46497pt too wide) in paragraph at lines 1164--1205
+File: ./Figuras/centr_correlogram_bats_bats_pearson.png Graphic file (type bmp)
+
+<./Figuras/centr_correlogram_bats_bats_pearson.png>
+[36]
+File: ./Figuras/centr_correlogram_bats_bats_spearman.png Graphic file (type bmp
+)
+<./Figuras/centr_correlogram_bats_bats_spearman.png>
+File: ./Figuras/centr_correlogram_bats_all_pearson.png Graphic file (type bmp)
+<./Figuras/centr_correlogram_bats_all_pearson.png>
+[37]
+File: ./Figuras/centr_correlogram_bats_all_spearman.png Graphic file (type bmp)
+
+<./Figuras/centr_correlogram_bats_all_spearman.png>
+
+Underfull \hbox (badness 1515) in paragraph at lines 1194--1194
+[]\TU/lmr/bx/n/14.4 Comparação das centralidades com $[]$ para a rede
+ []
+
+[38]
+Overfull \hbox (11.84496pt too wide) in paragraph at lines 1210--1251
 [][] 
  []
 
-[36]
+[39]
+File: ./Figuras/centr_correlogram_ants_ants_pearson.png Graphic file (type bmp)
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+<./Figuras/centr_correlogram_ants_ants_pearson.png>
+File: ./Figuras/centr_correlogram_ants_ants_spearman.png Graphic file (type bmp
+)
+<./Figuras/centr_correlogram_ants_ants_spearman.png>
+[40]
+File: ./Figuras/centr_correlogram_ants_all_pearson.png Graphic file (type bmp)
+<./Figuras/centr_correlogram_ants_all_pearson.png>
+File: ./Figuras/centr_correlogram_ants_all_spearman.png Graphic file (type bmp)
 
+<./Figuras/centr_correlogram_ants_all_spearman.png>
+[41]
+File: ./Figuras/centr_correlogram_rand_all_pearson.png Graphic file (type bmp)
+<./Figuras/centr_correlogram_rand_all_pearson.png>
+[42]
+File: ./Figuras/centr_correlogram_rand_all_spearman.png Graphic file (type bmp)
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+<./Figuras/centr_correlogram_rand_all_spearman.png>
+[43] [44] [45
 
-[37] [38] [39
+] [46] [47
 
-] [40] [41] [42
-
-] [43] (TF_esqueleto.aux (Capa.aux))
+] [48] (TF_esqueleto.aux (Capa.aux))
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 22444 strings out of 412249
- 400513 string characters out of 2855680
- 940677 words of memory out of 3000000
- 41474 multiletter control sequences out of 15000+200000
+ 22510 strings out of 412249
+ 403574 string characters out of 2855680
+ 942073 words of memory out of 3000000
+ 41530 multiletter control sequences out of 15000+200000
  548481 words of font info for 134 fonts, out of 3000000 for 9000
  1348 hyphenation exceptions out of 8191
  84i,11n,118p,913b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on TF_esqueleto.pdf (47 pages).
+Output written on TF_esqueleto.pdf (51 pages).

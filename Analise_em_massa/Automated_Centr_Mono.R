@@ -34,8 +34,6 @@ AllCentr = function(nodes_path = "./Network_Inputs/bat-plant_nodes.csv", links_p
   net_mono_nodup = graph_from_data_frame(d = links_no_dupl, vertices = nodes, directed = F)
   net_mono = graph_from_data_frame(d = links, vertices = nodes, directed = F)
   
-  #TODO:Analisar a centralidade da rede agregada
-  
   clo = closeness(net_mono, normalized = FALSE)
   btw = betweenness(net_mono, directed = FALSE, normalized = TRUE)
   eig = eigen_centrality(net_mono)
@@ -56,7 +54,7 @@ AllCentr = function(nodes_path = "./Network_Inputs/bat-plant_nodes.csv", links_p
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 #gera uma lista com o nome (string) de todos os arquivos csv de um diretório
-path <- "./Input"
+path <- "./Input_all"
 list_files <- dir_ls(path, glob = "*.csv")
 
 #Separa uma lista para os arquivos 'links' e para o arquivo 'nodes'. Eh necessario que alguma palavra dentro do nome do arquivo .csv seja 'links' ou 'nodes'
@@ -74,19 +72,24 @@ for (i in 1:length(list_files)) {
 list_nodes_path
 list_links_path
 
-net_names_list = str_sub(list_nodes_path, 9)
+net_names_list = str_sub(list_nodes_path, 13)
 net_names_list = str_sub(net_names_list, 1, -5)
 net_names_list
 
-# Gera uma lista com os caminhos dos RDatas do Gnorm
-rData_Gnorm_path_list <- dir_ls("./RDatas_Gnorm", glob = "*.RData")
-
+rData_Gnorm_path_list = list()
+for (i in 1:length(net_names_list)) {
+  rData_Gnorm_path_list[[i]] = paste("./RDatas_Gnorm/", net_names_list[[i]], ".RData", sep = "")
+}
+rData_Gnorm_path_list
 
 progression = winProgressBar(title = "Progress bar", min = 0,max = length(net_names_list) , width = 300)
 for (i in 1:length(net_names_list)) {
   AllCentr(nodes_path = list_nodes_path[[i]], links_path = list_links_path[[i]],
            rData_Gnorm_path = rData_Gnorm_path_list[[i]],
            rData_to_save_name = paste("./RDatas_AllCentr/", net_names_list[[i]], "_allCentr.RData", sep = ""))
+  print(list_nodes_path[[i]])
+  print(list_links_path[[i]])
+  print(rData_Gnorm_path_list[[i]])
   setWinProgressBar(progression, i, title=paste(round(i*100/length(net_names_list) , digits = 2),"% done  - ", net_names_list[[i]]))
 }
 

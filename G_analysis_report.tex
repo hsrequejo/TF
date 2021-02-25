@@ -1,0 +1,244 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+  12pt,
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={G Analysis Report},
+  pdfauthor={Henrique S Requejo},
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=Maroon,
+  citecolor=Blue,
+  urlcolor=blue,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage[utf8]{inputenc}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{amsbsy}
+\usepackage[portuguese]{babel}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage[font=small,labelfont=bf]{caption}
+
+\newcommand*{\secref}[1]{Section~\ref{#1}}
+
+\floatplacement{figure}{H}
+\onehalfspacing
+\graphicspath{ {./images/} }
+\setlength{\parindent}{2em}
+\AtBeginDocument{\let\maketitle\relax}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+\title{G Analysis Report}
+\author{Henrique S Requejo}
+\date{}
+
+\begin{document}
+\maketitle
+
+\pagenumbering{gobble}
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\pagenumbering{arabic}
+
+\hypertarget{visuxe3o-geral-da-rede-ihs-70-400}{%
+\section{Visão geral da rede
+IHS-70-400}\label{visuxe3o-geral-da-rede-ihs-70-400}}
+
+A rede IHS-70-400 possui 2 camadas (layer2 e layer1), 470 nós e 1522
+conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede.
+A figura \ref{fig:fig1} apresenta uma visão geral da rede.
+
+\begin{table}[!h]
+
+\caption{\label{tab:Tabela_Prop_Rede}\label{tab:1}Propriedades da rede  IHS-70-400}
+\centering
+\begin{tabular}[t]{ll}
+\toprule
+Propriedade & Valor\\
+\midrule
+\cellcolor{gray!6}{Número de Camadas} & \cellcolor{gray!6}{2}\\
+Tipo de conexões & layer2  e  layer1\\
+\cellcolor{gray!6}{Número de nós} & \cellcolor{gray!6}{470}\\
+Número de conexões & 1522\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{G_analysis_report_files/figure-latex/Figura_Overview-1} 
+
+}
+
+\caption{\label{fig:fig1}Visão geral da rede  IHS-70-400 .}\label{fig:Figura_Overview}
+\end{figure}
+
+\hypertarget{resultados-da-rede-ihs-70-400}{%
+\section{Resultados da rede
+IHS-70-400}\label{resultados-da-rede-ihs-70-400}}
+
+\hypertarget{distribuiuxe7uxe3o-de-mathbfg_norm}{%
+\subsection{\texorpdfstring{Distribuição de
+\(\mathbf{G_{norm}}\)}{Distribuição de \textbackslash mathbf\{G\_\{norm\}\}}}\label{distribuiuxe7uxe3o-de-mathbfg_norm}}
+
+A variável \(G\) foi calculada para 10 partições de \(\omega\), ou seja,
+o tamanho do passo dado dentro de \(\omega\) foi de 0.1. O processo foi
+repetido para 16 partições de \(\gamma\), com \(\gamma\) começando em
+0.25, com passos de 0.25 até um \(\gamma\) máximo de 4. O cálculo de
+\(\overline{G}\) foi feito usando 100 iterações. A tabela \ref{tab:2}
+resume os parâmetros de execução do código e a figura \ref{fig:fig2}
+mostra a distribuição dos valores de \(G_{norm}\) médio obtidos.
+
+\begin{table}[!h]
+
+\caption{\label{tab:Parametros_Execucao}\label{tab:2}Parâmetros de execucao}
+\centering
+\begin{tabular}[t]{lr}
+\toprule
+Parâmetro & Valor\\
+\midrule
+\cellcolor{gray!6}{Iterações} & \cellcolor{gray!6}{100}\\
+Partições de omega & 10\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{G_analysis_report_files/figure-latex/Distribuicao_Gnorm-1} 
+
+}
+
+\caption{\label{fig:fig2}Distribuição de $G_{norm}$ médio da rede  IHS-70-400 .}\label{fig:Distribuicao_Gnorm}
+\end{figure}
+
+\hypertarget{variauxe7uxe3o-de-mathbfoverlineg-por-boldsymbolomega}{%
+\subsection{\texorpdfstring{Variação de \(\mathbf{\overline{G}}\) por
+\(\boldsymbol{\omega}\)}{Variação de \textbackslash mathbf\{\textbackslash overline\{G\}\} por \textbackslash boldsymbol\{\textbackslash omega\}}}\label{variauxe7uxe3o-de-mathbfoverlineg-por-boldsymbolomega}}
+
+Como temos dados em 3 dimensões (\(\overline{G}\), \(\omega\),
+\(\gamma\)) temos algumas formas diferentes para apresentar os valores
+de \(\overline{G}\) em relação a \(\omega\) e \(\gamma\), não sei dizer
+se devemos usar uma delas, as três ou alguma outra. A figura
+\ref{fig:1a} mostra curvas de decaimento de \(\overline{G}\) por
+\(\omega\) para diferentes nós com diferentes valores de \(G_{norm}\) e
+para diferentes valores de \(\gamma\). A figura \ref{fig:1a.1} mostra a
+superfície 3D formada por \(\overline{G}\) em relação a \(\omega\) e
+\(\gamma\). A figura \ref{fig:1a.2} mostra a mesma superfície da figura
+\ref{fig:1a.1} mas no formato de mapa de calor.
+
+\begin{figure}[H]
+
+{\centering \subfloat[resource_114 . $G_{norm} =$ 1.368\label{fig:decaimentos_ilustrativos-1}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos-1} }\subfloat[resource_97 . $G_{norm} =$ 1.363\label{fig:decaimentos_ilustrativos-2}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos-2} }\newline\subfloat[resource_381 . $G_{norm} =$ 1.003\label{fig:decaimentos_ilustrativos-3}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos-3} }\subfloat[resource_38 . $G_{norm} =$ 0.849\label{fig:decaimentos_ilustrativos-4}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos-4} }
+
+}
+
+\caption{\label{fig:1a}Exemplos de curvas do decaimento de $\overline{G}$ em relação a $\omega$ e $\gamma$ para diferentes valores de $\gamma$ da rede  IHS-70-400 . (a) Curvas de $\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Curvas de $\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede.}\label{fig:decaimentos_ilustrativos}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \subfloat[resource_114 . $G_{norm} =$ 1.368\label{fig:decaimentos_ilustrativos_sup_3D-1}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-1} }\subfloat[resource_97 . $G_{norm} =$ 1.363\label{fig:decaimentos_ilustrativos_sup_3D-2}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-2} }\newline\subfloat[resource_381 . $G_{norm} =$ 1.003\label{fig:decaimentos_ilustrativos_sup_3D-3}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-3} }\subfloat[resource_38 . $G_{norm} =$ 0.849\label{fig:decaimentos_ilustrativos_sup_3D-4}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_sup_3D-4} }
+
+}
+
+\caption{\label{fig:1a.1}Exemplos de superfícies do decaimento de $\overline{G}$ em relação a $\omega$ e $\gamma$ para diferentes valores de $\gamma$ da rede  IHS-70-400 . (a) Superfície de $\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Superfície de $\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede.}\label{fig:decaimentos_ilustrativos_sup_3D}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \subfloat[resource_114 . $G_{norm} =$ 1.368\label{fig:decaimentos_ilustrativos_heatmap-1}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-1} }\subfloat[resource_97 . $G_{norm} =$ 1.363\label{fig:decaimentos_ilustrativos_heatmap-2}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-2} }\newline\subfloat[resource_381 . $G_{norm} =$ 1.003\label{fig:decaimentos_ilustrativos_heatmap-3}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-3} }\subfloat[resource_38 . $G_{norm} =$ 0.849\label{fig:decaimentos_ilustrativos_heatmap-4}]{\includegraphics[width=.49\linewidth]{G_analysis_report_files/figure-latex/decaimentos_ilustrativos_heatmap-4} }
+
+}
+
+\caption{\label{fig:1a.2}Exemplos de mapas de calor do decaimento de $\overline{G}$ em relação a $\omega$ e $\gamma$ para diferentes valores de $\gamma$ da rede  IHS-70-400 . (a) Mapa de calor de $\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Mapa de calor de $\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede.}\label{fig:decaimentos_ilustrativos_heatmap}
+\end{figure}
+
+\end{document}

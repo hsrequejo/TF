@@ -1,0 +1,120 @@
+Ants-ants
+=========
+
+similarity_bin
+  clo   btw   eig   deg Gnorm 
+  0.7   0.6   0.7   0.7   1.0 
+> similarity_dist
+      clo       btw       eig       deg     Gnorm 
+0.2342857 0.1509524 0.1619048 0.1652381 1.0000000 
+> most_central_list
+[[1]]
+     Ceppus      Camruf      Bracor      Camcra      Brapic      Psepal      Camtra      Camwes      Linmic      Camley 
+0.005208333 0.004464286 0.004237288 0.004098361 0.003906250 0.003875969 0.003787879 0.003472222 0.003448276 0.003401361 
+
+[[2]]
+    Ceppus     Bracor     Camcra     Brapic     Camruf     Psepal     Camtra     Cambla     Camley     Ecttub 
+0.53495007 0.12861925 0.12211915 0.08311291 0.07750146 0.04944031 0.03318091 0.01987238 0.01921172 0.01908965 
+
+[[3]]
+    Ceppus     Bracor     Camcra     Camruf     Psepal     Camtra     Brapic     Camwes     Phetri     Camley 
+1.00000000 0.31935061 0.22994287 0.22196987 0.14228060 0.12515160 0.12494406 0.10575988 0.05029548 0.04375029 
+
+[[4]]
+Ceppus Bracor Camruf Camcra Brapic Psepal Camtra Camwes Phetri Camley 
+   294     94     81     80     45     41     38     23     15     12 
+
+[[5]]
+  Camcra   Brapic   Ceppus   Camley   Dorgoe   Brasp1   Phetri   Bracor   Linmic   Psepal 
+1.354869 1.340810 1.221853 1.200063 1.192447 1.152569 1.137233 1.136740 1.094680 1.088982 
+
+Ants-plants
+===========
+
+similarity_bin
+  clo   btw   eig   deg Gnorm 
+  0.5   0.4   0.5   0.5   1.0 
+> similarity_dist
+      clo       btw       eig       deg     Gnorm 
+0.2200000 0.1750000 0.1533333 0.2250000 1.0000000 
+> most_central_list
+[[1]]
+     Baccon      Velniv      Barfla      Velcor      Symret      Chapap      Myrmon      Byrsp1      Tetmic      Charam 
+0.004424779 0.004424779 0.004385965 0.004385965 0.004347826 0.004273504 0.004237288 0.004201681 0.004201681 0.004032258 
+
+[[2]]
+    Symret     Velniv     Chapap     Baccon     Myrmon     Barfla     Velcor     Tetmic     Crosp1     Hypsp1 
+0.09794859 0.07733114 0.07007485 0.06570163 0.06378807 0.06104802 0.05767253 0.02613680 0.02532496 0.01949155 
+
+[[3]]
+   Chapap    Symret    Barfla    Baccon    Myrmon    Byrsp1    Velniv    Crosp1    Aspjol    Velcor 
+0.4557776 0.4140237 0.3907726 0.3341058 0.3053719 0.2544293 0.2482458 0.2426070 0.2211862 0.2077685 
+
+[[4]]
+Symret Chapap Baccon Velniv Barfla Myrmon Velcor Byrsp1 Crosp1 Tetmic 
+    60     58     47     47     46     46     33     31     31     26 
+
+[[5]]
+  Baccon   Vocthy   Byrsp1   Mikita   Aspjol   Myrmon   Tetmic   Velcor   Gaymon   Cuperi 
+1.386172 1.235132 1.180905 1.117615 1.090804 1.042802 1.025034 1.024262 1.020013 1.005683 
+
+
+Bats-bats
+=========
+
+similarity_bin
+  clo   btw   eig   deg Gnorm 
+  0.5   0.4   0.7   0.6   1.0 
+> similarity_dist
+      clo       btw       eig       deg     Gnorm 
+0.2291667 0.2125000 0.3491667 0.3325000 1.0000000 
+> most_central_list
+[[1]]
+      Artjam       Carper       Artlit       Glosor       Stulil       Phyhas       Phydis       Lepcur       Glocom       Carcas 
+0.0008216927 0.0007917656 0.0007651109 0.0007097232 0.0006968641 0.0006680027 0.0006574622 0.0006523157 0.0006455778 0.0006397953 
+
+[[2]]
+    Artjam     Carper     Artlit     Glosor     Stulil     Lepcur     Anocau     Stulud     Monred     Phyhas 
+0.30347624 0.26423317 0.15230926 0.14406407 0.13341937 0.08033429 0.06970726 0.05518955 0.04970104 0.04302446 
+
+[[3]]
+   Artjam    Carper    Artlit    Stulil    Glosor    Carcas    Phyhas    Urobil    Artpha    Carbre 
+1.0000000 0.8625771 0.8016580 0.3961384 0.3118543 0.2744460 0.2585632 0.2554321 0.2233190 0.1927259 
+
+[[4]]
+Artjam Carper Artlit Stulil Glosor Carcas Lepcur Phyhas Anocau Carbre 
+   149    138    112     72     65     44     43     40     30     29 
+
+[[5]]
+  Artjam   Artlit   Urobil   Stulil   Carcas   Carbre   Artcon   Vamnym   Carper   Plahel 
+1.548255 1.509180 1.487743 1.469162 1.401430 1.391689 1.390807 1.365066 1.363639 1.358701 
+
+Bats-plants
+===========
+
+similarity_bin
+  clo   btw   eig   deg Gnorm 
+  0.2   0.2   0.1   0.2   1.0 
+> similarity_dist
+       clo        btw        eig        deg      Gnorm 
+0.06111111 0.07000000 0.10000000 0.06666667 1.00000000 
+> most_central_list
+[[1]]
+      Cecobt       Cecpel       Carpap       Cecgla       Cecfic       Cecdis       CecPal       Baupau       Anaexc       Broali 
+0.0007867821 0.0007674597 0.0007369197 0.0007293946 0.0007158196 0.0007077141 0.0007027407 0.0006910850 0.0006901311 0.0006891799 
+
+[[2]]
+     Cecobt      Cecpel      Bauung      Calghi      Cecgla      Broali      CarBra      Cecfic      Anaexc      CecPal 
+0.041217853 0.030340880 0.015708845 0.013892953 0.012308715 0.012032612 0.011739362 0.010343508 0.009564485 0.009079029 
+
+[[3]]
+   Cecpel    Cecobt    Cecfic    Carpap    Cecdis    CecPal    Cecgla    Cecmem    Anaexc    Ceccon 
+0.3685313 0.2690168 0.2374621 0.1958503 0.1947244 0.1867891 0.1834930 0.1828601 0.1651245 0.1576601 
+
+[[4]]
+Cecobt Cecpel Cecfic Calghi Anaexc CecPal Broali Cecdis Cecgla Carpap 
+    16     13     12     11      8      8      7      7      7      6 
+
+[[5]]
+  Cecpel   Broali   Burcyc   Abureg   Acacol   Acafar   Acnarb   Acracu   Adedic   Aectil 
+1.400999 1.220242 1.157953 0.978040 0.978040 0.978040 0.978040 0.978040 0.978040 0.978040 

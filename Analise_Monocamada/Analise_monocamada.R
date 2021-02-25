@@ -38,8 +38,6 @@ net_mono = graph_from_data_frame(d = links, vertices = nodes, directed = F)
 
 plot(net_mono)
 
-#TODO:Analisar a centralidade da rede agregada
-
 clo = closeness(net_mono, normalized = FALSE)
 btw = betweenness(net_mono, directed = FALSE, normalized = TRUE)
 eig = eigen_centrality(net_mono)

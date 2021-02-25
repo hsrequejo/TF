@@ -135,7 +135,7 @@ G_Analisys = function(nodes_path, links_path, network_name, partitions_of_omega 
 
 
 #gera uma lista com o nome (string) de todos os arquivos csv de um diretório
-path <- "./Input"
+path <- "./Input_all"
 list_files <- dir_ls(path, glob = "*.csv")
 
 #Separa uma lista para os arquivos 'links' e para o arquivo 'nodes'. Eh necessario que alguma palavra dentro do nome do arquivo .csv seja 'links' ou 'nodes'
@@ -164,5 +164,8 @@ for (i in 1:length(net_names_list)) {
 }
 
 
+G_Analisys("./Input/rand_ml_5_250_125_nodes9.csv", "./Input/rand_ml_5_250_125_links9.csv", network_name = "rand_ml_5_250_125", iterations = 10)
 
 
+load("./RDatas_Gnorm/rand_ml_5_100_50_nodes7.RData")
+length(G_norm_mean)

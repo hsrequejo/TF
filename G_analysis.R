@@ -52,11 +52,13 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 # links = read.csv("./Network_Inputs/ant-plant_links.csv", header=T, as.is=T)
 # nodes = read.csv("./Network_Inputs/Flo_nodes.csv", header=T, as.is=T)
 # links = read.csv("./Network_Inputs/Flo.csv", header=T, as.is=T)
-nodes = read.csv("./Network_Inputs/rand_ml_2_100_30_nodes.csv", header=T, as.is=T)
-links = read.csv("./Network_Inputs/rand_ml_2_100_30_links.csv", header=T, as.is=T)
+# nodes = read.csv("./Network_Inputs/rand_ml_2_100_30_nodes.csv", header=T, as.is=T)
+# links = read.csv("./Network_Inputs/rand_ml_2_100_30_links.csv", header=T, as.is=T)
+nodes = read.csv("./Network_Inputs/IHS_70_400_nodes.csv", header=T, as.is=T)
+links = read.csv("./Network_Inputs/IHS_70_400_links.csv", header=T, as.is=T)
 
 # Pra ser usado no corpo do texto do documento R Markdown
-net_name = "teste"
+net_name = "IHS-70-400"
 
 #string com o referencia no arquivo .bib, e.g. "Mello2019". Usada para fazer a citação no R Markdown
 bib_ref = "vazio"

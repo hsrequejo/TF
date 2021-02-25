@@ -86,7 +86,7 @@ size2 = 3*size1 #tamanho dos valores acima de G_threshold
 ```
 
 ```{r leitura_dos_dados}
-load("./RDatas/rand_ml_2_100_30_nodes3.RData")
+load("./RDatas/IHS-70-400.RData")
 ```
 
 ```{r remove underlines do net_name}

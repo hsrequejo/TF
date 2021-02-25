@@ -162,6 +162,10 @@ rownames(simil_dist_mean_sd) = c("Mean", "SD")
 simil_bin_mean_sd = rbind(simil_bin_mean, simil_bin_sd)
 rownames(simil_bin_mean_sd) = c("Mean", "SD")
 
+simil_dist_mean
+simil_dist_mean_sd
+simil_bin_mean
+simil_bin_mean_sd
 
 save(simil_bin, simil_dist,
      simil_bin_mean_sd, simil_dist_mean_sd,

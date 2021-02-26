@@ -19,6 +19,8 @@ urlcolor: blue
 linkcolor: black
 fontsize: 12pt
 ---
+
+```{=html}
 <!--
 
 Este código usa o arquivo bats.RData e ants.RData para gerar o documento.
@@ -40,8 +42,9 @@ net_name = string com o nome da rede
 bib_ref = Referencia bibliografica da rede como no biblatex
 
 -->
-
+```
 <!-- As opcoes message = FALSE e warning = FALSE servem para não mostrar As mensagens do console e Warnings no PDF -->
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 'H', fig.align="center")
 
@@ -67,9 +70,8 @@ source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido 
 
 ```
 
-
-
 <!-- Sem numero de pagina -->
+
 \pagenumbering{gobble}
 
 \include{Capa.tex}
@@ -81,11 +83,12 @@ source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido 
 \pagebreak
 
 <!-- Começa a numeracao de pagina -->
-\pagenumbering{arabic} 
+
+\pagenumbering{arabic}
 
 # Resumo
 
-Análises de modularidade oriundas da ciência de redes têm sido usadas na Ecologia para operacionalizar conceitos como guilda, grupo funcional e papel funcional. Contudo, essas análises têm sido feitas apenas para redes monocamada, ou seja, que contém só um tipo de interação, portanto, apenas uma classe de arestas. No caso do algoritmo de modularidade Louvain, uma das grandes diferenças entre a tradicional versão monocamada e a versão multicamada é a constante de acoplamento. Essa constante, implementada no algoritmo multicamada, torna possível que um mesmo nó pertença a dois módulos diferentes em camadas diferentes. Neste projeto, queremos identificar os nós que resistem ao aumento dessa força de acoplamento entre camadas, permanecendo em mais de um módulo em diferentes camadas ao aumentarmos essa força de acoplamento. Em redes de interações ecológicas, esses nós resistentes devem representar espécies que desempenham papéis funcionais importantes. Por exemplo, animais que são importantes tanto para a polinização, quanto para a dispersão de sementes de duas ou mais famílias de plantas. Para classificar as espécies com relação a sua importância, comparamos a curva do número de módulos aos quais cada nó pertence em função da variação na constante de acoplamento e do parâmetro de resolução. Assim, selecionamos os nós que apresentam menor decaimento de módulos, ou seja, que permanecem em mais de um módulo mesmo com alta força de acoplamento entre camadas, considerando diferentes cenários de resolução. Uma variável chamada de $G_{norm}$ foi criada para quantificar essa relação entre quantidade de módulos e força de acoplamento entre camadas. Foram analisadas duas redes de interações, uma entre morcegos e plantas e outra de formigas e plantas. Os nós que possuem alto $G_{norm}$ possuem uma boa intersecção com os nós mais centrais da rede, porém, o seu ranking de importância foi diferente e nós que não possuiam altos valores de centralidade monocamada apresentaram altos valores de $G_{norm}$, mostrando que pode haver ganho de informação nessa abordagem multicamada em comparação à monocamada. Isso pode ajudar a encontrar espécies que sejam mais importantes do que outras para manter funções e serviços ecossistêmicos vitais entre camadas da rede.
+Análises de modularidade e centralidade oriundas da ciência de redes têm sido usadas na Ecologia para operacionalizar conceitos como guilda, grupo funcional e papel funcional. Contudo, essas análises têm sido feitas apenas para redes monocamada, ou seja, que contém só um tipo de interação e portanto, apenas uma classe de arestas. No caso do algoritmo de modularidade Louvain, uma das grandes diferenças entre a tradicional versão monocamada e a versão multicamada é a constante de acoplamento. Essa constante, implementada no algoritmo multicamada, torna possível que um mesmo nó pertença a dois módulos diferentes em camadas diferentes. Neste projeto, queremos identificar os nós que resistem ao aumento dessa força de acoplamento entre camadas, permanecendo em mais de um módulo em diferentes camadas ao aumentarmos essa força. Em redes de interações ecológicas, esses nós resistentes devem representar espécies que desempenham papéis funcionais importantes. Por exemplo, animais que são importantes tanto para a polinização, quanto para a dispersão de sementes de duas ou mais famílias de plantas. Para classificar as espécies com relação à sua importância, comparamos curvas da variação no número de módulos aos quais cada nó pertence em função da variação na constante de acoplamento e do parâmetro de resolução. Assim, selecionamos os nós que apresentam menor decaimento de módulos, ou seja, que permanecem em mais de um módulo mesmo que seja alta a força de acoplamento entre camadas, considerando diferentes cenários de resolução. Criamos uma nova métrica de centralidade chamada de $G_{norm}$ para quantificar essa relação entre quantidade de módulos e força de acoplamento entre camadas. Para testar essa nova métrica, analisamos redes de interações multicamada baseadas em dados de campo: uma entre morcegos e plantas e outra entre formigas e plantas. Os nós com alto $G_{norm}$ possuem uma boa intersecção com os nós mais centrais da rede, porém o seu ranking de importância diferiu. Alguns nós que não possuiam altos valores de centralidade monocamada apresentaram altos valores de $G_{norm}$, mostrando que pode haver ganho de informação na abordagem multicamada em comparação à monocamada. Isso pode ajudar a encontrar espécies que sejam mais importantes do que outras para manter funções e serviços ecossistêmicos vitais em sistemas naturais.
 
 <!-- Não precisa incluir citações no resumo. Deixe-as para o corpo do texto. -->
 
@@ -93,55 +96,58 @@ Análises de modularidade oriundas da ciência de redes têm sido usadas na Ecol
 
 # Modularidade de Newman e Girvan
 
-A ciência de redes tem sido usada para investigar sistemas ecológicos desde o século XIX [@Ings2018]. Dentre vários avanços, essa abordagem nos permitiu entender melhor como várias espécies afetam umas às outras por meio de interações diretas e indiretas. Esse entendimento  levou a importantes insights sobre a estrutura, função e dinâmica de redes de interações [@Pilosof2017].
+A ciência de redes tem sido usada para investigar sistemas ecológicos desde o século XIX [@Ings2018]. Dentre vários avanços, essa abordagem nos permitiu entender melhor como diferentes espécies afetam umas às outras por meio de interações diretas e indiretas [@guimarães2017]. Esse entendimento levou a importantes *insights* sobre a estrutura, função e dinâmica de redes de interações [@Pilosof2017].
 
-Uma forma de obtermos estes insights é olhar para a estrutura de módulos da rede, o que pode revelar alguns padrões escondidos em meio à complexidade de nós e conexões. Estes módulos são compostos por nós mais conectados entre si do que com outros nós de fora do módulo. A capacidade de encontrar e analisar esses módulos pode fornecer ajuda inestimável para entender mais a fundo a estrutura das redes [@Newman2004a]. 
+Uma forma de obtermos estes *insights* é olharmos para a estrutura modular da rede, que pode revelar alguns padrões escondidos em meio ao emaranhado de nós e conexões. Estes módulos são compostos por nós mais conectados entre si do que com outros nós de fora do módulo. A capacidade de encontrar e analisar esses módulos pode ser muito útil para entendermos mais a fundo a estrutura e a dinâmica das redes complexas [@Newman2004a], incluindo as redes de interações.
 
-É relativamente fácil identificar módulos em redes pequenas e pouco conectadas. Porém, essa tarefa se torna muito difícil quando analisamos redes mais complexas, com milhares, ou até mesmo milhões, de nós distribuídos em várias camadas. Então, como podemos identificar módulos em redes complexas? Existem muitas formas, como por exemplo métodos aglomerativos, divisivos, baseados em cliques e de otimização de modularidade. Neste projeto vamos focar na otimização de modularidade.
+É relativamente fácil identificar módulos em redes pequenas e pouco conectadas, como a grande maioria das redes de interações estudadas até o momento [@dormann2017]. Porém, essa tarefa se torna muito difícil quando analisamos redes mais complexas, com milhares, ou até mesmo milhões, de nós distribuídos em várias camadas. Então como podemos identificar módulos nessas redes maiores e mais complexas? Existem muitas formas, como por exemplo métodos aglomerativos, divisivos, baseados em cliques e de otimização da modularidade. Aqui focamos na otimização da modularidade.
 
-Para otimizarmos a modularidade, precisamos de uma métrica que indique se uma específica divisão da rede em módulos é melhor do que outra, para então buscar qual seria a melhor divisão de módulos possível. Uma métrica para medir a qualidade da modularidade de redes foi definida pela primeira vez por Newman e Girvan [@Newman2004a] como:
+Para otimizarmos a modularidade, precisamos de uma métrica que indique se uma dada divisão da rede em módulos é melhor do que outra, para então buscarmos qual seria a melhor divisão de módulos possível. Uma métrica para medir a qualidade da modularidade de redes foi definida pela primeira vez por Newman e Girvan [@Newman2004a] como:
 
+```{=tex}
 \begin{equation} \label{eq:mod_basica}
     Q = \sum^{k}_{i=1}(e_{ii}-a^2_i)
-\end{equation} 
-
+\end{equation}
+```
 Onde $e_{ii}$ representa a fração das conexões observadas dentro do módulo $i$ em relação ao total de conexões dentro da rede e $a^2_i$ representa a quantidade esperada de conexões no módulo $i$.
 
-Para determinar a proporção de conexões dentro dos módulos, suponha que temos uma uma possível divisão de módulos dentro da rede representada pela matriz de adjacência $A_{ij}$,  seja $C_i$ o módulo  que o nó $i$ está contido, então, a fração de conexões que conectam os vértices que estão dentro de um mesmo módulo é:
+Essa equação tem servido de base para a maioria das métricas de modularidade desenvolvidas deste então [@fortunato2016]. Para determinarmos a proporção de conexões dentro dos módulos, suponha que tenhamos uma possível divisão de módulos dentro da rede representada pela matriz de adjacência $A_{ij}$. Sendo $C_i$ o módulo que o nó $i$ está contido, então a fração de conexões que conectam os vértices que estão dentro de um mesmo módulo é:
 
+```{=tex}
 \begin{equation} \label{eq:fracao_conect}
     \frac{\sum_{ij} A_{ij} \delta (c_i, c_j)}{\sum_{ij} A_{ij}} = \frac{1}{2m} \sum_{ij} A_{ij} \delta (c_i, c_j) 
-\end{equation} 
+\end{equation}
+```
+Onde $\delta$ é o delta de Kronecker, que retorna o valor 1 caso $c_i = c_j$ e zero caso contrário; a variável $m$ representa o número total de conexões da rede. Falta agora definirmos uma forma de medir a quantidade esperada de nós dentro do módulo. Se conectarmos os vértices de forma aleatória, preservando os graus de cada nó, representados pela variável $k$, temos que a probabilidade de existir uma conexão entre os nós $i$ e $j$ é $k_i k_j / 2m$ . Dessa forma, temos que a modularidade descrita acima pode ser rescrita de uma forma mais operacional [@Blondel2008] como:
 
-
-Onde $\delta$ é o delta de kronecker, que retorna o valor 1 caso $c_i = c_j$ e zero caso contrário; a variável $m$ representa o número total de conexões da rede. Falta agora definirmos uma forma de medir a quantidade esperada de nós dentro do módulo. Se conectarmos os vértices de forma aleatória, preservando os graus de cada nó, representados pela variável $k$, temos que a probabilidade de existir uma conexão entre os nós $i$ e $j$ é $k_i k_j / 2m$ . Dessa forma, temos que a modularidade descrita acima pode ser reescrita de uma forma mais operacional [@Blondel2008] como:
-
+```{=tex}
 \begin{equation} \label{eq:blondel}
     Q = \frac{1}{2m} \sum_{ij} (A_{ij} - \frac{k_i k_j}{2m}) \delta(c_i c_j)
 \end{equation}
-
-Os valores da modularidade descrita acima podem variar entre zero e 1.
+```
+Os valores da modularidade descrita acima variam entre 0 (zero) e 1 (um).
 
 \pagebreak
 
 # Método Louvain para otimização de modularidade
 
-Se dividirmos a rede em módulos e o valor de modularidade definido por Newman e Girvan for alto, temos que a divisão de módulos escolhida é boa. Dessa forma, basta dividirmos a rede em diferentes módulos visando maximizar o valor da modularidade Newman-Girvan. Porém, esta não é uma tarefa fácil, já que a otimização de modularidade é um problema NP-difícil [@Brandes2008]. Um problema NP (Non Deterministic Polynomial Time) é um problema que leva um tempo exponencial para ser resolvido, por exemplo $O(2^N)$. Estes problemas NP demoram muito para serem computados, por exemplo, caso o problema possua uma complexidade exponencial $O(2^N)$ e $N$ (tamanho da entrada) seja igual a 100, o programa demoraria um tempo maior que a idade do universo para ser resolvido. Um problema NP-difícil é um problema que é ao menos tão difícil quanto um problema NP-completo.
+Se dividirmos a rede em módulos e o valor de modularidade definido por Newman e Girvan for alto, temos que a divisão de módulos escolhida é boa. Dessa forma, basta dividirmos a rede em diferentes módulos visando maximizar o valor da modularidade Newman-Girvan. Porém, esta não é uma tarefa fácil, já que a otimização de modularidade é um problema NP-difícil [@Brandes2008]. Um problema NP-difícil (Non Deterministic Polynomial Time) é um problema que leva um tempo exponencial para ser resolvido, por exemplo $O(2^N)$. Um problema NP demora muito para serem computado, caso ele possua uma complexidade exponencial $O(2^N)$ e $N$ (tamanho da entrada) seja igual a 100. Sob essas condições, o programa demoraria um tempo maior do que a idade do universo para ser resolvido. Um problema NP-difícil é um problema que é ao menos tão difícil quanto um problema NP-completo.
 
-Esta dificuldade computacional em dividir redes em módulos significativos motivou a procura por métodos heurísticos para encontrar agrupamentos que apresentam um alto valor de modularidade com uma complexidade razoável. Este é o caso do método Louvain [@Blondel2008],  que parece funcionar em um tempo $O(M)$, onde $M$ representa o número total de conexões da rede, ou seja, é resolvido em tempo polinomial, neste caso, linear com relação ao número de nós da rede. Essa complexidade computacional permite que redes de grande escala possam ser analisadas em tempo razoável, além de ser simples e de fácil implementação.
+Esta dificuldade computacional em dividir redes em módulos significativos motivou a procura por métodos heurísticos para encontrar agrupamentos que apresentem um alto valor de modularidade com uma complexidade razoável. Este é o caso do método Louvain [@Blondel2008], que parece funcionar em um tempo $O(M)$, onde $M$ representa o número total de conexões da rede, ou seja, é resolvido em tempo polinomial, neste caso, linear com relação ao número de nós da rede. Essa complexidade computacional permite que redes de grande escala possam ser analisadas em tempo razoável, além de ser simples e de fácil implementação.
 
-A implementação do algoritmo Louvain consiste de dois passos básicos, descritos em detalhe por @Blondel2008. O primeiro passo agrupa os nós em módulos de forma individual, favorecendo otimizações locais de modularidade. O segundo passo transforma a rede original em uma nova rede simplificada, cujo os novos nós são os módulos do passo anterior. As conexões entre estes novos nós correspondem à soma das conexões entre os módulos e cada nó agora tem um laço (conexão que liga um nó a ele mesmo) cujo o peso é a soma das conexões dentro do módulo correspondente. Esses dois passos são repetidos até que não exista mais aumento no valor da modularidade. A figura \ref{fig:algoritmo_Louvain} ilustra o algoritmo.
+A implementação do algoritmo Louvain consiste em dois passos básicos [@Blondel2008]. O primeiro passo agrupa os nós em módulos de forma individual, favorecendo otimizações locais de modularidade. O segundo passo transforma a rede original em uma nova rede simplificada, cujo os novos nós são os módulos do passo anterior. As conexões entre estes novos nós correspondem à soma das conexões entre os módulos e cada nó agora tem um laço (conexão que liga um nó a si mesmo) cujo peso é a soma das conexões dentro do módulo correspondente. Esses dois passos são repetidos até que não exista mais aumento no valor da modularidade. A figura \ref{fig:algoritmo_Louvain} ilustra o algoritmo.
 
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.8\textwidth]{./Figuras/Algoritmo_Louvain.png}
 \caption{Extraído de Blondel et al. (2008). Visualização dos passos do algoritmo Louvain. Cada passo é feito em duas fases: uma onde a modularidade é otimizada permitindo somente mudanças locais de módulo e uma onde os módulos encontradas são agregadas e uma nova rede de módulos é construída.}
 \label{fig:algoritmo_Louvain}
 \end{figure}
+```
+Apesar de este ser um algoritmo ganancioso (*greedy*), ele apresenta boa detecção de módulos que possuem sentido quando aplicados em redes reais [@Blondel2008; @Meunier2009; @Zhang2010] e é mais rápido que outros algoritmos similares, como mostrado na tabela \ref{tab:tabela_blondel} (extraída de @Blondel2008). Outra vantagem do método é que não precisamos saber previamente o número de módulos em que a rede deve ser dividida.
 
-Apesar deste ser um algoritmo ganancioso, ele apresenta boa detecção de módulos que possuem sentido quando aplicados em redes reais [@Blondel2008;@Meunier2009;@Zhang2010] e é mais rápido que outros algoritmos similares, como mostrado na tabela \ref{tab:tabela_blondel}, extraída de @Blondel2008. Outra vantagem do método é que não precisamos saber previamente o número de módulos que a rede deve ser dividida.
-
-
+```{=tex}
 \begin{table}[h!]
   \caption{Extraído de Blondel et al. (2008). Comparação entre os tempos computacionais dos algoritmos Clauset et al (CNM), Pons e Latapy (PL), Wakita e Tsurumi (WT) e Louvain (LV). Os resultados mostram a modularidade obtida e o tempo computacional para cada rede/método. Células em branco representam tempos computacionais maiores que 24 horas.}
   \label{tab:tabela_blondel}
@@ -149,106 +155,118 @@ Apesar deste ser um algoritmo ganancioso, ele apresenta boa detecção de módul
   \resizebox{\textwidth}{!}{ 
 \begin{tabular}{ | c | c | c | c | c | c | c | c | }
 \hline
-	 & \textbf{Karate} & \textbf{Arxiv} & \textbf{Internet} & \textbf{Web nd.edu} & \textbf{Telefone} & \textbf{Web uk2005} & \textbf{WebBase 2001} \\ \hline
-	Nós / Conexões & 34/77 & 9k/24k & 70k/351k & 325k/1M & 2.04M/5.4M & 39M/783M & 118M/1B \\ \hline
-	CNM & 0.38/0s & 0.772/3.6s & 0.692/799s & 0.927/5034s & - & - & - \\ \hline
-	PL & 0.42/0s & 0.752/3.3s & 0.729/575s & 0.895/6666s & - & - & - \\ \hline
-	WT & 0.42/0s & 0.761/0.7s & 0.667/62s & 0.898/248s & 0.553/367s & - & - \\ \hline
-	LV & 0.42/0s & 0.813/0s & 0.781/1s & 0.935/3s & 0.76/44s & 0.935/3s & 0.984/152min \\ \hline
+     & \textbf{Karate} & \textbf{Arxiv} & \textbf{Internet} & \textbf{Web nd.edu} & \textbf{Telefone} & \textbf{Web uk2005} & \textbf{WebBase 2001} \\ \hline
+    Nós / Conexões & 34/77 & 9k/24k & 70k/351k & 325k/1M & 2.04M/5.4M & 39M/783M & 118M/1B \\ \hline
+    CNM & 0.38/0s & 0.772/3.6s & 0.692/799s & 0.927/5034s & - & - & - \\ \hline
+    PL & 0.42/0s & 0.752/3.3s & 0.729/575s & 0.895/6666s & - & - & - \\ \hline
+    WT & 0.42/0s & 0.761/0.7s & 0.667/62s & 0.898/248s & 0.553/367s & - & - \\ \hline
+    LV & 0.42/0s & 0.813/0s & 0.781/1s & 0.935/3s & 0.76/44s & 0.935/3s & 0.984/152min \\ \hline
 \end{tabular}
 }
 \end{table}
+```
+Por outro lado, o método Louvain também apresenta limitações [@Good2010]. Dentre as mais expressivas estão o limite de resolução, o problema de degeneração e o fato de o algoritmo não ser determinístico. O problema de limite de resolução ocorre pois o algoritmo pode não parar nos módulos "intuitivos" devido a uma segunda passagem pela modificação dos módulos. Já o problema de degeneração ocorre, pois podem existir muitas soluções com valor de modularidade próximos do máximo global, nesses casos é muito difícil encontrar o máximo global e realmente afirmar se ele possui significância científica maior do que a dos máximos locais com valores de modularidade similares.
 
-Por outro lado, o método Louvain também apresenta limitações [@Good2010]. Dentre as mais expressivas estão o limite de resolução, o problema de degeneração e o fato de o algoritmo não ser determinístico. O problema de limite de resolução ocorre pois o algoritmo pode não parar nos módulos “intuitivos” devido a uma segunda passagem pela modificação dos módulos. Já o problema de degeneração ocorre pois podem existir muitas soluções com valor de modularidade próximos do máximo global, nesses casos é muito difícil encontrar o máximo global e de realmente afirmar se o máximo global possui significância científica maior que os máximos locais com valores de modularidade similares.
-
-Uma característica interessante do método é que não é possível, pela própria natureza do algoritmo, que um mesmo nó esteja presente em diferentes módulos, essa sobreposição de módulos é chamada dentro da área de modularidade de redes de \textit{overlapping communities}. Porém, ao adaptarmos a forma de calcular a modularidade para multicamada [@Mucha2010], existe a possibilidade de que um mesmo nó pertença a diferentes módulos em diferentes camadas ao ajustarmos um parâmetro de entrada. Esta diferença é interessante e será usada para tentar encontrar espécies-chave que são boas conectoras entre grupos diferentes em camadas diferentes.
+Uma característica interessante do método é que não é possível, pela própria natureza do algoritmo, que um mesmo nó esteja presente em diferentes módulos. Essa sobreposição de módulos é chamada dentro da área de modularidade de redes de \textit{overlapping communities}. Porém, ao adaptarmos a forma de calcular a modularidade para multicamada [@Mucha2010], existe a possibilidade de que um mesmo nó pertença a diferentes módulos em diferentes camadas ao ajustarmos um parâmetro de entrada. Esta diferença é interessante e será usada para tentar encontrar espécies-chave que são boas conectoras entre grupos diferentes em camadas diferentes.
 
 \pagebreak
 
-# Modularidade Multicamada
+# Modularidade multicamada
 
-Apesar do amplo estudo de redes para compreensão de sistemas e tomada de decisão, estas redes são normalmente estudadas de forma desconexa de outras redes ou então agregando-se várias redes em uma única rede [@Pilosof2017]. Uma maneira de aumentarmos as informações usadas no estudo de redes é usar redes multicamada [@Pilosof2017]. Quando usadas para representar sistemas ecológicos,  as redes multicamada podem ter suas camadas definidas através de interações de diferentes tipos, ou que acontecem em diferentes localidades ou estações do ano, por exemplo [@Pilosof2017].
+Apesar do amplo estudo de redes para compreensão de sistemas e tomada de decisão, redes do mundo real são normalmente estudadas de forma desconexa de outras redes ou então agregando-se várias redes em uma única rede [@Pilosof2017]. Uma maneira de aumentarmos as informações usadas no estudo de redes é usar redes multicamada. Quando usadas para representar sistemas ecológicos, as redes multicamada podem ter suas camadas definidas através de interações de diferentes tipos, ou que acontecem em diferentes localidades ou estações do ano, por exemplo [@Pilosof2017].
 
-No caso deste projeto, a rede em foco é a rede multicamada onde as camadas são definidas pelo tipo de interação, ou seja, todos os nós estão presentes em todas as camadas e apenas o tipo de ligação (interações) entre os nós é o que muda em cada camada. Assim, nesse tipo de rede há duas classes maiores de arestas: intracamada, que conecta nós dentro de uma camada, e intercamada, que conecta um mesmo nó entre duas camadas. Este tipo de rede é chamada de \textit{multiplex} [@Mucha2010], que é uma subdivisão da grande categoria definida como redes multicamada.
+No presente estudo, focamos redes multicamada onde as camadas são definidas pelo tipo de interação, ou seja, onde todos os nós estão presentes em todas as camadas e apenas o tipo de conexão (interações) entre os nós é que muda entre camadas. Assim, nesse tipo de rede há duas classes maiores de arestas: intracamada, que conectam nós dentro de uma camada, e intercamada, que conectam um mesmo nó entre duas camadas. Este tipo de rede é chamada de \textit{multiplex} [@Mucha2010], que é uma subdivisão da grande categoria definida como redes multicamada.
 
 Redes multiplex também podem ter sua modularidade analisada pelo método Louvain [@Mucha2010]. Essa adaptação consiste basicamente na mudança da forma como a função da modularidade é calculada, incluindo um parâmetro $\omega$ que controla o acoplamento entre as diferentes camadas da rede. Há também o parâmetro de resolução $\omega$, que pode enviesar a tendência do algoritmo em encontrar módulos de escalas menores ou maiores. A generalização da equação de modularidade [@Mucha2010] é dada por:
 
+```{=tex}
 \begin{equation} \label{eq:1}
 Q^{M} = \frac{1}{\mu} \sum_{ij\alpha\beta} \left[ \left(A_{i\alpha,j\alpha} - \gamma_{\alpha} \frac{k_{i\alpha} k_{j\alpha}}{2m_\alpha} \right) \delta_{\alpha,\beta} + \omega A_{i\alpha,j\beta} \delta_{ij} \right] \delta(c_{i\alpha}, c_{j \beta})
 \end{equation}
+```
+Onde $\delta$ é o delta de kronecker, que retorna o valor 1 caso $c_{i\alpha} = c_{j \beta}$ e zero caso contrário; a variável $m$ representa a soma de do grau de cada nó na camada $\alpha$; $A_{i\alpha,j\alpha}$ é a matriz de adjacência na camada $\alpha$; $A_{i\alpha,j\beta}$ é a matriz de adjacência entre camadas; $k_{i\alpha}$ representa o grau do nó $i$ na camada $\alpha$ e $\mu = \sum_{i,j, \alpha}A_{i\alpha,j\alpha} + \omega \sum_{i,\alpha,\beta} A_{i\alpha,j\beta}$. Note que se utilizarmos $\omega = 0$ e $\gamma = 1$, a equação de modularidade generalizada (eq. \ref{eq:1}) é proporcional à média da modularidade monocamada [@Newman2004a; @Newman2004b] de cada camada. Isto também está descrito em @Bianconi2018, pg. 147-148:
 
-Onde $\delta$ é o delta de kronecker, que retorna o valor 1 caso $c_{i\alpha} = c_{j \beta}$ e zero caso contrário; a variável $m$ representa a soma de do grau de cada nó na camada $\alpha$; $A_{i\alpha,j\alpha}$ é a matriz de adjacência na camada $\alpha$; $A_{i\alpha,j\beta}$ é a matriz de adjacência entre camadas; $k_{i\alpha}$ representa o grau do nó $i$ na camada $\alpha$ e $\mu = \sum_{i,j, \alpha}A_{i\alpha,j\alpha} + \omega \sum_{i,\alpha,\beta} A_{i\alpha,j\beta}$. Note que se utilizarmos $\omega = 0$ e $\gamma = 1$, a equação de modularidade generalizada (eq. \ref{eq:1}) é proporcional a média da modularidade monocamada [@Newman2004a; @Newman2004b] de cada camada. Isto também está descrito em @Bianconi2018, pg. 147-148:
-
+```{=tex}
 \begin{equation} \label{eq:2}
 Q^{M} = \frac{1}{\mu} \sum_{\alpha} \frac{1}{2m_\alpha} \sum_{ij} \left(A_{i\alpha,j\alpha} - \gamma_{\alpha} \frac{k_{i\alpha} k_{j\alpha}}{2m_\alpha} \right) \delta(c_{i\alpha}, c_{j\alpha}) \end{equation}
-
+```
 # Parâmetros de acoplamento ($\omega$) e resolução ($\gamma$) na prática
 
-Como a escolha dos parâmetros de resolução e acoplamento é arbitrária, ficam as perguntas: qual seria o melhor valor para aplicar em uma dada rede? Existe apenas um único valor adequado ou o valor a ser escolhido depende do da pergunta que pretendo responder? Quais são os efeitos na prática quando variamos $\gamma$ e $\omega$? Com o objetivo de responder essas perguntas e auxiliar outros cientistas na escolha dos valores de $\gamma$ e $\omega$, vamos analisar essas questões em detalhes.
+Como a escolha dos parâmetros de resolução e acoplamento é arbitrária, surgem as perguntas: qual seria o melhor valor para aplicar em uma dada rede? Existe apenas um único valor adequado ou o valor a ser escolhido depende da pergunta que se pretende responder? Quais são os efeitos na prática quando variamos $\gamma$ e $\omega$? Com o objetivo de responder essas perguntas e auxiliar outros cientistas na escolha dos valores de $\gamma$ e $\omega$, analisamos essas questões em detalhes.
 
-O parâmetro $\omega$ está contido no intervalo (0,1).Zero (0) representa o desacoplamento total das camadas (cada camada é tratada como uma rede individual) e a modularidade final é a média da modularidade de cada camada. Um (1) representa o acoplamento máximo, que faz com que a rede multiplex se comporte como uma rede monocamada. Na prática, isso significa que, quando aumentamos os valores da constante de acoplamento $\omega$, aumentamos o peso das arestas intercamada [@Mucha2010], isso faz com que as camadas tenham maior influência umas sobre as outras, favorecendo a formação de módulos multicamada. Quando diminuímos $\omega$, o contrário ocorre, o que favorece a formação de módulos monocamada.
+O parâmetro $\omega$ está contido no intervalo (0,1). Zero (0) representa o desacoplamento total das camadas (cada camada é tratada como uma rede independente) e a modularidade final é a média da modularidade de cada camada. Um (1) representa o acoplamento máximo, que faz com que a rede multiplex se comporte como uma rede monocamada. Na prática, isso significa que, quando aumentamos os valores da constante de acoplamento $\omega$, aumentamos o peso das arestas intercamada [@Mucha2010]. Isso faz com que as camadas tenham maior influência umas sobre as outras, favorecendo a formação de módulos multicamada. Quando diminuímos $\omega$, o contrário ocorre, o que favorece a formação de módulos monocamada.
 
 <!-- É importante padronizar o vocabulário ao longo do texto. Na teoria de grafos: elemento = vértice, conexão = aresta, estrutura = topologia etc. Na teoria de redes: elemento = nó, conexão = elo, estrutura = arquitetura. É importante então não usar de forma intercambiável termos como conexão, link e aresta. Eles são  personagens da sua história, logo, precisam ser nomeados de forma consistente. Escolha um dos dialetos e siga com ele. -->
 
 O parâmetro de resolução foi introduzido por @Reichardt2006 para avaliar redes monocamada e depois estendido para a modularidade generalizada multicamada [@Mucha2010]. De uma forma geral, se $\gamma_2 > \gamma_1$, os módulos encontrados com $\gamma_2$ possuem menos nós (módulos menores) e são mais numerosos (maior quantidade de módulos). Os módulos encontrados com $\gamma_2$ podem ser submódulos dos obtidos usando $\gamma_1$, mas nem sempre é o caso [@Reichardt2006]. Lembrando que $0 \leq \gamma \leq \infty$. Porém, não faz sentido aumentarmos $\gamma$ para valores muito altos, já que existe um limite a partir do qual os módulos se tornam tão pequenos que cada módulo passa a ter apenas um nó.
 
-Vamos usar a rede multiplex Famílias de Florença [@Kent1978] para ilustrar graficamente o que ocorre quando variamos os parâmetros $\omega$ e $\gamma$. Essa rede foi escolhida por ser pequena, o que facilita sua visualização. A figura \ref{fig:Mosaico1} mostra a distribuição dos módulos sobre as duas camadas da rede para diferentes valores de $\omega$ e $\gamma$.
+Vamos usar uma rede multiplex clássica na literatura, Famílias de Florença [@Kent1978], para ilustrar graficamente o que ocorre quando variamos os parâmetros $\omega$ e $\gamma$. Essa rede foi escolhida por ser pequena, o que facilita sua visualização. A figura \ref{fig:Mosaico1} mostra a distribuição dos módulos sobre as duas camadas da rede para diferentes valores de $\omega$ e $\gamma$.
 
+```{=tex}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{./Figuras/Mosaico_edit.png}
     \caption{Módulos formados usando diferentes valores de acoplamento $\omega$ e resolução $\gamma$. Valores de $\omega$ variam no eixo y e valores de $\gamma$ variam no eixo x.}
     \label{fig:Mosaico1}
 \end{figure}
-
+```
 \pagebreak
 
-Quanto maiores o os valores de $\gamma$ e menores os valores de $\omega$, menores e mais numerosos são os módulos e vice-versa. A figura \ref{fig:Mosaico2} mostra o número de módulos para a rede exemplo Famílias de Florença, onde podemos ver que ocorre o previsto na teoria.
+Quanto maiores o os valores de $\gamma$ e menores os valores de $\omega$, menores e mais numerosos são os módulos e vice-versa. A figura \ref{fig:Mosaico2} mostra o número de módulos para a rede Famílias de Florença, onde podemos ver que ocorre o previsto na teoria.
 
+```{=tex}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{./Figuras/Mosaico_numero_de_modulos_edit.png}
     \caption{Número de módulos totais da rede para diferentes valores de acoplamento $\omega$ e resolução $\gamma$. Valores de $\omega$ variam no eixo y e valores de $\gamma$ variam no eixo x.}
     \label{fig:Mosaico2}
 \end{figure}
-
+```
 \pagebreak
 
-Mas, afinal, quais valores devo escolher para esses dois parâmetros? A resposta mais correta é: depende. Depende de qual propriedade da rede queremos enfocar e qual pergunta queremos responder com esse enfoque. Por exemplo, se quisermos verificar quais são os “grandes módulos” da rede, devemos usar um valor de $\gamma$ mais baixo, mas se quisermos olhar para os módulos menores (mais “íntimos”) ou submódulos dos “grandes módulos” obtidos com um $\gamma$ mais baixo, um $\gamma$ maior seria mais indicado.
+Mas, afinal, quais valores deveriam ser escolhidos para esses dois parâmetros? A resposta mais correta é: depende. Depende de qual propriedade da rede queremos enfocar e qual pergunta queremos responder com esse enfoque. Por exemplo, se quisermos verificar quais são os "grandes módulos" da rede, devemos usar um valor de $\gamma$ mais baixo, mas se quisermos olhar para os módulos menores (mais "íntimos") ou submódulos dos "grandes módulos" obtidos com um $\gamma$ mais baixo, um $\gamma$ maior seria mais indicado.
 
-Se quisermos que as conexões de uma camada influenciem mais a outra camada, devemos usar um $\omega$ mais alto, coso contrário, melhor usar um $\omega$ mais baixo. Vamos usar agora como exemplo aa redemorcego-planta [@Mello2019], onde existem duas camadas: uma de nectarívoria e outra de frugivoria. Se quisermos encontrar módulos onde existam morcegos com dietas mais similares entre si, um $\omega$ mais alto é recomendado, pois a frugivoria e a nectarivoria ficaram com alta influência uma sobre a outra no cálculo dos módulos. Já se quisermos separar os morcegos com uma preferência maior por flores, por frutos ou que tenham uma dieta equilibrada, podemos usar um $\omega$ menor, porque assim aumenta a tendência dos módulos se formarem pesando mais as interações dentro de cada camada da rede. IIsso faz com que os morcegos estejam em grupos que priorizam mais a nectarivoria ou a frugivoria ou até mesmo que possuem interações equilibradas entre camadas (estão em dois grupos em camadas diferentes).
+Se quisermos que as conexões de uma camada influenciem mais a outra camada, devemos usar um $\omega$ mais alto, caso contrário, melhor seria usar um $\omega$ mais baixo. Vamos usar agora como exemplo uma de rede interações entre morcegos e plantas ("rede morcego-planta", @Mello2019), onde existem duas camadas: uma de nectarivoria (consumo de néctar) e outra de frugivoria (consumo de frutos).
 
-Interpretação, conhecimento específico da área que a rede representa e saber o que queremos enxergar são os fatores principais para a escolha dos valores de $\omega$ e $\gamma$
+Se quisermos encontrar módulos onde existam morcegos com dietas mais similares entre si, um $\omega$ mais alto é recomendado, pois a frugivoria e a nectarivoria ficam com alta influência uma sobre a outra no cálculo dos módulos. Já se quisermos separar os morcegos com uma preferência maior por flores, por frutos ou que tenham uma dieta equilibrada, podemos usar um $\omega$ menor. Assim aumenta a tendência de os módulos se formarem pesando mais as interações dentro de cada camada da rede. Isso faz com que os morcegos estejam em grupos que priorizam mais a nectarivoria ou a frugivoria ou até mesmo que possuem interações equilibradas entre camadas (estão em dois grupos em camadas diferentes).
 
-Caso quisermos apenas obter uma distribuição de módulos confiável sem a necessidade de interpretação, podemos escolher um valor de $\omega$ e $\gamma$ que maximiza a modularidade. Os valores de $\omega$ e $\gamma$ que maximizam a modularidade diferem para cada rede. A figura \ref{fig:Mosaico3} mostra os valores da modularidade para diferentes valores de $\omega$ e $\gamma$ da rede exemplo Famílias de Florença.
+Estudando a formação desses módulos de morcegos com diferentes dietas, podemos jogar luz sobre vários fenômenos ecológicos e evolutivos. Por exemplo, podemos dar mais um passo no entendimento sobre como a morfologia funcional do crânio de um morcego afeta a sua dieta [@rossoni2017] e, consequentemente, o papel funcional que ele desempenha em seu habitat [@mello2014]. Até o momento, tem-se estudado papeís funcionais quase exclusivamente no contexto de um único tipo de interação [@garcía-callejas2017]. Contudo, na natureza, observamos que as espécies de animais vivem entre mundos, alternando entre interações mutualistas e antagonistas em cada um deles. E a definição desses mundos em si depende muito da escala espaço-temporal estudada.
 
+Outra rede do mundo real que usaremos aqui descreve interações entre formigas e plantas ("rede formiga-planta", @Costa2016). Nessa outra rede multicamada, as formigas se relacionam com as plantas através de quatro tipos de consumo de recursos diferentes: néctar extrafloral, pólen/néctar, frutos e melado de trofobiontes. Além disso, também fazem visitas simples, sem consequências mensuráveis para a planta. Essas interações geram então cinco camadas na rede e têm diferentes consequências para a vida das plantas e sua aptidão [@rico-gray2007].
+
+Como no caso dos morcegos, essa rede formiga-planta também representa um emaranhado de diferentes mundos, com diferentes pressões seletivas para as formigas. Para consumir os diferentes tipos de recursos que as plantas oferecem, elas precisam de adaptações morfológicas e fisiológicas específicas. Ter ou não ter uma ou mais dessas adaptações leva diferentes espécies de formigas a ocuparem diferentes módulos na rede [@Costa2016]. Uma análise de modularidade multicamada tem o potencial de entender melhor as relações entre esses módulos em diferentes escalas de organização da rede.
+
+Independente da história natural do sistema de estudo, caso queiramos apenas obter uma distribuição de módulos confiável sem a necessidade de interpretação, podemos escolher um valor de $\omega$ e $\gamma$ que maximiza a modularidade. Os valores de $\omega$ e $\gamma$ que maximizam a modularidade diferem para cada rede. A figura \ref{fig:Mosaico3} mostra os valores da modularidade para diferentes valores de $\omega$ e $\gamma$ da rede exemplo Famílias de Florença.
+
+```{=tex}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{./Figuras/Mosaico_modularidade_edit.png}
     \caption{Valor da modularidade para diferentes valores de acoplamento $\omega$ e resolução $\gamma$. Valores de $\omega$ variam no eixo y e valores de $\gamma$ variam no eixo x.}
     \label{fig:Mosaico3}
 \end{figure}
-
-Com a resolução do ensaio feito, os valores mais indicados para a rede famílias de florença seriam $\omega = 0.75$ e $\gamma = 1.5$. Para valores mais precisos, basta aumentar as partições de $\gamma$ e $\omega$ ou refinar os valores de $\gamma$ e $\omega$ em torno dos máximos obtidos no ensaio anterior.
+```
+Com a resolução do ensaio feito, os valores mais indicados para a rede Famílias de Florença seriam $\omega = 0.75$ e $\gamma = 1.5$. Para valores mais precisos, basta aumentar as partições de $\gamma$ e $\omega$ ou refinar os valores de $\gamma$ e $\omega$ em torno dos máximos obtidos no ensaio anterior.
 
 Também existe a possibilidade de que os valores de modularidade fiquem muito próximos uns dos outros. Nesse caso, é comum que os módulos fiquem muito similares entre si, então, é possível escolher qualquer um dos valores de $\omega$ e $\gamma$. Caso os módulos fiquem muito diferentes entre si (um caso mais raro), uma interpretação de um especialista na área que a rede está retratando é fundamental.
 
 \clearpage
 
-
 # Variável $G$ e $G_{norm}$
 
 ## Variável G
 
-A variável G representa o número de módulos que um determinado nó pertence. Como o algoritmo Louvain não permite que um mesmo nó participe de mais de um módulo dentro de uma mesma camada, G é uma variável discreta inteira que possui o mínimo de 1 e o máximo igual ao número de camadas da rede estudada. G possui valores bem definidos nos extremos, se $\omega = 0 \Rightarrow G = 1$ e se $\omega = 0 \Rightarrow G = \text{ número total de camadas da rede}$. Entre estes valores de $\omega$ o comportamento de G é variado, mas tende a cair conforme a força de acoplamento $\omega$ aumenta. O comportamento do decaimento de G em relação a $\omega$ é diferente para cada nó da rede, alguns nós resistem e permanecem em mais de um módulo ao aumentarmos $\omega$, já outros rapidamente passam a pertencer a apenas um módulo ao aumentarmos $\omega$. A figura \ref{fig:Figura_G} ilustra o comportamento de diferentes nós ao aumentarmos $\omega$. A figura \ref{fig:Exemplo_decai} mostra um exemplo de curva de decaimento de G em relação a $\omega$.
+A variável G representa o número de módulos a que um determinado nó pertence. Como o algoritmo Louvain não permite que um mesmo nó participe de mais de um módulo dentro de uma mesma camada, G é uma variável discreta inteira que possui o mínimo de 1 e o máximo igual ao número de camadas da rede estudada. G possui valores bem definidos nos extremos, se $\omega = 0 \Rightarrow G = 1$ e se $\omega = 0 \Rightarrow G = \text{ número total de camadas da rede}$. Entre estes valores de $\omega$ o comportamento de G é variado, mas tende a cair conforme a força de acoplamento $\omega$ aumenta. O comportamento do decaimento de G em relação a $\omega$ é diferente para cada nó da rede, alguns nós resistem e permanecem em mais de um módulo ao aumentarmos $\omega$, já outros rapidamente passam a pertencer a apenas um módulo ao aumentarmos $\omega$. A figura \ref{fig:Figura_G} ilustra o comportamento de diferentes nós ao aumentarmos $\omega$. A figura \ref{fig:Exemplo_decai} mostra um exemplo de curva de decaimento de G em relação a $\omega$.
 
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.8\textwidth]{./Figuras/Figura_G.png}
 \caption{Esquema ilustrativo do que ocorre com alguns nós ao aumentarmos o parâmetro $\omega$. Para valores de $\omega$ baixos, vemos que os nós A e B estão em módulos diferentes em camadas diferentes. Ao aumentarmos a força de acoplamento $\omega$, o nó A passa a pertencer ao módulo verde tanto na camada superior como na camada inferior, já o nó B resiste e permanece no módulo azul na camada superior e no módulo verde na camada inferior. Se aumentarmos ainda mais a força de acoplamento $\omega$, em algum momento o nó B acaba cedendo e passa a pertencer a apenas um módulo nas duas camadas.}
 \label{fig:Figura_G}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \setlength{\fboxsep}{0pt}%
@@ -257,13 +275,14 @@ A variável G representa o número de módulos que um determinado nó pertence. 
 \caption{Exemplo hipotético de decaimentos de G (módulos que o nó pertence em diferentes camadas) em relação ao parâmetro $\omega$ (constante de acoplamento) esperados. O nó representado pela cor vermelha possui um decaimento rápido de G, portanto, representa uma espécie pouco conectiva do ponto de vista da rede multicamada como um todo. O contrário ocorre com a espécie representada pelo nó azul.}
 \label{fig:Exemplo_decai}
 \end{figure}
-
+```
 Como o algoritmo Louvain não é determinístico (pode retornar diferentes resultados a cada compilação) e a variável G é inteira e discreta, para termos uma maior confiabilidade precisamos repetir o processo várias vezes para cada valor de $\omega$ e extrair uma média de G para cada nó. Assim o valor médio de G é dado por:
 
+```{=tex}
 \begin{equation} \label{eq:3}
     \overline{G_{\omega}} = \frac{1}{I} \sum_{i=1}^{I} G_{i}
 \end{equation}
-
+```
 Onde $I$ se refere ao número de iterações.
 
 Repetindo isso para diferentes valores de $\omega$, teremos uma curva de decaimento $\overline{G}$ por $\omega$.
@@ -274,10 +293,11 @@ Podemos agora repetir esse processo para diferentes valores de $\gamma$, assim v
 
 Para facilitar a classificação dos nós de acordo com sua curva $\overline{G}$ por $\omega$ por $\gamma$, toda a família de curvas será resumida em uma única variável para cada nó, normalizada pela média. Chamaremos essa variável de $G_{norm}$, definida na equação \ref{eq:4}.
 
+```{=tex}
 \begin{equation} \label{eq:4}
     G_{norm} = \frac{\sum_{j=1}^{P_2} \sum_{i = 1}^{P_1} \overline{G}_{i,j}}{\frac{1}{N} \sum_{k=1}^{N} \sum_{j=1}^{P_2} \sum_{i = 1}^{P_1} \overline{G}_{i,j,k}}
 \end{equation}
-
+```
 Onde $P_1$, $P_2$ são o número de partições de $\omega$ e $\gamma$; $N$ é u número de nós na rede; $i$, $j$ são os índices de $\overline{G}$ dentro de $\omega$, $\gamma$; e $k$ é o índice do nó na rede (número de identificação do nó).
 
 \pagebreak
@@ -287,9 +307,11 @@ load("./RDatas/bats.RData")
 ```
 
 <!-- modifcar o 'net_x' para corresponder com as figuras -->
+
 # Visão geral da rede `r net_name`
 
 <!-- Usa as variaveis nodes e links para gerar a tabela comk os numeros da rede -->
+
 ```{r Propriedades_Rede}
 
 net_multinet = Convert_to_Multinet(nodes, links)
@@ -327,20 +349,26 @@ names(propriedades_rede) = c("Propriedade", "Valor")
 ```
 
 <!-- Usa as variavei geradas no code chunk acima para preencher o texto -->
-A rede `r net_name` [@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1} apresenta uma visão geral da rede.
+
+A rede `r net_name` [\@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1} apresenta uma visão geral da rede.
 
 ```{r Tabela_Prop_Rede, col.names = NULL}
 kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1}Propriedades da rede ", net_name)) %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
 <!-- links, nodes e layout sao variaveis vindas do .RData -->
+
 ```{r Figura_Overview, fig.cap=paste(fig.cap="\\label{fig:fig1}Visão geral da rede ", net_name, ".")}
 #calcula um layout (igraph) e plota o grafo usando a funcao aux CustomPlot----
 Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3) # TODO: melhorar o custom plot depois
 ```
 
 <!-- Resultados da rede morcegos-planta -->
+
 # Resultados da rede `r net_name`
+
+<!--# É melhor separar os resultados para animais e plantas. Isso facilita muito a interpretação biológica -->
+
 ## Distribuição de $\mathbf{G_{norm}}$
 
 A variável $G$ foi calculada para `r partitions_of_omega` partições de $\omega$, ou seja, o tamanho do passo dado dentro de $\omega$ foi de `r 1/partitions_of_omega`. O processo foi repetido para `r length(gammas)` partições de $\gamma$, com $\gamma$ começando em `r min(gammas)`, com passos de `r (gammas[2] - gammas[1])` até um $\gamma$ máximo de `r max(gammas)`. O cálculo de $\overline{G}$ foi feito usando `r iterations` iterações. A tabela \ref{tab:2} resume os parâmetros de execução do código e a figura \ref{fig:fig2} mostra a distribuição dos valores de $G_{norm}$ obtidos.
@@ -355,14 +383,13 @@ names(propriedades_rede) = c("Parâmetro", "Valor")
 kable(propriedades_rede, "latex", booktabs = T, caption = "\\label{tab:2}Parâmetros de execucao") %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
-
 ```{r Distribuicao_Gnorm, fig.cap=paste(fig.cap="\\label{fig:fig2}Distribuição de $G_{norm}$ médio da rede ", net_name, ".")}
 G_norm_dristrib_plot(G_norm_mean_ordered)
 ```
 
 ## Variação de $\mathbf{\overline{G}}$ por $\boldsymbol{\omega}$
 
-Como temos dados em 3 dimensões ($\overline{G}$, $\omega$, $\gamma$) temos algumas formas diferentes para apresentar os valores de $\overline{G}$ em relação a $\omega$ e $\gamma$, não sei dizer se devemos usar uma delas, as três ou alguma outra. A figura \ref{fig:1a} mostra curvas de decaimento de $\overline{G}$ por $\omega$ para diferentes nós com diferentes valores de $G_{norm}$ e para diferentes valores de $\gamma$. A figura \ref{fig:1a.1} mostra a superfície 3D formada por $\overline{G}$ em relação a $\omega$ e $\gamma$. A figura \ref{fig:1a.2} mostra a mesma superfície da figura \ref{fig:1a.1} mas no formato de mapa de calor.
+Como temos dados em 3 dimensões ($\overline{G}$, $\omega$, $\gamma$) temos diferentes possibilidades para apresentar os valores de $\overline{G}$ em relação a $\omega$ e $\gamma$. A figura \ref{fig:1a} mostra curvas de decaimento de $\overline{G}$ por $\omega$ para diferentes nós com diferentes valores de $G_{norm}$ e para diferentes valores de $\gamma$. A figura \ref{fig:1a.1} mostra a superfície 3D formada por $\overline{G}$ em relação a $\omega$ e $\gamma$. A figura \ref{fig:1a.2} mostra a mesma superfície da figura \ref{fig:1a.1} mas no formato de mapa de calor.
 
 ```{r select_exemple_nodes}
 #seleciona quatro noh e guarda suas curvas de decaimento G em relacao a w e gamma usando funcao auxiliar
@@ -382,7 +409,6 @@ for (i in 1:length(selection)) {
 }
 ```
 
-
 ```{r decaimentos_ilustrativos_sup_3D, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.1}Exemplos de superfícies do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Superfície de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Superfície de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
 
 for (i in 1:length(selection)) {
@@ -390,7 +416,6 @@ for (i in 1:length(selection)) {
   Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
 }
 ```
-
 
 ```{r decaimentos_ilustrativos_heatmap, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1a.2}Exemplos de mapas de calor do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Mapa de calor de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Mapa de calor de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
 
@@ -409,7 +434,6 @@ size2 = 3*size1 #tamanho dos valores acima de G_threshold
 
 ```
 
-
 A figura \ref{fig:2a} e a tabela \ref{tab:3} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`.
 
 ```{r define_aspecto}
@@ -420,13 +444,11 @@ if (lnum < 4) {
 }
 ```
 
-
 ```{r fig-sub2, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:2a}Espécies com G$_{norm}$ maiores que ", G_threshold, "em destaque de tamanho e cor."), fig.asp=asp, nrow = 1, ncol = 3}
 
 Custom_plot2D_destaque_palette(G_norm_mean, links, nodes, layout, size1, size2)
 
 ```
-
 
 ```{r, tabela_decimento_lento}
 selected_nodes = sort(G_norm_mean[which(G_norm_mean > G_threshold)], decreasing = TRUE)
@@ -437,7 +459,6 @@ rownames(selected_nodes_df) = NULL
 kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3}Espécies com valores de $G_{norm}$ maiores que", G_threshold), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
-
 ```{r leitura_dos_dados_formigas}
 load("./RDatas/ants.RData")
 ```
@@ -445,9 +466,11 @@ load("./RDatas/ants.RData")
 \pagebreak
 
 <!-- modifcar o 'net_x' para corresponder com as figuras -->
+
 # Visão geral da rede `r net_name`
 
 <!-- Usa as variaveis nodes e links para gerar a tabela comk os numeros da rede -->
+
 ```{r Propriedades_Rede_b}
 
 net_multinet = Convert_to_Multinet(nodes, links)
@@ -485,20 +508,24 @@ names(propriedades_rede) = c("Propriedade", "Valor")
 ```
 
 <!-- Usa as variavei geradas no code chunk acima para preencher o texto -->
-A rede `r net_name` [@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1a} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1a} apresenta uma visão geral da rede.
+
+A rede `r net_name` [\@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1a} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1a} apresenta uma visão geral da rede.
 
 ```{r Tabela_Prop_Rede_b, col.names = NULL}
 kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1a}Propriedades da rede ", net_name)) %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
 <!-- links, nodes e layout sao variaveis vindas do .RData -->
+
 ```{r Figura_Overview_b, fig.cap=paste(fig.cap="\\label{fig:fig1a}Visão geral da rede ", net_name, ".")}
 #calcula um layout (igraph) e plota o grafo usando a funcao aux CustomPlot----
 Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3) # TODO: melhorar o custom plot depois
 ```
 
-
 # Resultados da rede `r net_name`
+
+<!--# É melhor separar os resultados para animais e plantas. Isso facilita muito a interpretação biológica -->
+
 ## Distribuição de $\mathbf{G_{norm}}$
 
 A variável $G$ foi calculada para `r partitions_of_omega` partições de $\omega$, ou seja, o tamanho do passo dado dentro de $\omega$ foi de `r 1/partitions_of_omega`. O processo foi repetido para `r length(gammas)` partições de $\gamma$, com $\gamma$ começando em `r min(gammas)`, com passos de `r (gammas[2] - gammas[3])` até um $\gamma$ máximo de `r max(gammas)`. O cálculo de $\overline{G}$ foi feito usando `r iterations` iterações. A tabela \ref{tab:2a} resume os parâmetros de execução do código e a figura \ref{fig:fig2a} mostra a distribuição dos valores de $G_{norm}$ médio obtidos.
@@ -512,7 +539,6 @@ propriedades_rede = data.frame(labels, numbers)
 names(propriedades_rede) = c("Parâmetro", "Valor")
 kable(propriedades_rede, "latex", booktabs = T, caption = "\\label{tab:2a}Parâmetros de execucao") %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
-
 
 ```{r Distribuicao_Gnorm_b, fig.cap=paste(fig.cap="\\label{fig:fig2a}Distribuição de $G_{norm}$ médio da rede ", net_name, ".")}
 G_norm_dristrib_plot(G_norm_mean_ordered)
@@ -540,7 +566,6 @@ for (i in 1:length(selection)) {
 }
 ```
 
-
 ```{r decaimentos_ilustrativos_sup_3D_b, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1b.1}Exemplos de superfícies do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Superfície de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Superfície de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
 
 for (i in 1:length(selection)) {
@@ -548,7 +573,6 @@ for (i in 1:length(selection)) {
   Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
 }
 ```
-
 
 ```{r decaimentos_ilustrativos_heatmap_b, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:1b.2}Exemplos de mapas de calor do decaimento de $\\overline{G}$ em relação a $\\omega$ e $\\gamma$ para diferentes valores de $\\gamma$ da rede ", net_name, ". (a) Mapa de calor de $\\overline{G}$ da especie com maior valor de $G_{norm}$ da rede. (b) Segundo maior valor de $G_{norm}$. (c) Valor de $G_{norm}$ mais proximo da média geral da rede. (d) Mapa de calor de $\\overline{G}$ referente a uma espécie com valor de $G_{norm}$ abaixo da média da rede."), fig.subcap=c(paste(names(selection[1]),". $G_{norm} =$", format(round(selection[1], 3), nsmall = 3)), paste(names(selection[2]),". $G_{norm} =$", format(round(selection[2], 3), nsmall = 3)), paste(names(selection[3]),". $G_{norm} =$", format(round(selection[3], 3), nsmall = 3)), paste(names(selection[4]),". $G_{norm} =$", format(round(selection[4], 3), nsmall = 3))), out.width='.49\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 2}
 
@@ -567,7 +591,6 @@ size2 = 4*size1 #tamanho dos valores acima de G_threshold
 
 ```
 
-
 A figura \ref{fig:2b} e a tabela \ref{tab:3a} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`.
 
 ```{r define_aspecto_b}
@@ -578,13 +601,11 @@ if (lnum < 4) {
 }
 ```
 
-
 ```{r fig-sub2_b, echo = FALSE, fig.cap=paste(fig.cap="\\label{fig:2b}Espécies com G$_{norm}$ maiores que ", G_threshold, "em destaque de tamanho e cor."), fig.asp=asp, nrow = 1, ncol = 3}
 
 Custom_plot2D_destaque_palette(G_norm_mean, links, nodes, layout, size1, size2)
 
 ```
-
 
 ```{r, tabela_decimento_lento_b}
 selected_nodes = sort(G_norm_mean[which(G_norm_mean > G_threshold)], decreasing = TRUE)
@@ -596,10 +617,12 @@ kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3a}
 ```
 
 \pagebreak
+
 # Distribuição de $\mathbf{G_{norm}}$ para redes aleatórias
 
-A distribuição dos valores de G$_{norm}$ também foi testada para algumas redes binárias puramente aleatórias, variando o número de camadas, conexões totais e número de nós. O universo de redes analisadas é apresentado na tabela \ref{table:univ_redes_aleat}. Foram geradas 10 redes aleatórias para cada combinação de camadas, conexões e nós, um total de 180 redes aleatórias foram analisadas.
+A distribuição dos valores de G$_{norm}$ também foi testada para algumas redes binárias puramente aleatórias, variando o número de camadas, conexões totais e nós. O universo de redes analisadas é apresentado na tabela \ref{table:univ_redes_aleat}. Foram geradas 10 redes aleatórias para cada combinação de camadas, conexões e nós, um total de 180 redes aleatórias foram analisadas.
 
+```{=tex}
 \begin{table}[!ht]
 \caption{Universo de redes aleatórias analisadas. Foram geradas e analisadas dez amostras de cada uma das combinações de camada, conexões e nós.}
 \label{table:univ_redes_aleat}
@@ -630,10 +653,11 @@ A distribuição dos valores de G$_{norm}$ também foi testada para algumas rede
 \hline
 \end{tabular}
 \end{table}
-
+```
 As figuras \ref{fig:hist_2cam}, \ref{fig:hist_3cam} e \ref{fig:hist_5cam} mostram as distribuições de Gnorm obtidas.
 
 <!-- Inserir os histogramas de distribuição de Gnorm -->
+
 ```{r, histograma_2cam, echo = FALSE, fig.show = "hold", fig.cap=paste(fig.cap="\\label{fig:hist_2cam}Distribuição de $G_{norm}$ para o grupo de redes de duas camadas."), out.width='.45\\linewidth', fig.asp=1, fig.ncol = 2, fig.nrow = 3}
 
 dir_to_plot = c("RDatas_2_100_20", "RDatas_2_250_50", "RDatas_2_100_30", "RDatas_2_250_75", "RDatas_2_100_50", "RDatas_2_250_125")
@@ -729,38 +753,43 @@ for (j in 1:length(dir_to_plot)) {
 
 \pagebreak
 
-# Comparação entre $\mathbf{G_{norm}}$ com centralidade da rede agregada
+# Comparação entre $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede agregada
 
-Os nós que possuem maiores valores de G$_{norm}$ parecem ser nós que possuem uma importância diferenciada dentro da rede, pois, ao permanecerem em diferentes grupos em diferentes camadas, mesmo após o aumento do acoplamento, pode indicar que estes nós possuem uma relação mais igualitária entre diferentes grupos em camadas diferentes, o que os tornam nós com potencial de bons conectores entre diferentes grupos em camadas diferentes da rede.
+Os nós que possuem maiores valores de G$_{norm}$ parecem ser os mais importantes dentro da rede. Isso porque, o fato de permanecerem em diferentes módulos em diferentes camadas, mesmo após o aumento do acoplamento, indica que eles se relacionam de maneir mais equilibrada com diferentes camadas. Assim, pode-se dizer que eles tem alto potencial como conectores entre diferentes módulos em diferentes camadas.
 
-Em redes complexas, devido a sua estrutura heterogênea, alguns nós podem ser considerados mais importantes que outros, esses nós mais importantes podem ser considerados como centrais [@Rodrigues2018]. Se compararmos os nós mais centrais de uma rede com os nós com maior G$_{norm}$, podemos verificar a relação entre as métricas.
+Esses nós mais importantes podem ser considerados como centrais, podendo ser conectores ou hubs [@Rodrigues2018]. Se compararmos os nós mais centrais de uma rede, identificados por outras métricas, com os nós que apresentaram maiores valores de G$_{norm}$, podemos examinar a relação entre diferentes métricas de centralidade.
 
-Existem vários tipos de centralidade diferentes, calculadas usando diferentes parâmetros como base. Neste trabalho vamos comparar quatro dessas centralidades com os nós que possuem alto G$_{norm}$. São elas: \textit{Closeness} [@Sabidussi1966], \textit{Betweeness} [@Freeman1977], \textit{Eigen Vector} [@Bonacich1972] e \textit{Degree}. Estas centralidades são calculadas sobre a rede multicamada agregada.
+Existem vários tipos de centralidade, calculadas usando-se diferentes parâmetros como base. Neste trabalho vamos comparar quatro dessas centralidades com os nós que possuem alto G$_{norm}$. São elas: \textit{Closeness} [@Sabidussi1966], \textit{Betweeness} [@Freeman1977], \textit{Eigen Vector} [@Bonacich1972] e \textit{Degree}. Estas centralidades são calculadas para a rede multicamada agregada.
 
-Duas formas de comparação foram usadas. Uma que se trata apenas de uma comparação binária, levando em conta apenas o número de nós em comum entre as centralidades e alto G$_{norm}$. Outra que leva em conta a distância entre rankings (posições) dos nós selecionados entre os mais centrais e altos valores de G$_{norm}$.
+Duas formas de comparação foram usadas. Uma se trata apenas de uma comparação binária, levando em conta apenas o número de nós em comum no topo dos rankings de G$_{norm}$ e das quatro outras centralides. Outra leva em conta a distância entre os rankings dos nós mais centrais para cada métrica.
 
 A similaridade binária é bastante trivial e seu índice pode ser calculado da seguinte forma:
 
+```{=tex}
 \begin{equation} \label{eq:sim_bin}
 Sim_{bin} = \frac{\sum_{j}^N\sum_{i}^N\delta(c_j, g_i)}{N}
 \end{equation}
-
-Onde $\delta(c_j, g_i)$ é o delta de kronecker; $N$ é o ranking de corte escolhido (e.g $N=5$ no caso de escolhermos avaliar os cinco nós melhores ranqueados de cada métrica); $c_j$ e $g_i$ são os vetores ordenadas por ranking dos nós mais centrais e com maiores valores de $G_{norm}$ respectivamente. Os valores da similaridade variam entre 0 (nenhum nó em comum) e 1 (todos os nós em comum).
+```
+Onde $\delta(c_j, g_i)$ é o delta de Kronecker; $N$ é o ranking de corte escolhido (e.g $N=5$ no caso de escolhermos avaliar os cinco nós melhores ranqueados de cada métrica); $c_j$ e $g_i$ são os vetores ordenadas por ranking dos nós mais centrais e com maiores valores de $G_{norm}$ respectivamente. Os valores da similaridade variam entre 0 (nenhum nó em comum) e 1 (todos os nós em comum).
 
 Além da comparação binária, podemos avaliar a similaridade levando em conta ranking do nó dentro do conjunto de corte escolhido. Para isso, adicionamos um fator de peso que é proporcional ao inverso da distância entre nós dentro da equação \ref{eq:sim_bin}.
 
+```{=tex}
 \begin{equation} \label{eq:sim_dist}
 Sim_{dist} = \frac{\sum_{j}^{N}\sum_{i}^{N}\frac{1}{1+|i-j|}\delta(c_j, g_i)}{N}
 \end{equation}
-
+```
 Onde o valor absoluto de $i-j$ é equivalente a distância entre os rankings dos nós $g_i$ e $c_j$. Os valores de $Sim_{dist}$ variam entre 0 e 1, onde 0 corresponde a nenhum nó em comum entre os métodos e 1 corresponde a todos os nós em comum e com o mesmo ranking.
 
 Para comparar $G_{norm}$ com as centralidades de forma mais ampla, vamos analisar também os correlogramas entre $G_{norm}$ e das centralidades utilizando os métodos de Pearson e de Spearman.
 
-## Comparação das centralidades com $\mathbf{G_{norm}}$ para a rede Morcegos-Plantas
+## Comparação entre $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede Morcegos-Plantas
 
-Comparando as 10 espécies de morcego melhores ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 melhores ranqueadas segundo os valores de $G_{norm}$, vemos que existem 7 espécies que também estão presentes em ao menos uma das centralidades avaliadas. Três espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ não estão presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_bats} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum (negrito) e únicas do $G_{norm}$ (itálico).
+Comparando as 10 espécies de morcego mais bem ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 mais bem ranqueadas segundo por $G_{norm}$, vemos que existem 7 espécies que também estão presentes em ao menos uma das quatro outras centralidades avaliadas.
 
+Três espécies que estão entre as 10 mais bem ranqueadas pelos valores de $G_{norm}$ não estão presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_bats} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum (negrito) e únicas do $G_{norm}$ (itálico).
+
+```{=tex}
 \begin{table}[!ht]
 \caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para os morcegos da rede de Morcegos-plantas. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_bats}
 \footnotesize
@@ -806,11 +835,12 @@ Comparando as 10 espécies de morcego melhores ranqueadas pelas centralidades \t
 \hline
 \end{tabular}
 \end{table}
-
+```
 A similaridade binária entre os 10 morcegos melhores ranqueados pelos valores de $G_{norm}$ e os 10 morcegos melhores ranqueados pelas centralidades avaliadas ficou entre 40% e 70%, ficando menos similar à centralidade \textit{Betweeness} e mais similar a centralidade \textit{Eigen Vector} (tabela \ref{table:centr_sim_bin_bats}).
 
-Levando em conta a distância entre os rankings para calcular a similaridade tivemos menor similaridade entre $G_{norm}$ e a centralidade \textit{Betweeness}, e uma maior similaridade às centralidades \textit{Eigen Vector} e \textit{Degree}, mas a similaridade nesse caso caiu bastante, mostrando que o ranqueamento entre $G_{norm}$ e as outras similaridades é diferente quando avaliamos os  nós mais bem colocados (tabela \ref{table:centr_sim_dist_bats}).
+Levando em conta a distância entre os rankings para calcular a similaridade tivemos menor similaridade entre $G_{norm}$ e a centralidade \textit{Betweeness}, e uma maior similaridade às centralidades \textit{Eigen Vector} e \textit{Degree}, mas a similaridade nesse caso caiu bastante, mostrando que o ranqueamento entre $G_{norm}$ e as outras similaridades é diferente quando avaliamos os nós mais bem colocados (tabela \ref{table:centr_sim_dist_bats}).
 
+```{=tex}
 \begin{table}[!ht]
 \caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para os morcegos da rede de Morcegos-Plantas.}\label{table:centr_sim_bin_bats}
 \centering
@@ -823,7 +853,8 @@ Closeness & Betweeness & Eigen Vector & Degree\\
 \hline
 \end{tabular}
 \end{table}
-
+```
+```{=tex}
 \begin{table}[!ht]
 \caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para os morcegos da rede de Morcegos-Plantas.}\label{table:centr_sim_dist_bats}
 \centering
@@ -836,41 +867,48 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \hline
 \end{tabular}
 \end{table}
-
+```
 Usando os correlogramas de Spearman e Pearson apenas para os morcegos (figuras \ref{fig:pearson_bats} e \ref{fig:spearman_bats}) e para a totalidade da rede (figuras \ref{fig:pearson_bats_all} e \ref{fig:spearman_bats_all}), vemos que quando avaliamos apenas os morcegos, a correlação entre as centraliadades e $G_{norm}$ é média (entre 0.58 e 0.71) e homogênea entre as centralidades, ficando um pouco mais alta para o \textit{eigen vector} (0.71) no caso do método de Pearson (figura \ref{fig:pearson_bats}). Já quando avaliamos a rede como um todo (plantas e morcegos), temos uma queda na correlação, especialmente quando utilizamos o método de Spearman, onde as correlações entre $G_{norm}$ e \textit{closeness} e $G_{norm}$ e \textit{eigen vector} caem para 0.23.
 
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_bats_pearson.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para os morcegos da rede Morcegos-Plantas}
 \label{fig:pearson_bats}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_bats_spearman.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para os morcegos da rede Morcegos-Plantas}
 \label{fig:spearman_bats}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_all_pearson.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para a totalidade da rede Morcegos-Plantas}
 \label{fig:pearson_bats_all}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_all_spearman.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para a totalidade da rede Morcegos-Plantas}
 \label{fig:spearman_bats_all}
 \end{figure}
+```
+## Comparação $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede Formigas-Plantas
 
-## Comparação das centralidades com $\mathbf{G_{norm}}$ para a rede Formigas-Plantas
+Comparando as 10 espécies de formigas mais bem ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 mais bem ranqueadas por $G_{norm}$ vemos que existem 8 espécies que também estão presentes em ao menos uma das centralidades avaliadas.
 
-Comparando as 10 espécies de formigas melhores ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 melhores ranqueadas segundo os valores de $G_{norm}$ vemos que existem 8 espécies que também estão presentes em ao menos uma das centralidades avaliadas. Duas espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ não estão presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_ants} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum (negrito) e únicas do $G_{norm}$ (itálico).
+Duas espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ não estão presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_ants} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum (negrito) e únicas do $G_{norm}$ (itálico).
 
+```{=tex}
 \begin{table}[!ht]
 \caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para e rede de Formigas-plantas. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_ants}
 \footnotesize
@@ -916,11 +954,12 @@ Comparando as 10 espécies de formigas melhores ranqueadas pelas centralidades \
 \hline
 \end{tabular}
 \end{table}
-
+```
 A similaridade binária entre as 10 melhores formigas ranqueadas pelos valores de $G_{norm}$ e as 10 melhores ranqueadas pelas centralidades avaliadas ficaram muito próximas para todas as centralidades estudadas, entre 60% e 70% (tabela \ref{table:centr_sim_bin_bats}).
 
 Levando em conta a distância entre os rankings para calcular a similaridade, podemos ver que houve uma diminuição dos valores e uma maior diferenciação das similaridades entre $G_{norm}$ e as centralidades, o que mostra que $G_{norm}$ ranqueia os nós de forma diferente das outras centralidades para esssa rede (tabela \ref{table:centr_sim_dist_bats}).
 
+```{=tex}
 \begin{table}[!ht]
 \caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para a rede de Formigas-Plantas.}\label{table:centr_sim_bin_ants}
 \centering
@@ -933,7 +972,8 @@ Closeness & Betweeness & Eigen Vector & Degree\\
 \hline
 \end{tabular}
 \end{table}
-
+```
+```{=tex}
 \begin{table}[!ht]
 \caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para a rede de Formigas-Plantas.}\label{table:centr_sim_dist_ants}
 \centering
@@ -946,41 +986,48 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \hline
 \end{tabular}
 \end{table}
-
+```
 Usando os correlogramas de Spearman e Pearson apenas para as formigas (figuras \ref{fig:pearson_ants} e \ref{fig:spearman_ants}) e para a totalidade da rede (figuras \ref{fig:pearson_ants_all} e \ref{fig:spearman_ants_all}), vemos que quando avaliamos apenas as formigas, a correlação entre as centraliadades e $G_{norm}$ é média (entre 0.48 e 0.66) quando usamos o método de Pearson, ficando um pouco mais alta e homogênea (entre 0.78 e 0.82) para o método de Spearman. Já quando avaliamos a rede como um todo (plantas e formigas), temos uma queda na correlação, ficando entre 0.43 e 0.48 no método de Pearson e entre 0.49 e 0.66 quando utilizamos o método de Spearman.
 
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_ants_pearson.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para as formigas da rede Formigas-Plantas}
 \label{fig:pearson_ants}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_ants_spearman.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para as formigas da rede Formigas-Plantas}
 \label{fig:spearman_ants}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_all_pearson.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para a totalidade da rede Formigas-Plantas}
 \label{fig:pearson_ants_all}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_all_spearman.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para a totalidade da rede Formigas-Plantas}
 \label{fig:spearman_ants_all}
 \end{figure}
+```
+## Comparação entre $\mathbf{G_{norm}}$ e outras métricas de centralidade para as redes aleatórias
 
-## Comparação das centralidades com alto $\mathbf{G_{norm}}$ para as redes aleatórias
+As tabelas \ref{table:centr_sim_bin_rand} e \ref{table:centr_sim_dist_rand} mostram a comparação de similaridade binária e de distância entre os nós centrais e com alto G$_{norm}$ para todo o grupo de redes aleatórias estudadas (tabela \ref{table:univ_redes_aleat}), considerando os 10 nós mais bem ranqueados. As figuras \ref{fig:pearson_rand_all} e \ref{fig:pearson_rand_all} mostram os correlogramas utilizando o método de Pearson e Spearman para as redes aleatórias.
 
-As tabelas \ref{table:centr_sim_bin_rand} e \ref{table:centr_sim_dist_rand} mostram a comparação de similaridade binária e de distância entre os nós centrais e com alto G$_{norm}$ para todo o grupo de redes aleatórias estudadas (tabela \ref{table:univ_redes_aleat}), considerando os 10 nós mais bem ranqueados. As figuras \ref{fig:pearson_rand_all} e \ref{fig:pearson_rand_all} mostram os correlogramas utilizando o método de Pearson e Spearman para as redes aleatórias. Vemos que mesmo as redes sendo aleatórias, ainda existe uma certa similiaridade e correlação entre nós com alto $G_{norm}$ e as centralidades, apesar de haver variação. As similaridades e correlações não ficaram na mesma ordem que as avaliadas nas redes de Morcegos-Plantas e Formigas-Plantas, diminuindo de valor.
+Vemos que mesmo as redes sendo aleatórias, ainda existe uma certa similiaridade e correlação entre nós com alto $G_{norm}$ e as centralidades, apesar de haver variação. As similaridades e correlações não ficaram na mesma ordem que as avaliadas nas redes de Morcegos-Plantas e Formigas-Plantas, diminuindo de valor.
 
+```{=tex}
 \begin{table}[!ht]
 \caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para as redes aleatórias.}\label{table:centr_sim_bin_rand}
 \centering
@@ -994,7 +1041,8 @@ sd & 0.203 & 0.209 & 0.208 & 0.207\\
 \hline
 \end{tabular}
 \end{table}
-
+```
+```{=tex}
 \begin{table}[!ht]
 \caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para as redes aleatórias.}\label{table:centr_sim_dist_rand}
 \centering
@@ -1008,42 +1056,46 @@ sd & 0.082 & 0.086 & 0.088 & 0.083\\
 \hline
 \end{tabular}
 \end{table}
-
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_rand_all_pearson.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para a totalidade da rede Formigas-Plantas}
 \label{fig:pearson_rand_all}
 \end{figure}
-
+```
+```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_rand_all_spearman.png}
 \caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para a totalidade da rede Formigas-Plantas}
 \label{fig:spearman_rand_all}
 \end{figure}
-
+```
+```{=tex}
 \clearpage
 \pagebreak
-
+```
 # Discussão
 
-A adição dos parâmetros $\omega$ e $\gamma$ para calcular a modularidade através do método Louvain em redes multiplex abre novas possibilidades de exploração desse tipo de rede, pois, ao variarmos esses parâmetros podemos identificar módulos diferentes, que variam de acordo com o quanto queremos que as camadas estejam acopladas e qual a resolução (tamanho) dos módulos queremos enxergar. Com essas novas variáveis, surgem também alguns nós especiais que permanecem em módulos diferentes em camadas diferentes, resistindo ao alto acoplamento entre as camadas, que, ao aumetar, tende a unir os módulos das diferentes camadas. Neste trabalho, foi criado uma parâmetro que resume essa resitência, que chamamos de $G_{norm}$.
+Os parâmetros $\omega$ e $\gamma$ para calcular a modularidade usando o método Louvain em redes multiplex abre novas possibilidades para o estudo de redes de interações. Isso porque, ao variarmos esses parâmetros, podemos identificar módulos diferentes, que variam de acordo com o quanto queremos que as camadas estejam acopladas e qual a resolução dos módulos queremos enfocar. Usando essas novas variáveis, podemos também identificar alguns nós especiais que permanecem em módulos diferentes em camadas diferentes, resistindo ao alto acoplamento entre as camadas. Neste estudo, criamos uma nova métrica que operacionaliza essa resitência: $G_{norm}$.
 
-Nas duas redes reais estudadas, a distribuição dos valores de $G_{norm}$ está como esperado, poucas espécies acima da média da rede e muitas espécies próximas da média ou abaixo dela. Isso mostra que apenas poucas espécies atingem valores altos de $G_{norm}$, sendo essa uma característica não comum entre nós das redes ecológicas estudadas, assim como altos valores de centralidade.
+Nas duas redes reais estudadas, a distribuição dos valores de $G_{norm}$ ficou de acordo com o usual para métricas de centralide. Isto é, poucas espécies ficaram acima da média da rede e a maioria ficou próxima ou abaixo da média. Isso demonstra que são poucas as espécies que atingem alta centralidade $G_{norm}$. Além disso, o ranking das espécies com maior $G_{norm}$ difere dos rankings observados para outras métricas de centralidade muito usadas na literatura.
 
-A distribuição de $G_{norm}$ para redes puramente aleatórias não apresentou a mesma forma de distribuição que a observada para as redes Morcegos-Plantas e Formigas-Plantas, especialmente para redes de duas camadas (figura \ref{fig:hist_2cam}). Isso já era esperado devido a característica aleatória da rede. As redes com muitas camadas apresentaram uma distribuição de $G_{norm}$ mais parecida com a observada nas redes ecológicas, isso pode ser atribuido ao fato de que quanto mais camadas a rede possuir, maior é o valor máximo possível de $G_{norm}$, mas os valores baixos não mudam muito, fazendo com que a calda para o lado direito fique naturalmente mais alongada.
+Além dessa diferença entre rankings, $G_{norm}$ apresentou outro compotamento peculiar. A distribuição de $G_{norm}$ para redes aleatórias não apresentou a mesma forma observada para as redes Morcego-Planta e Formiga-Planta, especialmente no caso das redes com duas camadas. Já as redes redes aleatórias com de três a cinco camadas apresentaram uma distribuição de $G_{norm}$ mais parecida com a observada entre as redes ecológicas. Isso pode ser atribuido ao fato de que, quanto mais camadas uma rede possuir, maior é o valor máximo possível de $G_{norm}$, mas os valores baixos não mudam muito, fazendo com que a cauda fique mais alongada para o lado direito.
 
-A variação de resolução $\gamma$ não parece influenciar G de forma tão intensa quanto a variação no acoplamento $\omega$, mas ela existe e é mais robusto selecionar nós com alto $G_{norm}$ como candidatos a centrais considerando a variação em $\gamma$ também, pois assim minimizamos a probabilidade de estarmos observando uma exceção dentro de um grande universo de parâmetros de resolução, além de obter as espécies importantes de uma forma mais generalizada.
+Outra diferença digna de nota é entre os parâmetros usados para analisar a modularidade multicamada e calcular $G_{norm}$. A variação da resolução $\gamma$ não parece influenciar G de forma tão intensa quanto a variação no acoplamento $\omega$, mas ela também mostrou ter um efeito sobre essa nova métrica. Portanto, é robusto selecionar nós com alto $G_{norm}$ como candidatos a hubs e conectores, considerando também a variação em $\gamma$ . Assim, diminuimos a probabilidade de estarmos observando uma exceção dentro de um grande universo de parâmetros de resolução, além de identificar as espécies importantes de uma forma mais generalizada.
 
-Caso exista uma variação significativa de $G_{norm}$ em relação a $\gamma$, podemos concluir que as espécies com alto $G_{norm}$ possuem importância relativa a resolução, ou seja, espécies podem ter sua importância aumentada ou diminuída caso estejamos interessados em grupos maiores ou menores. Isto pode ocorrer, já que a importância do nó de acordo com $G_{norm}$ se baseia na distriubuição dos módulos. Nesse caso, um especialista ná área temática da rede estudada é fundamental para interpretar qual a resolução ideal que deve ser utilizada.
+Nos casos em que porventura existir uma variação significativa de $G_{norm}$ em relação a $\gamma$, podemos concluir que as espécies com alto $G_{norm}$ podem ter sua importância aumentada ou diminuída, caso estejamos interessados em grupos maiores ou menores. Isto pode ocorrer, já que a importância do nó operacionalizada por $G_{norm}$ se baseia na distribuição dos módulos. Nesse caso, um especialista na área temática da rede estudada poderia interpretar qual a resolução deveria ser utilizada, com base nas propriedades do sistema.
 
-Quando avaliamos as 10 espécies mais bem ranqueadas das redes Morcegos-Planta e Formigas-Planta, vimos que as espécies com altos valores de $G_{norm}$ possuem uma intersecção razoável com as espécies centrais das redes de Formigas-Plantas (60% - 70% dependendo da métrica) e Morcegos-Plantas (40% - 70% dependendo da métrica). Isto é interessante, já que o ranqueamento das espécies foi feito levando em conta a resistência de cada espécie ao parâmetro de acoplamento entre camadas $\omega$, algo muito diferente dos métodos de centralidade tradicionais. As correlaçoes de Spearman e Pearson também retornaram valores positivos, reforçando que os parâmetros que são importantes para a centralidade também influenciam o $G_{norm}$.
+Outro ponto em que o olhar de um especialista pode enxergar grande valor na métrica $G_{norm}$ é o ranking de centralidade dos nós. Quando avaliamos as 10 espécies mais bem ranqueadas das redes ecológicas reais, vimos que as espécies com altos valores de $G_{norm}$ possuem alguma sobreposição com as espécies tidas como centrais por outras métricas nas redes Formiga-Planta (60% - 70% dependendo da métrica) e Morcego-Planta (40% - 70% dependendo da métrica). Isso é interessante, já que o ranqueamento das espécies foi feito levando-se em conta a resistência de cada uma delas ao parâmetro de acoplamento entre camadas $\omega$. Esse é um critério muito diferente dos adotados pelas outras métricas de centralidade avaliados. As correlaçoes de Spearman e Pearson também retornaram valores positivos, porém não muito altos, reforçando que as outras métricas e $G_{norm}$ se sobrepõe de diferentes formas, mas contam histórias diferentes. Já para as redes aleatórias, a correlação entre os rankings obtidos com $G_{norm}$ e com as outras métricas de centralidade monocamada foi menor e variou ainda mais, como esperado.
 
-Para as redes aleatórias, a similaridade entre os nós com alto $G_{norm}$ e as métricas de centralidade monocamada estudadas diminuiu e foi variável. Isso era esperado de certa forma, já que as redes são puramente aleatórias e não refletem necessáriamente a estrutura das redes ecológicas estudadas, inclusive, essa diminuição na correlação também ocorre entre as próprias centralidades.
+Algo ainda mais interessante que a similaridade entre as espécies entre os rankings de centralidade, são as diferenças finas em termos de quais nós figuram nesses rankings. As espécies mais bem ranqueadas apenas pelos valores de $G_{norm}$ e que não foram bem ranqueadas pelas outras centralidades estudadas talvez possuam uma importância diferenciada dentro da rede multicamada. Essa importância escapa à identificação por métricas monocamada, o que reforça o valor de estudarmos redes multicamadas usando análises que respeitem sua estrutura original, sem agregar as interações de diferentes tipos.
 
-Algo ainda mais interessante que a similaridade entre as melhores ranqueadas entre centralidades e $G_{norm}$, são as diferenças. As espécies selecionadas apenas pelos valores de $G_{norm}$ e que não foram selecionadas pelas centralidades estudadas podem ser espécies que possuem algum tipo de importância dentro da rede multicamada e não foram consideradas tão relevantes pelas métricas de centralidades monocamada avaliadas nesse trabalho. Caso essas espécies tenham importância real, isso pode reforçar o valor de usarmos redes multicamadas, já que ganhamos informação relevante em relação a redes monocamada . \textbf{\textit{[Aqui preciso da sua ajuda Prof. Queria saber se as espécies selecionadas apenas por $G_{norm}$ (Artcon, Vamnym, Plahel) (Dorgoe, Brasp1) e as que subiram no ranking (Urobil, Cabre) (Camcra, Camley) possuem alguma característica especial que as faça serem boas conectoras entre camadas ou algo assim]}}  
+Por exemplo, no caso das interações entre morcegos e plantas, já foi apontado, com base em análises de redes monocamada [@mello2014] e também de redes multicamada [@Mello2019], que espécies de morcegos como *Artibeus jamaicensis* (Artjam) e *Anoura caudifer* (Anocau) seriam hubs ou conectoras. Trata-se de morcegos que focam mais em frutos ou flores, respectivamente, mas que são capaz de consumir ambos os recursos. Por isso, além de atingirem altos valores de centralidade monocamada, elas também atingem altos valores de centralidade multicamada. Contudo, no presente estudo, vimos que, levando-se em conta o acomplamento e a resolução da estrutura modular da rede multicamada, outras espécies, como *Artibeus concolor* (Artcon) e *Platyrrhinus helleri* (Plahel) podem ser ainda mais importantes como pontes entre mundos diferentes, devido à sua alta resistência à variação no parâmetro de acoplamento, traduzida como permanência nos módulos. O mesmo ocorre com formigas como *Dorymyrmex* *goeldii* (Dorgoe) e *Brachymyrmex* sp1 (Brasp1), que são identificadas como muito centrais apenas pela nova métrica. Estudar essas espécies bem ranqueadas apenas por $G_{norm}$ pode levar a novos insights sobre como o papel funcional de mutualistas e antagonistas é determinado por sua ecologia e evolução.
+
+Essas peculiaridades nos levam a sugerir também que a nova métrica de centralidade $G_{norm}$ poderia ser usada para identificar espécies-chave em redes de interações ecológicas. Espécies identificadas por essa métrica, mesmo que identificadas também por outras métricas multicamada, são muito importantes para a transferência de informação por vias diretas e indiretas em sistemas ecológicos. Essas vias unem diferentes grupos de plantas, de diferentes famílias e que produzem diferentes tipos de recursos essenciais para manter populações de animais.
 
 \pagebreak
 
@@ -1051,4 +1103,5 @@ Algo ainda mais interessante que a similaridade entre as melhores ranqueadas ent
 
 # Referências
 
-<div id="refs"></div>
+::: {#refs}
+:::

@@ -63,7 +63,7 @@ library(akima)
 library(plot3D)
 library(fs)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido ao acentos nos plots
 
@@ -88,7 +88,7 @@ source("Aux_functions.R", encoding="utf-8") # importante a opção UTF-8 devido 
 
 # Resumo
 
-Análises de modularidade e centralidade oriundas da ciência de redes têm sido usadas na Ecologia para operacionalizar conceitos como guilda, grupo funcional e papel funcional. Contudo, essas análises têm sido feitas apenas para redes monocamada, ou seja, que contém só um tipo de interação e portanto, apenas uma classe de arestas. No caso do algoritmo de modularidade Louvain, uma das grandes diferenças entre a tradicional versão monocamada e a versão multicamada é a constante de acoplamento. Essa constante, implementada no algoritmo multicamada, torna possível que um mesmo nó pertença a dois módulos diferentes em camadas diferentes. Neste projeto, queremos identificar os nós que resistem ao aumento dessa força de acoplamento entre camadas, permanecendo em mais de um módulo em diferentes camadas ao aumentarmos essa força. Em redes de interações ecológicas, esses nós resistentes devem representar espécies que desempenham papéis funcionais importantes. Por exemplo, animais que são importantes tanto para a polinização, quanto para a dispersão de sementes de duas ou mais famílias de plantas. Para classificar as espécies com relação à sua importância, comparamos curvas da variação no número de módulos aos quais cada nó pertence em função da variação na constante de acoplamento e do parâmetro de resolução. Assim, selecionamos os nós que apresentam menor decaimento de módulos, ou seja, que permanecem em mais de um módulo mesmo que seja alta a força de acoplamento entre camadas, considerando diferentes cenários de resolução. Criamos uma nova métrica de centralidade chamada de $G_{norm}$ para quantificar essa relação entre quantidade de módulos e força de acoplamento entre camadas. Para testar essa nova métrica, analisamos redes de interações multicamada baseadas em dados de campo: uma entre morcegos e plantas e outra entre formigas e plantas. Os nós com alto $G_{norm}$ possuem uma boa intersecção com os nós mais centrais da rede, porém o seu ranking de importância diferiu. Alguns nós que não possuiam altos valores de centralidade monocamada apresentaram altos valores de $G_{norm}$, mostrando que pode haver ganho de informação na abordagem multicamada em comparação à monocamada. Isso pode ajudar a encontrar espécies que sejam mais importantes do que outras para manter funções e serviços ecossistêmicos vitais em sistemas naturais.
+Análises de modularidade e centralidade oriundas da ciência de redes têm sido usadas na Ecologia para operacionalizar conceitos como guilda, grupo funcional e papel funcional. Contudo, essas análises têm sido feitas apenas para redes monocamada, ou seja, que contém só um tipo de interação e, portanto, apenas uma classe de arestas. No caso do algoritmo de modularidade Louvain, uma das grandes diferenças entre a tradicional versão monocamada e a versão multicamada é a constante de acoplamento. Essa constante, implementada no algoritmo multicamada, torna possível que um mesmo nó pertença a dois módulos diferentes em camadas diferentes. Neste projeto, queremos identificar os nós que resistem ao aumento dessa força de acoplamento entre camadas, permanecendo em mais de um módulo em diferentes camadas ao aumentarmos essa força. Em redes de interações ecológicas, esses nós resistentes devem representar espécies que desempenham papéis funcionais importantes. Por exemplo, animais que são importantes tanto para a polinização, quanto para a dispersão de sementes de duas ou mais famílias de plantas. Para classificar as espécies com relação à sua importância, comparamos curvas da variação no número de módulos aos quais cada nó pertence em função da variação na constante de acoplamento e do parâmetro de resolução. Assim, selecionamos os nós que apresentam menor decaimento de módulos, ou seja, que permanecem em mais de um módulo mesmo que seja alta a força de acoplamento entre camadas, considerando diferentes cenários de resolução. Criamos uma nova métrica de centralidade chamada de $G_{norm}$ para quantificar essa relação entre quantidade de módulos e força de acoplamento entre camadas. Para testar essa nova métrica, analisamos redes de interações multicamada baseadas em dados de campo: uma entre morcegos e plantas e outra entre formigas e plantas. Os nós com alto $G_{norm}$ possuem uma boa intersecção com os nós mais centrais da rede, porém o seu ranking de importância diferiu. Alguns nós que não possuiam altos valores de centralidade monocamada apresentaram altos valores de $G_{norm}$, mostrando que pode haver ganho de informação na abordagem multicamada em comparação à monocamada. Isso pode ajudar a encontrar espécies que sejam mais importantes do que outras para manter funções e serviços ecossistêmicos vitais em sistemas naturais.
 
 <!-- Não precisa incluir citações no resumo. Deixe-as para o corpo do texto. -->
 
@@ -118,7 +118,9 @@ Essa equação tem servido de base para a maioria das métricas de modularidade 
     \frac{\sum_{ij} A_{ij} \delta (c_i, c_j)}{\sum_{ij} A_{ij}} = \frac{1}{2m} \sum_{ij} A_{ij} \delta (c_i, c_j) 
 \end{equation}
 ```
-Onde $\delta$ é o delta de Kronecker, que retorna o valor 1 caso $c_i = c_j$ e zero caso contrário; a variável $m$ representa o número total de conexões da rede. Falta agora definirmos uma forma de medir a quantidade esperada de nós dentro do módulo. Se conectarmos os vértices de forma aleatória, preservando os graus de cada nó, representados pela variável $k$, temos que a probabilidade de existir uma conexão entre os nós $i$ e $j$ é $k_i k_j / 2m$ . Dessa forma, temos que a modularidade descrita acima pode ser rescrita de uma forma mais operacional [@Blondel2008] como:
+Onde $\delta$ é o delta de Kronecker, que retorna o valor 1 caso $c_i = c_j$ e zero caso contrário; a variável $m$ representa o número total de conexões da rede.
+
+Falta agora definirmos uma forma de medir a quantidade esperada de nós dentro do módulo. Se conectarmos os vértices de forma aleatória, preservando os graus de cada nó, representados pela variável $k$, temos que a probabilidade de existir uma conexão entre os nós $i$ e $j$ é $k_i k_j / 2m$ . Dessa forma, temos que a modularidade descrita acima pode ser rescrita de uma forma mais operacional [@Blondel2008] como:
 
 ```{=tex}
 \begin{equation} \label{eq:blondel}
@@ -131,7 +133,7 @@ Os valores da modularidade descrita acima variam entre 0 (zero) e 1 (um).
 
 # Método Louvain para otimização de modularidade
 
-Se dividirmos a rede em módulos e o valor de modularidade definido por Newman e Girvan for alto, temos que a divisão de módulos escolhida é boa. Dessa forma, basta dividirmos a rede em diferentes módulos visando maximizar o valor da modularidade Newman-Girvan. Porém, esta não é uma tarefa fácil, já que a otimização de modularidade é um problema NP-difícil [@Brandes2008]. Um problema NP-difícil (Non Deterministic Polynomial Time) é um problema que leva um tempo exponencial para ser resolvido, por exemplo $O(2^N)$. Um problema NP demora muito para serem computado, caso ele possua uma complexidade exponencial $O(2^N)$ e $N$ (tamanho da entrada) seja igual a 100. Sob essas condições, o programa demoraria um tempo maior do que a idade do universo para ser resolvido. Um problema NP-difícil é um problema que é ao menos tão difícil quanto um problema NP-completo.
+Se dividirmos a rede em módulos e o valor de modularidade definido por Newman e Girvan for alto, temos que a divisão de módulos escolhida é boa. Dessa forma, basta dividirmos a rede em diferentes módulos visando maximizar o valor da modularidade Newman-Girvan. Porém, esta não é uma tarefa fácil, já que a otimização de modularidade é um problema NP-difícil [@Brandes2008]. Um problema NP-difícil (Non Deterministic Polynomial Time) é um problema que leva um tempo exponencial para ser resolvido, por exemplo $O(2^N)$. Um problema NP demora muito para serem computado, se pegarmos o caso que a complexidade seja exponencial $O(2^N)$ e $N$ (tamanho da entrada) seja igual a 100, sob essas condições, o programa demoraria um tempo maior do que a idade do universo para ser resolvido. Um problema NP-difícil é um problema que é ao menos tão difícil quanto um problema NP-completo.
 
 Esta dificuldade computacional em dividir redes em módulos significativos motivou a procura por métodos heurísticos para encontrar agrupamentos que apresentem um alto valor de modularidade com uma complexidade razoável. Este é o caso do método Louvain [@Blondel2008], que parece funcionar em um tempo $O(M)$, onde $M$ representa o número total de conexões da rede, ou seja, é resolvido em tempo polinomial, neste caso, linear com relação ao número de nós da rede. Essa complexidade computacional permite que redes de grande escala possam ser analisadas em tempo razoável, além de ser simples e de fácil implementação.
 
@@ -153,19 +155,21 @@ Apesar de este ser um algoritmo ganancioso (*greedy*), ele apresenta boa detecç
   \label{tab:tabela_blondel}
   \centering
   \resizebox{\textwidth}{!}{ 
-\begin{tabular}{ | c | c | c | c | c | c | c | c | }
+\begin{tabular}{ c|ccccccc}
 \hline
-     & \textbf{Karate} & \textbf{Arxiv} & \textbf{Internet} & \textbf{Web nd.edu} & \textbf{Telefone} & \textbf{Web uk2005} & \textbf{WebBase 2001} \\ \hline
-    Nós / Conexões & 34/77 & 9k/24k & 70k/351k & 325k/1M & 2.04M/5.4M & 39M/783M & 118M/1B \\ \hline
-    CNM & 0.38/0s & 0.772/3.6s & 0.692/799s & 0.927/5034s & - & - & - \\ \hline
-    PL & 0.42/0s & 0.752/3.3s & 0.729/575s & 0.895/6666s & - & - & - \\ \hline
-    WT & 0.42/0s & 0.761/0.7s & 0.667/62s & 0.898/248s & 0.553/367s & - & - \\ \hline
-    LV & 0.42/0s & 0.813/0s & 0.781/1s & 0.935/3s & 0.76/44s & 0.935/3s & 0.984/152min \\ \hline
+     & \textbf{Karate} & \textbf{Arxiv} & \textbf{Internet} & \textbf{Web nd.edu} & \textbf{Telefone} & \textbf{Web uk2005} & \textbf{WebBase 2001} \\
+     \hline
+     \hline
+    \textbf{Nós / Conexões} & 34/77 & 9k/24k & 70k/351k & 325k/1M & 2.04M/5.4M & 39M/783M & 118M/1B \\
+    \textbf{CNM} & 0.38/0s & 0.772/3.6s & 0.692/799s & 0.927/5034s & - & - & - \\
+    \textbf{PL} & 0.42/0s & 0.752/3.3s & 0.729/575s & 0.895/6666s & - & - & - \\
+    \textbf{WT} & 0.42/0s & 0.761/0.7s & 0.667/62s & 0.898/248s & 0.553/367s & - & - \\
+    \textbf{LV} & 0.42/0s & 0.813/0s & 0.781/1s & 0.935/3s & 0.76/44s & 0.935/3s & 0.984/152min \\ \hline
 \end{tabular}
 }
 \end{table}
 ```
-Por outro lado, o método Louvain também apresenta limitações [@Good2010]. Dentre as mais expressivas estão o limite de resolução, o problema de degeneração e o fato de o algoritmo não ser determinístico. O problema de limite de resolução ocorre pois o algoritmo pode não parar nos módulos "intuitivos" devido a uma segunda passagem pela modificação dos módulos. Já o problema de degeneração ocorre, pois podem existir muitas soluções com valor de modularidade próximos do máximo global, nesses casos é muito difícil encontrar o máximo global e realmente afirmar se ele possui significância científica maior do que a dos máximos locais com valores de modularidade similares.
+Por outro lado, o método Louvain também apresenta limitações [@Good2010]. Dentre as mais expressivas estão o limite de resolução, o problema de degeneração e o fato de o algoritmo não ser determinístico. O problema de limite de resolução ocorre pois o algoritmo pode não parar nos módulos "intuitivos" devido a uma segunda passagem pela modificação dos módulos. Já o problema de degeneração ocorre pois podem existir muitas soluções com valor de modularidade próximos do máximo global, nesses casos é muito difícil encontrar o máximo global e realmente afirmar se ele possui significância científica maior do que a dos máximos locais com valores de modularidade similares.
 
 Uma característica interessante do método é que não é possível, pela própria natureza do algoritmo, que um mesmo nó esteja presente em diferentes módulos. Essa sobreposição de módulos é chamada dentro da área de modularidade de redes de \textit{overlapping communities}. Porém, ao adaptarmos a forma de calcular a modularidade para multicamada [@Mucha2010], existe a possibilidade de que um mesmo nó pertença a diferentes módulos em diferentes camadas ao ajustarmos um parâmetro de entrada. Esta diferença é interessante e será usada para tentar encontrar espécies-chave que são boas conectoras entre grupos diferentes em camadas diferentes.
 
@@ -177,7 +181,7 @@ Apesar do amplo estudo de redes para compreensão de sistemas e tomada de decis�
 
 No presente estudo, focamos redes multicamada onde as camadas são definidas pelo tipo de interação, ou seja, onde todos os nós estão presentes em todas as camadas e apenas o tipo de conexão (interações) entre os nós é que muda entre camadas. Assim, nesse tipo de rede há duas classes maiores de arestas: intracamada, que conectam nós dentro de uma camada, e intercamada, que conectam um mesmo nó entre duas camadas. Este tipo de rede é chamada de \textit{multiplex} [@Mucha2010], que é uma subdivisão da grande categoria definida como redes multicamada.
 
-Redes multiplex também podem ter sua modularidade analisada pelo método Louvain [@Mucha2010]. Essa adaptação consiste basicamente na mudança da forma como a função da modularidade é calculada, incluindo um parâmetro $\omega$ que controla o acoplamento entre as diferentes camadas da rede. Há também o parâmetro de resolução $\omega$, que pode enviesar a tendência do algoritmo em encontrar módulos de escalas menores ou maiores. A generalização da equação de modularidade [@Mucha2010] é dada por:
+Redes multiplex também podem ter sua modularidade analisada pelo método Louvain [@Mucha2010]. Essa adaptação consiste basicamente na mudança da forma como a função da modularidade é calculada, incluindo um parâmetro $\omega$ que controla o acoplamento entre as diferentes camadas da rede. Há também o parâmetro de resolução $\gamma$, que pode enviesar a tendência do algoritmo em encontrar módulos de escalas menores ou maiores. A generalização da equação de modularidade [@Mucha2010] é dada por:
 
 ```{=tex}
 \begin{equation} \label{eq:1}
@@ -198,7 +202,7 @@ O parâmetro $\omega$ está contido no intervalo (0,1). Zero (0) representa o de
 
 <!-- É importante padronizar o vocabulário ao longo do texto. Na teoria de grafos: elemento = vértice, conexão = aresta, estrutura = topologia etc. Na teoria de redes: elemento = nó, conexão = elo, estrutura = arquitetura. É importante então não usar de forma intercambiável termos como conexão, link e aresta. Eles são  personagens da sua história, logo, precisam ser nomeados de forma consistente. Escolha um dos dialetos e siga com ele. -->
 
-O parâmetro de resolução foi introduzido por @Reichardt2006 para avaliar redes monocamada e depois estendido para a modularidade generalizada multicamada [@Mucha2010]. De uma forma geral, se $\gamma_2 > \gamma_1$, os módulos encontrados com $\gamma_2$ possuem menos nós (módulos menores) e são mais numerosos (maior quantidade de módulos). Os módulos encontrados com $\gamma_2$ podem ser submódulos dos obtidos usando $\gamma_1$, mas nem sempre é o caso [@Reichardt2006]. Lembrando que $0 \leq \gamma \leq \infty$. Porém, não faz sentido aumentarmos $\gamma$ para valores muito altos, já que existe um limite a partir do qual os módulos se tornam tão pequenos que cada módulo passa a ter apenas um nó.
+O parâmetro de resolução foi introduzido por @Reichardt2006 para avaliar redes monocamada e depois estendido para a modularidade generalizada multicamada [@Mucha2010]. De uma forma geral, se $\gamma_2 > \gamma_1$, os módulos encontrados com $\gamma_2$ possuem menos nós (módulos menores) e são mais numerosos (maior quantidade de módulos). Os módulos encontrados com $\gamma_2$ podem ser submódulos dos obtidos usando $\gamma_1$, mas nem sempre é o caso [@Reichardt2006]. Lembrando que $0 \leq \gamma \leq \infty$. Porém, não faz sentido aumentarmos $\gamma$ para valores muito altos, já que existe um limite a partir do qual os módulos se tornam tão pequenos que cada módulo passa a ter como integrante apenas um nó.
 
 Vamos usar uma rede multiplex clássica na literatura, Famílias de Florença [@Kent1978], para ilustrar graficamente o que ocorre quando variamos os parâmetros $\omega$ e $\gamma$. Essa rede foi escolhida por ser pequena, o que facilita sua visualização. A figura \ref{fig:Mosaico1} mostra a distribuição dos módulos sobre as duas camadas da rede para diferentes valores de $\omega$ e $\gamma$.
 
@@ -226,15 +230,15 @@ Quanto maiores o os valores de $\gamma$ e menores os valores de $\omega$, menore
 
 Mas, afinal, quais valores deveriam ser escolhidos para esses dois parâmetros? A resposta mais correta é: depende. Depende de qual propriedade da rede queremos enfocar e qual pergunta queremos responder com esse enfoque. Por exemplo, se quisermos verificar quais são os "grandes módulos" da rede, devemos usar um valor de $\gamma$ mais baixo, mas se quisermos olhar para os módulos menores (mais "íntimos") ou submódulos dos "grandes módulos" obtidos com um $\gamma$ mais baixo, um $\gamma$ maior seria mais indicado.
 
-Se quisermos que as conexões de uma camada influenciem mais a outra camada, devemos usar um $\omega$ mais alto, caso contrário, melhor seria usar um $\omega$ mais baixo. Vamos usar agora como exemplo uma de rede interações entre morcegos e plantas ("rede morcego-planta", @Mello2019), onde existem duas camadas: uma de nectarivoria (consumo de néctar) e outra de frugivoria (consumo de frutos).
+Se quisermos que as conexões de uma camada influenciem mais a outra camada, devemos usar um $\omega$ mais alto, caso contrário, melhor seria usar um $\omega$ mais baixo. Vamos usar agora como exemplo uma de rede interações entre morcegos e plantas ("rede Morcego-Planta", @Mello2019), onde existem duas camadas: uma de nectarivoria (consumo de néctar) e outra de frugivoria (consumo de frutos).
 
-Se quisermos encontrar módulos onde existam morcegos com dietas mais similares entre si, um $\omega$ mais alto é recomendado, pois a frugivoria e a nectarivoria ficam com alta influência uma sobre a outra no cálculo dos módulos. Já se quisermos separar os morcegos com uma preferência maior por flores, por frutos ou que tenham uma dieta equilibrada, podemos usar um $\omega$ menor. Assim aumenta a tendência de os módulos se formarem pesando mais as interações dentro de cada camada da rede. Isso faz com que os morcegos estejam em grupos que priorizam mais a nectarivoria ou a frugivoria ou até mesmo que possuem interações equilibradas entre camadas (estão em dois grupos em camadas diferentes).
+Se quisermos encontrar módulos onde existam morcegos com dietas mais similares entre si, um $\omega$ mais alto é recomendado, pois a frugivoria e a nectarivoria ficam com alta influência uma sobre a outra no cálculo dos módulos. Já se quisermos separar os morcegos com uma preferência maior por flores, por frutos ou que tenham uma dieta equilibrada, podemos usar um $\omega$ menor. Assim, aumenta a tendência de os módulos se formarem pesando mais as interações dentro de cada camada da rede. Isso faz com que os morcegos estejam em grupos que priorizam mais a nectarivoria ou a frugivoria ou até mesmo que possuem interações equilibradas entre camadas (estão em dois grupos em camadas diferentes).
 
 Estudando a formação desses módulos de morcegos com diferentes dietas, podemos jogar luz sobre vários fenômenos ecológicos e evolutivos. Por exemplo, podemos dar mais um passo no entendimento sobre como a morfologia funcional do crânio de um morcego afeta a sua dieta [@rossoni2017] e, consequentemente, o papel funcional que ele desempenha em seu habitat [@mello2014]. Até o momento, tem-se estudado papeís funcionais quase exclusivamente no contexto de um único tipo de interação [@garcía-callejas2017]. Contudo, na natureza, observamos que as espécies de animais vivem entre mundos, alternando entre interações mutualistas e antagonistas em cada um deles. E a definição desses mundos em si depende muito da escala espaço-temporal estudada.
 
-Outra rede do mundo real que usaremos aqui descreve interações entre formigas e plantas ("rede formiga-planta", @Costa2016). Nessa outra rede multicamada, as formigas se relacionam com as plantas através de quatro tipos de consumo de recursos diferentes: néctar extrafloral, pólen/néctar, frutos e melado de trofobiontes. Além disso, também fazem visitas simples, sem consequências mensuráveis para a planta. Essas interações geram então cinco camadas na rede e têm diferentes consequências para a vida das plantas e sua aptidão [@rico-gray2007].
+Outra rede do mundo real que usaremos aqui descreve interações entre formigas e plantas ("rede Formiga-Planta", @Costa2016). Nessa outra rede multicamada, as formigas se relacionam com as plantas através de quatro tipos de consumo de recursos diferentes: néctar extrafloral, pólen/néctar, frutos e melado de trofobiontes. Além disso, também fazem visitas simples, sem consequências mensuráveis para a planta. Essas interações geram então cinco camadas na rede e têm diferentes consequências para a vida das plantas e sua aptidão [@rico-gray2007].
 
-Como no caso dos morcegos, essa rede formiga-planta também representa um emaranhado de diferentes mundos, com diferentes pressões seletivas para as formigas. Para consumir os diferentes tipos de recursos que as plantas oferecem, elas precisam de adaptações morfológicas e fisiológicas específicas. Ter ou não ter uma ou mais dessas adaptações leva diferentes espécies de formigas a ocuparem diferentes módulos na rede [@Costa2016]. Uma análise de modularidade multicamada tem o potencial de entender melhor as relações entre esses módulos em diferentes escalas de organização da rede.
+Como no caso dos morcegos, essa rede Formiga-Planta também representa um emaranhado de diferentes mundos, com diferentes pressões seletivas para as formigas. Para consumir os diferentes tipos de recursos que as plantas oferecem, elas precisam de adaptações morfológicas e fisiológicas específicas. Ter ou não ter uma ou mais dessas adaptações leva diferentes espécies de formigas a ocuparem diferentes módulos na rede [@Costa2016]. Uma análise de modularidade multicamada tem o potencial de entender melhor as relações entre esses módulos em diferentes escalas de organização da rede.
 
 Independente da história natural do sistema de estudo, caso queiramos apenas obter uma distribuição de módulos confiável sem a necessidade de interpretação, podemos escolher um valor de $\omega$ e $\gamma$ que maximiza a modularidade. Os valores de $\omega$ e $\gamma$ que maximizam a modularidade diferem para cada rede. A figura \ref{fig:Mosaico3} mostra os valores da modularidade para diferentes valores de $\omega$ e $\gamma$ da rede exemplo Famílias de Florença.
 
@@ -304,6 +308,7 @@ Onde $P_1$, $P_2$ são o número de partições de $\omega$ e $\gamma$; $N$ é u
 
 ```{r leitura_dos_dados_morcego}
 load("./RDatas/bats.RData")
+net_name = "Morcego-Planta"
 ```
 
 <!-- modifcar o 'net_x' para corresponder com as figuras -->
@@ -350,7 +355,7 @@ names(propriedades_rede) = c("Propriedade", "Valor")
 
 <!-- Usa as variavei geradas no code chunk acima para preencher o texto -->
 
-A rede `r net_name` [\@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1} apresenta uma visão geral da rede.
+A rede `r net_name` [@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1} apresenta uma visão geral da rede.
 
 ```{r Tabela_Prop_Rede, col.names = NULL}
 kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1}Propriedades da rede ", net_name)) %>% kable_styling(latex_options = c("striped", "hold_position"))
@@ -363,7 +368,7 @@ kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1}P
 Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3) # TODO: melhorar o custom plot depois
 ```
 
-<!-- Resultados da rede morcegos-planta -->
+<!-- Resultados da rede Morcego-Planta -->
 
 # Resultados da rede `r net_name`
 
@@ -434,7 +439,7 @@ size2 = 3*size1 #tamanho dos valores acima de G_threshold
 
 ```
 
-A figura \ref{fig:2a} e a tabela \ref{tab:3} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`.
+A figura \ref{fig:2a} e a tabela \ref{tab:3} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`. Os nomes das espécies de morcegos e plantas são apresentados em códigos e a relação entre o código e o nome científico pode ser consultado no Anexo I.
 
 ```{r define_aspecto}
 if (lnum < 4) {
@@ -450,6 +455,7 @@ Custom_plot2D_destaque_palette(G_norm_mean, links, nodes, layout, size1, size2)
 
 ```
 
+<!--
 ```{r, tabela_decimento_lento}
 selected_nodes = sort(G_norm_mean[which(G_norm_mean > G_threshold)], decreasing = TRUE)
 selected_nodes_df = data.frame(names(selected_nodes), format(round(selected_nodes, 3), nsmall = 3))
@@ -458,12 +464,42 @@ rownames(selected_nodes_df) = NULL
 
 kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3}Espécies com valores de $G_{norm}$ maiores que", G_threshold), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
+-->
+
+```{=tex}
+\begin{table}[!ht]
+\caption{Espécies com valores de $G_{norm}$ maiores que 1.35.}
+\label{tab:3}
+\centering
+\begin{tabular}{cc|cc}
+\hline
+\multicolumn{2}{c|}{Morcegos} & \multicolumn{2}{c}{Plantas} \\
+\hline
+Espécie       & Gnorm       & Espécie       & Gnorm      \\
+\hline
+\hline
+Artjam        & 1.548       & Syzjam        & 1.538      \\
+Artlit        & 1.509       & Ingver        & 1.432      \\
+Urobil        & 1.488       & Cecpel        & 1.401      \\
+Stulil        & 1.469       & Manzap        & 1.360      \\
+Carcas        & 1.401       &               &            \\
+Carbre        & 1.392       &               &            \\
+Artcon        & 1.391       &               &            \\
+Vamnym        & 1.365       &               &            \\
+Carper        & 1.364       &               &            \\
+Plahel        & 1.359       &               &            \\
+\hline
+\end{tabular}
+\end{table}
+```
+
+
+\pagebreak
 
 ```{r leitura_dos_dados_formigas}
 load("./RDatas/ants.RData")
+net_name = "Formiga-Planta"
 ```
-
-\pagebreak
 
 <!-- modifcar o 'net_x' para corresponder com as figuras -->
 
@@ -509,7 +545,7 @@ names(propriedades_rede) = c("Propriedade", "Valor")
 
 <!-- Usa as variavei geradas no code chunk acima para preencher o texto -->
 
-A rede `r net_name` [\@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1a} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1a} apresenta uma visão geral da rede.
+A rede `r net_name` [@`r bib_ref`] possui `r lnum` camadas (`r lnames2`), `r nnum` nós e `r cnum` conexões. A tabela \ref{tab:1a} mostra o resumo das propriedades da rede. A figura \ref{fig:fig1a} apresenta uma visão geral da rede.
 
 ```{r Tabela_Prop_Rede_b, col.names = NULL}
 kable(propriedades_rede, "latex", booktabs = T, caption = paste("\\label{tab:1a}Propriedades da rede ", net_name)) %>% kable_styling(latex_options = c("striped", "hold_position"))
@@ -585,13 +621,13 @@ for (i in 1:length(selection)) {
 ## Seleção das espécies com maior $\mathbf{G_{norm}}$.
 
 ```{r define_Gnorm_treshold_b}
-G_threshold = 1.21
+G_threshold = 1.15
 size1 = 3 #tamanho dos nos abixo do G_threshold
 size2 = 4*size1 #tamanho dos valores acima de G_threshold
 
 ```
 
-A figura \ref{fig:2b} e a tabela \ref{tab:3a} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`.
+A figura \ref{fig:2b} e a tabela \ref{tab:3a} mostram as espécies com valor de $G_{norm}$ acima de `r G_threshold`, ou seja, aquelas com decaimento de $G$ mais lento da rede `r net_name`. Os nomes das espécies de formigas e plantas são apresentados em códigos e a relação entre o código e o nome científico pode ser consultado no Anexo II.
 
 ```{r define_aspecto_b}
 if (lnum < 4) {
@@ -606,7 +642,7 @@ if (lnum < 4) {
 Custom_plot2D_destaque_palette(G_norm_mean, links, nodes, layout, size1, size2)
 
 ```
-
+<!--
 ```{r, tabela_decimento_lento_b}
 selected_nodes = sort(G_norm_mean[which(G_norm_mean > G_threshold)], decreasing = TRUE)
 selected_nodes_df = data.frame(names(selected_nodes), format(round(selected_nodes, 3), nsmall = 3))
@@ -615,12 +651,37 @@ rownames(selected_nodes_df) = NULL
 
 kable(selected_nodes_df, "latex", booktabs = T, caption = paste("\\label{tab:3a}Espécies com valores de $G_{norm}$ maiores que", G_threshold), escape = FALSE) %>% kable_styling(latex_options = c("striped", "hold_position"))
 ```
+-->
 
+```{=tex}
+\begin{table}[!ht]
+\caption{Espécies com valores de $G_{norm}$ maiores que 1.15.}
+\label{tab:3a}
+\centering
+\begin{tabular}{cc|cc}
+\hline
+\multicolumn{2}{c|}{Formiga} & \multicolumn{2}{c}{Planta} \\
+\hline
+Espécie       & Gnorm       & Espécie       & Gnorm      \\
+\hline
+\hline
+Camcra        & 1.355       & Baccon       & 1.386       \\
+Brapic        & 1.341       & Vocthy       & 1.235       \\
+Ceppus        & 1.222       & Remfer       & 1.189       \\
+Camley        & 1.200       & Byrsp1       & 1.181       \\
+Dorgoe        & 1.192       &              &             \\
+Brasp1        & 1.153       &              &             \\
+\hline
+\end{tabular}
+\end{table}
+```
+\vfill
 \pagebreak
+
 
 # Distribuição de $\mathbf{G_{norm}}$ para redes aleatórias
 
-A distribuição dos valores de G$_{norm}$ também foi testada para algumas redes binárias puramente aleatórias, variando o número de camadas, conexões totais e nós. O universo de redes analisadas é apresentado na tabela \ref{table:univ_redes_aleat}. Foram geradas 10 redes aleatórias para cada combinação de camadas, conexões e nós, um total de 180 redes aleatórias foram analisadas.
+A distribuição dos valores de $G_{norm}$ também foi testada para algumas redes binárias puramente aleatórias, variando o número de camadas, conexões totais e nós. O universo de redes analisadas é apresentado na tabela \ref{table:univ_redes_aleat}. Foram geradas 10 redes aleatórias para cada combinação de camadas, conexões e nós, um total de 180 redes aleatórias foram analisadas.
 
 ```{=tex}
 \begin{table}[!ht]
@@ -755,13 +816,13 @@ for (j in 1:length(dir_to_plot)) {
 
 # Comparação entre $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede agregada
 
-Os nós que possuem maiores valores de G$_{norm}$ parecem ser os mais importantes dentro da rede. Isso porque, o fato de permanecerem em diferentes módulos em diferentes camadas, mesmo após o aumento do acoplamento, indica que eles se relacionam de maneir mais equilibrada com diferentes camadas. Assim, pode-se dizer que eles tem alto potencial como conectores entre diferentes módulos em diferentes camadas.
+Os nós que possuem maiores valores de $G_{norm}$ parecem ser os mais importantes dentro da rede. Isso porque, o fato de permanecerem em diferentes módulos em diferentes camadas, mesmo após o aumento do acoplamento, indica que eles se relacionam de maneira mais equilibrada com diferentes camadas. Assim, pode-se dizer que eles tem alto potencial como conectores entre diferentes módulos em diferentes camadas.
 
-Esses nós mais importantes podem ser considerados como centrais, podendo ser conectores ou hubs [@Rodrigues2018]. Se compararmos os nós mais centrais de uma rede, identificados por outras métricas, com os nós que apresentaram maiores valores de G$_{norm}$, podemos examinar a relação entre diferentes métricas de centralidade.
+Esses nós mais importantes podem ser considerados como centrais, podendo ser conectores ou hubs [@Rodrigues2018]. Se compararmos os nós mais centrais de uma rede, identificados por outras métricas, com os nós que apresentaram maiores valores de $G_{norm}$, podemos examinar a relação entre diferentes métricas de centralidade.
 
-Existem vários tipos de centralidade, calculadas usando-se diferentes parâmetros como base. Neste trabalho vamos comparar quatro dessas centralidades com os nós que possuem alto G$_{norm}$. São elas: \textit{Closeness} [@Sabidussi1966], \textit{Betweeness} [@Freeman1977], \textit{Eigen Vector} [@Bonacich1972] e \textit{Degree}. Estas centralidades são calculadas para a rede multicamada agregada.
+Existem vários tipos de centralidade, calculadas usando-se diferentes parâmetros como base. Neste trabalho vamos comparar quatro dessas centralidades com os nós que possuem alto $G_{norm}$. São elas: \textit{Closeness} [@Sabidussi1966], \textit{Betweeness} [@Freeman1977], \textit{Eigen Vector} [@Bonacich1972] e \textit{Degree}. Estas centralidades são calculadas para a rede multicamada agregada.
 
-Duas formas de comparação foram usadas. Uma se trata apenas de uma comparação binária, levando em conta apenas o número de nós em comum no topo dos rankings de G$_{norm}$ e das quatro outras centralides. Outra leva em conta a distância entre os rankings dos nós mais centrais para cada métrica.
+Duas formas de comparação foram usadas. Uma se trata apenas de uma comparação binária, levando em conta apenas o número de nós em comum no topo dos rankings de $G_{norm}$ e das quatro outras centralides. Outra leva em conta a distância entre os rankings dos nós mais centrais para cada métrica.
 
 A similaridade binária é bastante trivial e seu índice pode ser calculado da seguinte forma:
 
@@ -783,66 +844,73 @@ Onde o valor absoluto de $i-j$ é equivalente a distância entre os rankings dos
 
 Para comparar $G_{norm}$ com as centralidades de forma mais ampla, vamos analisar também os correlogramas entre $G_{norm}$ e das centralidades utilizando os métodos de Pearson e de Spearman.
 
-## Comparação entre $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede Morcegos-Plantas
 
-Comparando as 10 espécies de morcego mais bem ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 mais bem ranqueadas segundo por $G_{norm}$, vemos que existem 7 espécies que também estão presentes em ao menos uma das quatro outras centralidades avaliadas.
+## Comparação entre $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede Morcego-Planta
+
+Comparando as 10 espécies de morcego mais bem ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 mais bem ranqueadas segundo $G_{norm}$, vemos que existem 7 espécies que também estão presentes em ao menos uma das quatro outras centralidades avaliadas.
 
 Três espécies que estão entre as 10 mais bem ranqueadas pelos valores de $G_{norm}$ não estão presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_bats} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum (negrito) e únicas do $G_{norm}$ (itálico).
 
 ```{=tex}
 \begin{table}[!ht]
-\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para os morcegos da rede de Morcegos-plantas. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_bats}
+\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para os morcegos da rede de Morcego-Planta. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_bats}
 \footnotesize
-\begin{tabular}{cccccccccc}
-\multicolumn{10}{l}{ \textbf{Closeness} } \\
+\begin{tabular}{cc|cc|cc|cc|cc}
 \hline
-\textbf{Artjam} & \textbf{Carper} & \textbf{Artlit} & Glosor & \textbf{Stulil} & Phyhas & Phydis & Lepcur & Glocom & \textbf{Carcas} \\
-\hline
-\hline
-0.00082 & 0.00079 & 0.00076 & 0.00071 & 0.00070 & 0.00067 & 0.00066 & 0.00065 & 0.00064 & 0.00064 \\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Betweeness} } \\
-\hline
-\textbf{Artjam} & \textbf{Carper} & \textbf{Artlit} & Glosor & \textbf{Stulil} & Lepcur & Anocau & Stulud & Monred & Phyhas  \\
+\multicolumn{2}{c|}{Closeness} & \multicolumn{2}{c|}{Betweeness} & \multicolumn{2}{c|}{Eigen Vector} & \multicolumn{2}{c|}{Degree} & \multicolumn{2}{c}{Gnorm} \\
 \hline
 \hline
-0.30347 & 0.26423 & 0.15230 & 0.14406 & 0.13341 & 0.08033 & 0.06970 & 0.05518 & 0.04970 & 0.04302  \\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Eigen Vector} } \\
-\hline
-\textbf{Artjam} & \textbf{Carper} & \textbf{Artlit} & \textbf{Stulil} & Glosor & \textbf{Carcas} & Phyhas & \textbf{Urobil} & Artpha & \textbf{Carbre} \\
-\hline
-\hline
-1.00000 & 0.86257 & 0.80165 & 0.39613 & 0.31185 & 0.27444 & 0.25856 & 0.25543 & 0.22331 & 0.19272  \\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Degree} } \\
-\hline
-\textbf{Artjam} & \textbf{Carper} & \textbf{Artlit} & \textbf{Stulil} & Glosor & \textbf{Carcas} & Lepcur & Phyhas & Anocau & \textbf{Carbre} \\
-\hline
-\hline
-149 & 138 & 112 & 72 & 65 & 44 & 43 & 40 & 30 & 29 \\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Gnorm} } \\
-\hline
-\textbf{Artjam} & \textbf{Artlit} & \textbf{Urobil} & \textbf{Stulil} & \textbf{Carcas} & \textbf{Carbre} & \textit{Artcon} & \textit{Vamnym} & \textbf{Carper} & \textit{Plahel}\\
-\hline
-\hline
-1.54825 & 1.50918 & 1.48774 & 1.46916 & 1.40143 & 1.39168 & 1.39080 & 1.36506 & 1.36363 & 1.35870 \\
+\textbf{Artjam}        & 0.00082       & \textbf{Artjam}        & 0.30347        & \textbf{Artjam}         & 1.00000         & \textbf{Artjam}        & 149        & \textbf{Artjam}      & 1.54825     \\
+\textbf{Carper}        & 0.00079       & \textbf{Carper}        & 0.26423        & \textbf{Carper}         & 0.86257         & \textbf{Carper}        & 138        & \textbf{Artlit}      & 1.50918     \\
+\textbf{Artlit}        & 0.00076       & \textbf{Artlit}        & 0.15230        & \textbf{Artlit}         & 0.80165         & \textbf{Artlit}        & 112        & \textbf{\textbf{Urobil}}      & 1.48774     \\
+Glosor        & 0.00071       & Glosor        & 0.14406        & \textbf{Stulil}         & 0.39613         & \textbf{Stulil}        & 72         & \textbf{Stulil}      & 1.46916     \\
+\textbf{Stulil}        & 0.00070       & \textbf{Stulil}        & 0.13341        & Glosor         & 0.31185         & Glosor        & 65         & \textbf{Carcas}      & 1.40143     \\
+Phyhas        & 0.00067       & Lepcur        & 0.08033        & \textbf{Carcas}         & 0.27444         & \textbf{Carcas}        & 44         & \textbf{Carbre}      & 1.39168     \\
+Phydis        & 0.00066       & Anocau        & 0.06970        & Phyhas         & 0.25856         & Lepcur        & 43         & \textit{Artcon}      & 1.39080     \\
+Lepcur        & 0.00065       & Stulud        & 0.05518        & \textbf{\textbf{Urobil}}         & 0.25543         & Phyhas        & 40         & \textit{Vamnym}      & 1.36506     \\
+Glocom        & 0.00064       & Monred        & 0.04970        & Artpha         & 0.22331         & Anocau        & 30         & \textbf{Carper}      & 1.36363     \\
+\textbf{Carcas}        & 0.00064       & Phyhas        & 0.04302        & \textbf{Carbre}         & 0.19272         & \textbf{Carbre}        & 29         & \textit{Plahel}      & 1.35870    \\
 \hline
 \end{tabular}
 \end{table}
 ```
-A similaridade binária entre os 10 morcegos melhores ranqueados pelos valores de $G_{norm}$ e os 10 morcegos melhores ranqueados pelas centralidades avaliadas ficou entre 40% e 70%, ficando menos similar à centralidade \textit{Betweeness} e mais similar a centralidade \textit{Eigen Vector} (tabela \ref{table:centr_sim_bin_bats}).
 
-Levando em conta a distância entre os rankings para calcular a similaridade tivemos menor similaridade entre $G_{norm}$ e a centralidade \textit{Betweeness}, e uma maior similaridade às centralidades \textit{Eigen Vector} e \textit{Degree}, mas a similaridade nesse caso caiu bastante, mostrando que o ranqueamento entre $G_{norm}$ e as outras similaridades é diferente quando avaliamos os nós mais bem colocados (tabela \ref{table:centr_sim_dist_bats}).
+Comparando as 10 espécies de plantas mais bem ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 mais bem ranqueadas segundo $G_{norm}$, vemos que existem 5 espécies que também estão presentes em ao menos uma das quatro outras centralidades avaliadas.
+
+Cinco espécies que estão entre as 10 mais bem ranqueadas pelos valores de $G_{norm}$ não estão presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_bats_plants} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum (negrito) e únicas do $G_{norm}$ (itálico).
 
 ```{=tex}
 \begin{table}[!ht]
-\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para os morcegos da rede de Morcegos-Plantas.}\label{table:centr_sim_bin_bats}
+\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para as plantas da rede de Morcego-Planta. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}
+\label{table:centr_raw_bats_plants}
+\footnotesize
+\begin{tabular}{cc|cc|cc|cc|cc}
+\hline
+\multicolumn{2}{c|}{Closeness} & \multicolumn{2}{c|}{Betweeness} & \multicolumn{2}{c|}{Eigen Vector} & \multicolumn{2}{c|}{Degree} & \multicolumn{2}{c}{Gnorm} \\
+\hline
+\hline
+Cecobt            & 0.000787   & Ceipen              & 0.0700    & \textbf{Cecpel}      & 0.368      & Cecobt              & 16    & \textbf{Syzjam}  & 1.538  \\
+\textbf{Cecpel}   & 0.000767   & \textbf{Syzjam}     & 0.0554    & Cecobt               & 0.269      & Ficins              & 15    & \textit{Ingver}  & 1.432  \\
+Mactin            & 0.000755   & Cecobt              & 0.0412    & \textbf{Manzap}      & 0.266      & Solrug              & 14    & \textbf{Cecpel}  & 1.400  \\
+Manind            & 0.000746   & \textbf{Manzap}     & 0.0319    & Ficins               & 0.260      & \textbf{Cecpel}     & 13    & \textbf{Manzap}  & 1.360  \\
+\textbf{Manzap}   & 0.000743   & \textbf{Cecpel}     & 0.0303    & Solrug               & 0.253      & Cecusa              & 13    & \textbf{Dysvir}  & 1.337  \\
+Piparb            & 0.000740   & \textbf{Pacweb}     & 0.0220    & Cecfic               & 0.237      & Ceipen              & 13    & \textbf{Pacweb}  & 1.292  \\
+Carpap            & 0.000737   & Pipama              & 0.0189    & Pipadu               & 0.229      & Ficyop              & 13    & \textit{Stegri}  & 1.227  \\
+Pipama            & 0.000734   & \textbf{Dysvir}     & 0.0174    & Fictri               & 0.227      & \textbf{Manzap}     & 13    & \textit{Neotet}  & 1.224  \\
+Cecgla            & 0.000729   & Spomom              & 0.0169    & Piparb               & 0.220      & Cecfic              & 12    & \textit{Broali}  & 1.220  \\
+Muncal            & 0.000729   & Mactin              & 0.0166    & Ficobt               & 0.208      & Fictri              & 12    & \textit{Cerrep}  & 1.190  \\
+\hline
+\end{tabular}
+\end{table}
+```
+
+A similaridade binária entre os 10 morcegos melhores ranqueados pelos valores de $G_{norm}$ e os 10 morcegos melhores ranqueados pelas centralidades avaliadas ficou entre 40% e 70%, ficando menos similar à centralidade \textit{Betweeness} e mais similar a centralidade \textit{Eigen Vector} (tabela \ref{table:centr_sim_bin_bats}).Levando em conta a distância entre os rankings para calcular a similaridade tivemos menor similaridade entre $G_{norm}$ e a centralidade \textit{Betweeness}, e uma maior similaridade às centralidades \textit{Eigen Vector} e \textit{Degree}, mas a similaridade nesse caso caiu bastante, mostrando que o ranqueamento entre $G_{norm}$ e as outras similaridades é diferente quando avaliamos os nós mais bem colocados (tabela \ref{table:centr_sim_dist_bats}).
+
+A similaridade binária entre as 10 plantas melhores ranqueadas pelos valores de $G_{norm}$ e as 10 melhores ranqueadas pelas centralidades avaliadas ficou entre bem abaixo da observada apenas para os morcegos, ficando, no caso das plantas, entre 20% (*Closeness*, *Eigen Vector* e *Degree*) e 70% (*Betweeness*)(tabela \ref{table:centr_sim_bin_bats_plants}).Levando em conta a distância entre os rankings para calcular a similaridade tivemos uma diminuição dos valores, devido a diferença da ordem de ranqueamnto, mas manteve a proporcionalidade da similaridade binária (tabela \ref{table:centr_sim_dist_bats_plants}).
+
+```{=tex}
+\begin{table}[!ht]
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para os morcegos da rede de Morcego-Planta.}\label{table:centr_sim_bin_bats}
 \centering
 \begin{tabular}{cccc}
 \hline
@@ -854,9 +922,11 @@ Closeness & Betweeness & Eigen Vector & Degree\\
 \end{tabular}
 \end{table}
 ```
+
+
 ```{=tex}
 \begin{table}[!ht]
-\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para os morcegos da rede de Morcegos-Plantas.}\label{table:centr_sim_dist_bats}
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para os morcegos da rede de Morcego-Planta.}\label{table:centr_sim_dist_bats}
 \centering
 \begin{tabular}{cccc}
 \hline
@@ -868,13 +938,46 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \end{tabular}
 \end{table}
 ```
-Usando os correlogramas de Spearman e Pearson apenas para os morcegos (figuras \ref{fig:pearson_bats} e \ref{fig:spearman_bats}) e para a totalidade da rede (figuras \ref{fig:pearson_bats_all} e \ref{fig:spearman_bats_all}), vemos que quando avaliamos apenas os morcegos, a correlação entre as centraliadades e $G_{norm}$ é média (entre 0.58 e 0.71) e homogênea entre as centralidades, ficando um pouco mais alta para o \textit{eigen vector} (0.71) no caso do método de Pearson (figura \ref{fig:pearson_bats}). Já quando avaliamos a rede como um todo (plantas e morcegos), temos uma queda na correlação, especialmente quando utilizamos o método de Spearman, onde as correlações entre $G_{norm}$ e \textit{closeness} e $G_{norm}$ e \textit{eigen vector} caem para 0.23.
+
+
+```{=tex}
+\begin{table}[!ht]
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para as plantas da rede de Morcego-Planta.}\label{table:centr_sim_bin_bats_plants}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree\\
+\hline
+\hline
+0.2 & 0.5 & 0.2 & 0.2\\
+\hline
+\end{tabular}
+\end{table}
+```
+
+
+```{=tex}
+\begin{table}[!ht]
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para as plantas da rede de Morcego-Planta.}\label{table:centr_sim_dist_bats_plants}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree \\
+\hline
+\hline
+0.100 & 0.308 & 0.083 & 0.0700\\
+\hline
+\end{tabular}
+\end{table}
+```
+
+Usando os correlogramas de Spearman e Pearson apenas para os morcegos (figuras \ref{fig:pearson_bats} e \ref{fig:spearman_bats}) e para as plantas da rede (figuras \ref{fig:pearson_bats_plants} e \ref{fig:spearman_bats_plants}), vemos que quando avaliamos apenas os morcegos, a correlação entre as centraliadades e $G_{norm}$ é média (entre 0.58 e 0.71) e homogênea entre as centralidades, ficando um pouco mais alta para o \textit{eigen vector} (0.71) no caso do método de Pearson (figura \ref{fig:pearson_bats}). Já quando avaliamos as plantas, temos uma queda na correlação, com exceção da centralidade *Betweeness* para o método de Pearson, onde a correlação ficou com um valor de 0.5.
 
 ```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_bats_pearson.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para os morcegos da rede Morcegos-Plantas}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para os morcegos da rede Morcego-Planta}
 \label{fig:pearson_bats}
 \end{figure}
 ```
@@ -882,27 +985,28 @@ Usando os correlogramas de Spearman e Pearson apenas para os morcegos (figuras \
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_bats_spearman.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para os morcegos da rede Morcegos-Plantas}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para os morcegos da rede Morcego-Planta}
 \label{fig:spearman_bats}
 \end{figure}
 ```
 ```{=tex}
 \begin{figure}[H] 
 \centering
-\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_all_pearson.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para a totalidade da rede Morcegos-Plantas}
-\label{fig:pearson_bats_all}
+\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_plants_pearson.png}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para as plantas da rede Morcego-Planta}
+\label{fig:pearson_bats_plants}
 \end{figure}
 ```
 ```{=tex}
 \begin{figure}[H] 
 \centering
-\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_all_spearman.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para a totalidade da rede Morcegos-Plantas}
-\label{fig:spearman_bats_all}
+\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_bats_plants_spearman.png}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para as plantas da rede Morcego-Planta}
+\label{fig:spearman_bats_plants}
 \end{figure}
 ```
-## Comparação $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede Formigas-Plantas
+
+## Comparação $\mathbf{G_{norm}}$ e outras métricas de centralidade para a rede Formiga-Planta
 
 Comparando as 10 espécies de formigas mais bem ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 mais bem ranqueadas por $G_{norm}$ vemos que existem 8 espécies que também estão presentes em ao menos uma das centralidades avaliadas.
 
@@ -910,58 +1014,63 @@ Duas espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{n
 
 ```{=tex}
 \begin{table}[!ht]
-\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para e rede de Formigas-plantas. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_ants}
+\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para as formigas da rede de Formiga-Planta. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_ants}
 \footnotesize
-\begin{tabular}{cccccccccc}
-\multicolumn{10}{l}{ \textbf{Closeness} } \\
+\begin{tabular}{cc|cc|cc|cc|cc}
 \hline
-\textbf{Cepus} & Camruf & \textbf{Bracor} & \textbf{Camcra} & \textbf{Brapic} & \textbf{Psepal} & Camtra &  Camwes &  \textbf{Linmic} & \textbf{Camley}  \\
-\hline
-\hline
-0.00520 & 0.00446 & 0.00423 & 0.00409 & 0.00390 & 0.00387 & 0.00378 & 0.00347 & 0.00344 & 0.00340\\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Betweeness} } \\
-\hline
-\textbf{Cepus} & \textbf{Bracor} & \textbf{Camcra} & \textbf{Brapic} & Camruf & \textbf{Psepal} & Camtra & Cambla & \textbf{Camley} & Ecttub \\
+\multicolumn{2}{c|}{Closeness} & \multicolumn{2}{c|}{Betweeness} & \multicolumn{2}{c|}{Eigen Vector} & \multicolumn{2}{c|}{Degree} & \multicolumn{2}{c}{Gnorm} \\
 \hline
 \hline
-0.53495 & 0.12861 & 0.12211 & 0.08311 & 0.07750 & 0.04944 & 0.03318 & 0.01987 & 0.01921 & 0.01908\\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Eigen Vector} } \\
-\hline
-\textbf{Cepus} & \textbf{Bracor} & Camruf & \textbf{Camcra} & \textbf{Brapic} & \textbf{Psepal} & Camtra & Camwes & \textbf{Phetri} & \textbf{Camley} \\
-\hline
-\hline
-1.00000 & 0.31935 & 0.22994 & 0.22196 & 0.14228 & 0.12515 & 0.12494 & 0.10575 & 0.05029 & 0.04375\\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Degree} } \\
-\hline
-\textbf{Cepus} & \textbf{Bracor} & Camruf & \textbf{Camcra} & \textbf{Brapic} & \textbf{Psepal} & Camtra & Camwes & \textbf{Phetri} & \textbf{Camley} \\
-\hline
-\hline
-294 & 94 & 81 & 80 & 45 & 41 & 38 & 23 & 15 & 12\\
-\hline
-& & & & & & & & & \\
-\multicolumn{10}{l}{ \textbf{Gnorm} } \\
-\hline
-\textbf{Camcra} & \textbf{Brapic} & \textbf{Cepus} & \textbf{Camley} & \textit{Dorgoe} & \textit{Brasp1} & \textbf{Phetri} & \textbf{Bracor} & \textbf{Linmic} & \textbf{Psepal} \\
-\hline
-\hline
-1.35486 & 1.34081 & 1.22185 & 1.20006 & 1.19244 & 1.15256 & 1.13723 & 1.13674 & 1.09468 & 1.08898\\
+\textbf{Cepus}    & 0.00520   & \textbf{Cepus}     & 0.53495   & \textbf{Cepus}      & 1.00000    & \textbf{Cepus}     & 294   & \textbf{Camcra} & 1.35486 \\
+Camruf            & 0.00446   & \textbf{Bracor}    & 0.12861   & \textbf{Bracor}     & 0.31935    & \textbf{Bracor}    & 94    & \textbf{Brapic} & 1.34081 \\
+\textbf{Bracor}   & 0.00423   & \textbf{Camcra}    & 0.12211   & Camruf              & 0.22994    & Camruf             & 81    & \textbf{Cepus}  & 1.22185 \\
+\textbf{Camcra}   & 0.00409   & \textbf{Brapic}    & 0.08311   & \textbf{Camcra}     & 0.22196    & \textbf{Camcra}    & 80    & \textbf{Camley} & 1.20006 \\
+\textbf{Brapic}   & 0.00390   & Camruf             & 0.07750   & \textbf{Brapic}     & 0.14228    & \textbf{Brapic}    & 45    & \textit{Dorgoe} & 1.19244 \\
+\textbf{Psepal}   & 0.00387   & \textbf{Psepal}    & 0.04944   & \textbf{Psepal}     & 0.12515    & \textbf{Psepal}    & 41    & \textit{Brasp1} & 1.15256 \\
+Camtra            & 0.00378   & Camtra             & 0.03318   & Camtra              & 0.12494    & Camtra             & 38    & \textbf{Phetri} & 1.13723 \\
+Camwes            & 0.00347   & Cambla             & 0.01987   & Camwes              & 0.10575    & Camwes             & 23    & \textbf{Bracor} & 1.13674 \\
+\textbf{Linmic}   & 0.00344   & Camley             & 0.01921   & \textbf{Phetri}     & 0.05029    & \textbf{Phetri}    & 15    & \textbf{Linmic} & 1.09468 \\
+\textbf{Camley}   & 0.00340   & Ecttub             & 0.01908   & \textbf{Camley}     & 0.04375    & \textbf{Camley}    & 12    & \textbf{Psepal} & 1.08898\\
 \hline
 \end{tabular}
 \end{table}
 ```
-A similaridade binária entre as 10 melhores formigas ranqueadas pelos valores de $G_{norm}$ e as 10 melhores ranqueadas pelas centralidades avaliadas ficaram muito próximas para todas as centralidades estudadas, entre 60% e 70% (tabela \ref{table:centr_sim_bin_bats}).
 
-Levando em conta a distância entre os rankings para calcular a similaridade, podemos ver que houve uma diminuição dos valores e uma maior diferenciação das similaridades entre $G_{norm}$ e as centralidades, o que mostra que $G_{norm}$ ranqueia os nós de forma diferente das outras centralidades para esssa rede (tabela \ref{table:centr_sim_dist_bats}).
+
+Comparando as 10 espécies de plantas mais bem ranqueadas pelas centralidades \textit{Closeness} , \textit{Betweeness} , \textit{Eigen Vector} e \textit{Degree} com as 10 mais bem ranqueadas segundo $G_{norm}$ vemos que existem 5 espécies que também estão presentes em ao menos uma das centralidades avaliadas. As outras cinco espécies que estão entre as 10 melhores ranqueadas pelos valores de $G_{norm}$ não estão presentes em nenhuma das centralidades avaliadas. A tabela \ref{table:centr_raw_ants_plants} mostra as 10 espécies melhores ranqueadas pelas centralidades e pelos valores $G_{norm}$, destacando as espécies em comum (negrito) e únicas do $G_{norm}$ (itálico).
+
+A similaridade binária entre as 10 melhores plantas ranqueadas pelos valores de $G_{norm}$ e as 10 melhores ranqueadas pelas centralidades avaliadas ficaram muito próximas para todas as centralidades estudadas, entre 30% e 40% (tabela \ref{table:centr_sim_bin_ants_plants}).
+
+Levando em conta a distância entre os rankings para calcular a similaridade, podemos ver que houve uma diminuição dos valores e uma maior diferenciação das similaridades entre $G_{norm}$ e as centralidades, com *Closeness* e *Degree* sendo os mais similares (tabela \ref{table:centr_sim_dist_ants_plants}).
 
 ```{=tex}
 \begin{table}[!ht]
-\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para a rede de Formigas-Plantas.}\label{table:centr_sim_bin_ants}
+\caption{Nós ordenados de forma decrescente de acordo com seus valores de centralidade e $G_{norm}$ para as plantas da rede de Formiga-Planta. Em negrito as espécies que alto valor de $G_{norm}$ e que também foram selecionadas por pelo menos uma métrica de centralidade. Em itálico as espécies que possuem alto valor de $G_{norm}$ mas não foram selecionadas em nenhuma outra centralidade.}\label{table:centr_raw_ants_plants}
+\footnotesize
+\begin{tabular}{cc|cc|cc|cc|cc}
+\hline
+\multicolumn{2}{c|}{Closeness} & \multicolumn{2}{c|}{Betweeness} & \multicolumn{2}{c|}{Eigen Vector} & \multicolumn{2}{c|}{Degree} & \multicolumn{2}{c}{Gnorm} \\
+\hline
+\hline
+\textbf{Baccon}   & 0.004424  & Symret             & 0.09794   & Chapap              & 0.4557     & Symret             & 60    & \textbf{Baccon}  & 1.3861 \\
+Velniv            & 0.004424  & Velniv             & 0.07733   & Symret              & 0.4140     & Chapap             & 58    & \textit{Vocthy}  & 1.2351 \\
+Barfla            & 0.004385  & Chapap             & 0.07007   & Barfla              & 0.3907     & \textbf{Baccon}    & 47    & \textit{Remfer}  & 1.1890 \\
+Velcor            & 0.004385  & \textbf{Baccon}    & 0.06570   & \textbf{Baccon}     & 0.3341     & Velniv             & 47    & \textbf{Byrsp1}  & 1.1809 \\
+Symret            & 0.004347  & \textbf{Myrmon}    & 0.06378   & \textbf{Myrmon}     & 0.3053     & Barfla             & 46    & \textit{Mikita}  & 1.1176 \\
+Chapap            & 0.004273  & Barfla             & 0.06104   & \textbf{Byrsp1}     & 0.2544     & \textbf{Myrmon}    & 46    & \textbf{Aspjol}  & 1.0908 \\
+\textbf{Myrmon}   & 0.004237  & Velcor             & 0.05767   & Velniv              & 0.2482     & Velcor             & 33    & \textbf{Myrmon}  & 1.0428 \\
+\textbf{Byrsp1}   & 0.004201  & \textbf{Tetmic}    & 0.02613   & Crosp1              & 0.2426     & \textbf{Byrsp1}    & 31    & \textit{Dasret}  & 1.0371 \\
+\textbf{Tetmic}   & 0.004201  & Crosp1             & 0.02532   & \textbf{Aspjol}     & 0.2211     & Crosp1             & 31    & \textit{Diporb}  & 1.0260 \\
+Lycram            & 0.004065  & Peitom             & 0.02502   & Velcor              & 0.2077     & \textbf{Tetmic}    & 26    & \textbf{Tetmic}  & 1.0250 \\
+\hline
+\end{tabular}
+\end{table}
+```
+
+
+```{=tex}
+\begin{table}[!ht]
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para as formigas da rede de Formiga-Planta.}\label{table:centr_sim_bin_ants}
 \centering
 \begin{tabular}{cccc}
 \hline
@@ -973,9 +1082,10 @@ Closeness & Betweeness & Eigen Vector & Degree\\
 \end{tabular}
 \end{table}
 ```
+
 ```{=tex}
 \begin{table}[!ht]
-\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para a rede de Formigas-Plantas.}\label{table:centr_sim_dist_ants}
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para as formigas da rede de Formiga-Planta.}\label{table:centr_sim_dist_ants}
 \centering
 \begin{tabular}{cccc}
 \hline
@@ -987,13 +1097,45 @@ Closeness & Betweeness & Eigen Vector & Degree \\
 \end{tabular}
 \end{table}
 ```
-Usando os correlogramas de Spearman e Pearson apenas para as formigas (figuras \ref{fig:pearson_ants} e \ref{fig:spearman_ants}) e para a totalidade da rede (figuras \ref{fig:pearson_ants_all} e \ref{fig:spearman_ants_all}), vemos que quando avaliamos apenas as formigas, a correlação entre as centraliadades e $G_{norm}$ é média (entre 0.48 e 0.66) quando usamos o método de Pearson, ficando um pouco mais alta e homogênea (entre 0.78 e 0.82) para o método de Spearman. Já quando avaliamos a rede como um todo (plantas e formigas), temos uma queda na correlação, ficando entre 0.43 e 0.48 no método de Pearson e entre 0.49 e 0.66 quando utilizamos o método de Spearman.
+
+
+```{=tex}
+\begin{table}[!ht]
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para as plantas da rede de Formiga-Planta.}\label{table:centr_sim_bin_ants_plants}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree\\
+\hline
+\hline
+0.4 & 0.3 & 0.4 & 0.4\\
+\hline
+\end{tabular}
+\end{table}
+```
+
+```{=tex}
+\begin{table}[!ht]
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para as plantas da rede de Formiga-Planta.}\label{table:centr_sim_dist_ants_plants}
+\centering
+\begin{tabular}{cccc}
+\hline
+Closeness & Betweeness & Eigen Vector & Degree \\
+\hline
+\hline
+0.270 & 0.091 & 0.116 & 0.203\\
+\hline
+\end{tabular}
+\end{table}
+```
+
+Usando os correlogramas de Spearman e Pearson apenas para as formigas (figuras \ref{fig:pearson_ants} e \ref{fig:spearman_ants}) e para as plantas da rede (figuras \ref{fig:pearson_ants_plants} e \ref{fig:spearman_ants_plants}), vemos que quando avaliamos apenas as formigas, a correlação entre as centraliadades e $G_{norm}$ é média (entre 0.48 e 0.66) quando usamos o método de Pearson, ficando um pouco mais alta e homogênea (entre 0.78 e 0.82) para o método de Spearman. Já quando avaliamos a rede como um todo (plantas e formigas), temos uma queda na correlação, ficando entre 0.43 e 0.48 no método de Pearson e entre 0.49 e 0.66 quando utilizamos o método de Spearman. Quando avaliamos apenas as plantas, a correlação cai um pouco, mas ainda continua próxima do observado apenas para as formigas.
 
 ```{=tex}
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_ants_pearson.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para as formigas da rede Formigas-Plantas}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para as formigas da rede Formiga-Planta}
 \label{fig:pearson_ants}
 \end{figure}
 ```
@@ -1001,35 +1143,35 @@ Usando os correlogramas de Spearman e Pearson apenas para as formigas (figuras \
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_ants_spearman.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para as formigas da rede Formigas-Plantas}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para as formigas da rede Formiga-Planta}
 \label{fig:spearman_ants}
 \end{figure}
 ```
 ```{=tex}
 \begin{figure}[H] 
 \centering
-\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_all_pearson.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para a totalidade da rede Formigas-Plantas}
-\label{fig:pearson_ants_all}
+\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_plants_pearson.png}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para as plantas da rede Formiga-Planta}
+\label{fig:pearson_ants_plants}
 \end{figure}
 ```
 ```{=tex}
 \begin{figure}[H] 
 \centering
-\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_all_spearman.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para a totalidade da rede Formigas-Plantas}
-\label{fig:spearman_ants_all}
+\includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_ants_plants_spearman.png}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para as plantas da rede Formiga-Planta}
+\label{fig:spearman_ants_plants}
 \end{figure}
 ```
 ## Comparação entre $\mathbf{G_{norm}}$ e outras métricas de centralidade para as redes aleatórias
 
 As tabelas \ref{table:centr_sim_bin_rand} e \ref{table:centr_sim_dist_rand} mostram a comparação de similaridade binária e de distância entre os nós centrais e com alto G$_{norm}$ para todo o grupo de redes aleatórias estudadas (tabela \ref{table:univ_redes_aleat}), considerando os 10 nós mais bem ranqueados. As figuras \ref{fig:pearson_rand_all} e \ref{fig:pearson_rand_all} mostram os correlogramas utilizando o método de Pearson e Spearman para as redes aleatórias.
 
-Vemos que mesmo as redes sendo aleatórias, ainda existe uma certa similiaridade e correlação entre nós com alto $G_{norm}$ e as centralidades, apesar de haver variação. As similaridades e correlações não ficaram na mesma ordem que as avaliadas nas redes de Morcegos-Plantas e Formigas-Plantas, diminuindo de valor.
+Vemos que mesmo as redes sendo aleatórias, ainda existe uma certa similiaridade e correlação entre nós com alto $G_{norm}$ e as centralidades, apesar de haver variação. As similaridades e correlações não ficaram na mesma ordem que as avaliadas nas redes de Morcego-Planta e Formiga-Planta, diminuindo de valor.
 
 ```{=tex}
 \begin{table}[!ht]
-\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para as redes aleatórias.}\label{table:centr_sim_bin_rand}
+\caption{Similaridade binária entre $G_{norm}$ e outras métricas de centralidade para as redes aleatórias, considerando os 10 mais bem colocados de cada métrica.}\label{table:centr_sim_bin_rand}
 \centering
 \begin{tabular}{ccccc}
 \hline
@@ -1044,7 +1186,7 @@ sd & 0.203 & 0.209 & 0.208 & 0.207\\
 ```
 ```{=tex}
 \begin{table}[!ht]
-\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para as redes aleatórias.}\label{table:centr_sim_dist_rand}
+\caption{Similaridade ponderada pela distância dos rankings entre $G_{norm}$ e outras métricas de centralidade para as redes aleatórias, considerando os 10 mais bem colocados de cada métrica.}\label{table:centr_sim_dist_rand}
 \centering
 \begin{tabular}{ccccc}
 \hline
@@ -1061,7 +1203,7 @@ sd & 0.082 & 0.086 & 0.088 & 0.083\\
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_rand_all_pearson.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para a totalidade da rede Formigas-Plantas}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Pearson para as redes aleatórias.}
 \label{fig:pearson_rand_all}
 \end{figure}
 ```
@@ -1069,7 +1211,7 @@ sd & 0.082 & 0.086 & 0.088 & 0.083\\
 \begin{figure}[H] 
 \centering
 \includegraphics[width=0.7\textwidth]{./Figuras/centr_correlogram_rand_all_spearman.png}
-\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para a totalidade da rede Formigas-Plantas}
+\caption{Correlograma comparando as centralidades com $G_{norm}$ utilizando o método de Spearman para as redes aleatórias.}
 \label{fig:spearman_rand_all}
 \end{figure}
 ```
@@ -1079,7 +1221,7 @@ sd & 0.082 & 0.086 & 0.088 & 0.083\\
 ```
 # Discussão
 
-Os parâmetros $\omega$ e $\gamma$ para calcular a modularidade usando o método Louvain em redes multiplex abre novas possibilidades para o estudo de redes de interações. Isso porque, ao variarmos esses parâmetros, podemos identificar módulos diferentes, que variam de acordo com o quanto queremos que as camadas estejam acopladas e qual a resolução dos módulos queremos enfocar. Usando essas novas variáveis, podemos também identificar alguns nós especiais que permanecem em módulos diferentes em camadas diferentes, resistindo ao alto acoplamento entre as camadas. Neste estudo, criamos uma nova métrica que operacionaliza essa resitência: $G_{norm}$.
+Os parâmetros $\omega$ e $\gamma$ usados para calcular a modularidade usando o método Louvain em redes *multiplex* abre novas possibilidades para o estudo de redes de interações. Isso porque, ao variarmos esses parâmetros, podemos identificar módulos diferentes, que variam de acordo com o quanto queremos que as camadas estejam acopladas e qual a resolução dos módulos queremos enfocar. Usando essas novas variáveis, podemos também identificar alguns nós especiais que permanecem em módulos diferentes em camadas diferentes, resistindo ao alto acoplamento entre as camadas. Neste estudo, criamos uma nova métrica que operacionaliza essa resitência: $G_{norm}$.
 
 Nas duas redes reais estudadas, a distribuição dos valores de $G_{norm}$ ficou de acordo com o usual para métricas de centralide. Isto é, poucas espécies ficaram acima da média da rede e a maioria ficou próxima ou abaixo da média. Isso demonstra que são poucas as espécies que atingem alta centralidade $G_{norm}$. Além disso, o ranking das espécies com maior $G_{norm}$ difere dos rankings observados para outras métricas de centralidade muito usadas na literatura.
 
@@ -1093,7 +1235,7 @@ Outro ponto em que o olhar de um especialista pode enxergar grande valor na mét
 
 Algo ainda mais interessante que a similaridade entre as espécies entre os rankings de centralidade, são as diferenças finas em termos de quais nós figuram nesses rankings. As espécies mais bem ranqueadas apenas pelos valores de $G_{norm}$ e que não foram bem ranqueadas pelas outras centralidades estudadas talvez possuam uma importância diferenciada dentro da rede multicamada. Essa importância escapa à identificação por métricas monocamada, o que reforça o valor de estudarmos redes multicamadas usando análises que respeitem sua estrutura original, sem agregar as interações de diferentes tipos.
 
-Por exemplo, no caso das interações entre morcegos e plantas, já foi apontado, com base em análises de redes monocamada [@mello2014] e também de redes multicamada [@Mello2019], que espécies de morcegos como *Artibeus jamaicensis* (Artjam) e *Anoura caudifer* (Anocau) seriam hubs ou conectoras. Trata-se de morcegos que focam mais em frutos ou flores, respectivamente, mas que são capaz de consumir ambos os recursos. Por isso, além de atingirem altos valores de centralidade monocamada, elas também atingem altos valores de centralidade multicamada. Contudo, no presente estudo, vimos que, levando-se em conta o acomplamento e a resolução da estrutura modular da rede multicamada, outras espécies, como *Artibeus concolor* (Artcon) e *Platyrrhinus helleri* (Plahel) podem ser ainda mais importantes como pontes entre mundos diferentes, devido à sua alta resistência à variação no parâmetro de acoplamento, traduzida como permanência nos módulos. O mesmo ocorre com formigas como *Dorymyrmex* *goeldii* (Dorgoe) e *Brachymyrmex* sp1 (Brasp1), que são identificadas como muito centrais apenas pela nova métrica. Estudar essas espécies bem ranqueadas apenas por $G_{norm}$ pode levar a novos insights sobre como o papel funcional de mutualistas e antagonistas é determinado por sua ecologia e evolução.
+Por exemplo, no caso das interações entre morcegos e plantas, já foi apontado, com base em análises de redes monocamada [@mello2014] e também de redes multicamada [@Mello2019], que espécies de morcegos como *Artibeus jamaicensis* (Artjam) e *Anoura caudifer* (Anocau) seriam hubs ou conectoras. Trata-se de morcegos que focam mais em frutos ou flores, respectivamente, mas que são capaz de consumir ambos os recursos. Por isso, além de atingirem altos valores de centralidade monocamada, elas também atingem altos valores de centralidade multicamada. Contudo, no presente estudo, vimos que, levando-se em conta o acomplamento e a resolução da estrutura modular da rede multicamada, outras espécies, como *Artibeus concolor* (Artcon) e *Platyrrhinus helleri* (Plahel) podem ser ainda mais importantes como pontes entre mundos diferentes, devido à sua alta resistência à variação no parâmetro de acoplamento, traduzida como permanência em módulos diferentes em camadas diferentes. O mesmo ocorre com formigas como *Dorymyrmex* *goeldii* (Dorgoe) e *Brachymyrmex* sp1 (Brasp1), que são identificadas como muito centrais apenas pela nova métrica. Estudar essas espécies bem ranqueadas apenas por $G_{norm}$ pode levar a novos insights sobre como o papel funcional de mutualistas e antagonistas é determinado por sua ecologia e evolução.
 
 Essas peculiaridades nos levam a sugerir também que a nova métrica de centralidade $G_{norm}$ poderia ser usada para identificar espécies-chave em redes de interações ecológicas. Espécies identificadas por essa métrica, mesmo que identificadas também por outras métricas multicamada, são muito importantes para a transferência de informação por vias diretas e indiretas em sistemas ecológicos. Essas vias unem diferentes grupos de plantas, de diferentes famílias e que produzem diferentes tipos de recursos essenciais para manter populações de animais.
 
@@ -1105,3 +1247,681 @@ Essas peculiaridades nos levam a sugerir também que a nova métrica de centrali
 
 ::: {#refs}
 :::
+
+\pagebreak
+
+\clearpage
+
+# Anexo I - Tabela de referência entre códigos e nomes científicos das espécies da rede Morcego-Planta
+
+\centering
+\footnotesize
+\tablefirsthead{\toprule Nome científico & Código & Taxon \\ \midrule}
+
+\tablehead{%
+\multicolumn{3}{c}%
+{{\bfseries  Continuação da página anterior}} \\
+\toprule Nome científico & Código & Taxon\\ \midrule}
+
+\tabletail{%
+\midrule \multicolumn{3}{r}{{Continua na próxima página}} \\ \midrule}
+\tablelasttail{%
+\\\midrule
+\multicolumn{3}{r}{{Final}} \\ \bottomrule}
+\begin{supertabular}{lll}
+\textit{Anoura caudifer               } & Anocau          & Morcego        \\
+\textit{Anoura fistulata              } & Anofis          & Morcego        \\
+\textit{Anoura geoffroyi              } & Anogeo          & Morcego        \\
+\textit{Ardops nichollsi              } & Ardnic          & Morcego        \\
+\textit{Artibeus cinereus             } & Artcin          & Morcego        \\
+\textit{Artibeus concolor             } & Artcon          & Morcego        \\
+\textit{Artibeus fimbriatus           } & Artfim          & Morcego        \\
+\textit{Artibeus flavescens           } & Artfla          & Morcego        \\
+\textit{Artibeus gnomus               } & Artgno          & Morcego        \\
+\textit{Artibeus hirsutus             } & Arthir          & Morcego        \\
+\textit{Artibeus jamaicensis          } & Artjam          & Morcego        \\
+\textit{Artibeus lituratus            } & Artlit          & Morcego        \\
+\textit{Artibeus obscurus             } & Artobs          & Morcego        \\
+\textit{Artibeus phaeotis             } & Artpha          & Morcego        \\
+\textit{Artibeus planirostris         } & Artpla          & Morcego        \\
+\textit{Artibeus toltecus             } & Arttol          & Morcego        \\
+\textit{Artibeus watsoni              } & Artwat          & Morcego        \\
+\textit{Brachyphylla cavernarum       } & Bracav          & Morcego        \\
+\textit{Brachyphylla nana             } & Branan          & Morcego        \\
+\textit{Carollia brevicauda           } & Carbre          & Morcego        \\
+\textit{Carollia castanea             } & Carcas          & Morcego        \\
+\textit{Carollia perspicillata        } & Carper          & Morcego        \\
+\textit{Carollia sowelli              } & Carsow          & Morcego        \\
+\textit{Carollia subrufa              } & Carsub          & Morcego        \\
+\textit{Centurio senex                } & Censen          & Morcego        \\
+\textit{Chiroderma doriae             } & Chidor          & Morcego        \\
+\textit{Chiroderma salvini            } & Chisal          & Morcego        \\
+\textit{Chiroderma trinitatum         } & Chitri          & Morcego        \\
+\textit{Chiroderma villosum           } & Chivil          & Morcego        \\
+\textit{Choeroniscus godmani          } & Chogod          & Morcego        \\
+\textit{Choeronycteris mexicana       } & Chomex          & Morcego        \\
+\textit{Ectophylla alba               } & Ectalb          & Morcego        \\
+\textit{Enchisthenes hartii           } & Enchar          & Morcego        \\
+\textit{Erophylla sezekorni           } & Erosez          & Morcego        \\
+\textit{Glossophaga commissarisi      } & Glocom          & Morcego        \\
+\textit{Glossophaga leachii           } & Glolea          & Morcego        \\
+\textit{Glossophaga longirostris      } & Glolon          & Morcego        \\
+\textit{Glossophaga soricina          } & Glosor          & Morcego        \\
+\textit{Hylonycteris underwoodi       } & Hylund          & Morcego        \\
+\textit{Lampronycteris brachyotis     } & Lambra          & Morcego        \\
+\textit{Leptonycteris curasoae        } & Lepcur          & Morcego        \\
+\textit{Leptonycteris nivalis         } & Lepniv          & Morcego        \\
+\textit{Leptonycteris yerbabuenae     } & Lepyer          & Morcego        \\
+\textit{Lichonycteris obscura         } & Licobs          & Morcego        \\
+\textit{Lonchophylla bokermanni       } & Lonbok          & Morcego        \\
+\textit{Lonchophylla mordax           } & Lonmor          & Morcego        \\
+\textit{Lonchophylla robusta          } & Lonrob          & Morcego        \\
+\textit{Macrotus waterhousii          } & Macwat          & Morcego        \\
+\textit{Mesophylla macconelli         } & Mesmac          & Morcego        \\
+\textit{Micronycteris hirsuta         } & Michir          & Morcego        \\
+\textit{Micronycteris megalotis       } & Micmeg          & Morcego        \\
+\textit{Monophyllus plethodon         } & Monple          & Morcego        \\
+\textit{Monophyllus redmani           } & Monred          & Morcego        \\
+\textit{Musonycteris harrisoni        } & Mushar          & Morcego        \\
+\textit{Phyllonycteris poeyi          } & Phypoe          & Morcego        \\
+\textit{Phyllostomus discolor         } & Phydis          & Morcego        \\
+\textit{Phyllostomus elongatus        } & Phyelo          & Morcego        \\
+\textit{Phyllostomus hastatus         } & Phyhas          & Morcego        \\
+\textit{Platalina genovensium         } & Plagen          & Morcego        \\
+\textit{Platyrrhinus brachycephalus   } & Plabra          & Morcego        \\
+\textit{Platyrrhinus helleri          } & Plahel          & Morcego        \\
+\textit{Platyrrhinus lineatus         } & Plalin          & Morcego        \\
+\textit{Platyrrhinus recifinus        } & Plarec          & Morcego        \\
+\textit{Pygoderma bilabiatum          } & Pygbil          & Morcego        \\
+\textit{Rhinophylla pumilio           } & Rhipum          & Morcego        \\
+\textit{Stenoderma rufum              } & Steruf          & Morcego        \\
+\textit{Sturnira erythromos           } & Stuery          & Morcego        \\
+\textit{Sturnira lilium               } & Stulil          & Morcego        \\
+\textit{Sturnira ludovici             } & Stulud          & Morcego        \\
+\textit{Sturnira oporaphilum          } & Stuopo          & Morcego        \\
+\textit{Sturnira tildae               } & Stutil          & Morcego        \\
+\textit{Uroderma bilobatum            } & Urobil          & Morcego        \\
+\textit{Uroderma magnirostrum         } & Uromag          & Morcego        \\
+\textit{Vampyressa nymphaea           } & Vamnym          & Morcego        \\
+\textit{Vampyressa pusilla            } & Vampus          & Morcego        \\
+\textit{Vampyrodes caraccioli         } & Vamcar          & Morcego        \\
+\textit{Vampyrops helleri             } & Vamhel          & Morcego        \\
+\textit{Abutilon regnelli             } & Abureg          & Planta         \\
+\textit{Acacia collinsii              } & Acacol          & Planta         \\
+\textit{Acacia farnesiana             } & Acafar          & Planta         \\
+\textit{Acnistus arborescens          } & Acnarb          & Planta         \\
+\textit{Acrocomia aculeata            } & Acracu          & Planta         \\
+\textit{Adenocalymna dichilum         } & Adedic          & Planta         \\
+\textit{Aechmea tillandsioides        } & Aectil          & Planta         \\
+\textit{Agave angustifolia            } & Agaang          & Planta         \\
+\textit{Agave colimana                } & Agacol          & Planta         \\
+\textit{Agave desmettiana             } & Agades          & Planta         \\
+\textit{Agave grisea                  } & Agagri          & Planta         \\
+\textit{Agave macroacantha            } & Agamac          & Planta         \\
+\textit{Agave palmeri                 } & Agapal          & Planta         \\
+\textit{Agave schottii                } & Agasch          & Planta         \\
+\textit{Agave subsimplex              } & Agasub          & Planta         \\
+\textit{Albizia occidentalis          } & Albocc          & Planta         \\
+\textit{Alexa grandiflora             } & Alegra          & Planta         \\
+\textit{Alnus jorulensis              } & Alnjor          & Planta         \\
+\textit{Anacardium excelsum           } & Anaexc          & Planta         \\
+\textit{Andira inermis                } & Andine          & Planta         \\
+\textit{Annona exsucca                } & Annexs          & Planta         \\
+\textit{Annona montana                } & Annmon          & Planta         \\
+\textit{Annona muricata               } & Annmur          & Planta         \\
+\textit{Annona squamosa               } & Annsqu          & Planta         \\
+\textit{Artocarpus integrifolia       } & Artint          & Planta         \\
+\textit{Asplundia vagans              } & Aspvag          & Planta         \\
+\textit{Bauhinia multinervia          } & Baumul          & Planta         \\
+\textit{Bauhinia pauletia             } & Baupau          & Planta         \\
+\textit{Bauhinia rufa                 } & Bauruf          & Planta         \\
+\textit{Bauhinia ungulata             } & Bauung          & Planta         \\
+\textit{Berrya cubensis               } & Bercub          & Planta         \\
+\textit{Bignonia diversifolia         } & Bigdiv          & Planta         \\
+\textit{Bocoa prouacensis             } & Bocpro          & Planta         \\
+\textit{Bombacopsis squamigera        } & Bomsqu          & Planta         \\
+\textit{Brosimum alicastrum           } & Broali          & Planta         \\
+\textit{Burmeistera borjensis         } & Burbor          & Planta         \\
+\textit{Burmeistera ceratocarpa       } & Burcer          & Planta         \\
+\textit{Burmeistera cyclostigmata     } & Burcyc          & Planta         \\
+\textit{Burmeistera cylindrocarpa     } & Burcyl          & Planta         \\
+\textit{Burmeistera lutosa            } & Burlut          & Planta         \\
+\textit{Burmeistera multiflora        } & Burmul          & Planta         \\
+\textit{Burmeistera smaragdi          } & Bursma          & Planta         \\
+\textit{Burmeistera sodiroana         } & Bursod          & Planta         \\
+\textit{Burmeistera succulenta        } & Bursuc          & Planta         \\
+\textit{Burmeistera truncata          } & Burtru          & Planta         \\
+\textit{Byrsonima spicata             } & Byrspi          & Planta         \\
+\textit{Caesalpinia vesicaria         } & Caeves          & Planta         \\
+\textit{Calliandra laxa               } & Callax          & Planta         \\
+\textit{Calophyllum brasiliense       } & Calbra          & Planta         \\
+\textit{Calophyllum longifolium       } & Callon          & Planta         \\
+\textit{Calycolpus warszewiczianus    } & Calwar          & Planta         \\
+\textit{Calyptranthes chytraculia     } & Calchy          & Planta         \\
+\textit{Calyptrogyne ghiesbreghtiana  } & Calghi          & Planta         \\
+\textit{Campomanesia mediterranea     } & Cammed          & Planta         \\
+\textit{Carica papaya                 } & Carpap          & Planta         \\
+\textit{Carludovica palmata           } & Carpal          & Planta         \\
+\textit{Carnegiea gigantea            } & Cargig          & Planta         \\
+\textit{Caryocar Brasiliense          } & CarBra          & Planta         \\
+\textit{Caryocar glabrum              } & Cargla          & Planta         \\
+\textit{Casimiroa edulis              } & Casedu          & Planta         \\
+\textit{Cecropia angustifolia         } & Cecang          & Planta         \\
+\textit{Cecropia concolor             } & Ceccon          & Planta         \\
+\textit{Cecropia distachya            } & Cecdis          & Planta         \\
+\textit{Cecropia ficifolia            } & Cecfic          & Planta         \\
+\textit{Cecropia glaziovii            } & Cecgla          & Planta         \\
+\textit{Cecropia hololeuca            } & Cechol          & Planta         \\
+\textit{Cecropia insignis             } & Cecins          & Planta         \\
+\textit{Cecropia membranacea          } & Cecmem          & Planta         \\
+\textit{Cecropia obtusa               } & Cecobt          & Planta         \\
+\textit{Cecropia obtusifolia          } & Cecobt          & Planta         \\
+\textit{Cecropia pachystachya         } & Cecpac          & Planta         \\
+\textit{Cecropia Palmata              } & CecPal          & Planta         \\
+\textit{Cecropia peltata              } & Cecpel          & Planta         \\
+\textit{Cecropia schreberiana         } & Cecsch          & Planta         \\
+\textit{Cecropia sciadophylla         } & Cecsci          & Planta         \\
+\textit{Ceiba aesculifolia            } & Ceiaes          & Planta         \\
+\textit{Ceiba pentandra               } & Ceipen          & Planta         \\
+\textit{Celtis iguanaea               } & Celigu          & Planta         \\
+\textit{Centropogon nigricans         } & Cennig          & Planta         \\
+\textit{Cephalocereus columna-trajani } & Cepcol          & Planta         \\
+\textit{Cereus hexagonus              } & Cerhex          & Planta         \\
+\textit{Cereus repandus               } & Cerrep          & Planta         \\
+\textit{Chelonanthus alatus           } & Cheala          & Planta         \\
+\textit{Chrysobalanus icaco           } & Chrica          & Planta         \\
+\textit{Chrysophyllum cainito         } & Chrcai          & Planta         \\
+\textit{Citrus aurantium              } & Citaur          & Planta         \\
+\textit{Clarisia mexicana             } & Clamex          & Planta         \\
+\textit{Cleome spinosa                } & Clespi          & Planta         \\
+\textit{Clidemia octona               } & Clioct          & Planta         \\
+\textit{Clusia flavida                } & Clufla          & Planta         \\
+\textit{Cobaea aschersoniana          } & Cobasc          & Planta         \\
+\textit{Coccoloba uvifera             } & Cocuvi          & Planta         \\
+\textit{Cocos nucifera                } & Cocnuc          & Planta         \\
+\textit{Coffea arabica                } & Cofara          & Planta         \\
+\textit{Conostegia icosandra          } & Conico          & Planta         \\
+\textit{Conostegia volcanalis         } & Convol          & Planta         \\
+\textit{Conostegia xalapensis         } & Conxal          & Planta         \\
+\textit{Cordia alliodora              } & Corall          & Planta         \\
+\textit{Cordia bicolor                } & Corbic          & Planta         \\
+\textit{Cordia collococca             } & Corcol          & Planta         \\
+\textit{Cordia dentata                } & Corden          & Planta         \\
+\textit{Cordia dodecandra             } & Cordod          & Planta         \\
+\textit{Cordia gerascanthus           } & Corger          & Planta         \\
+\textit{Couma utilis                  } & Couuti          & Planta         \\
+\textit{Coussapoa villosa             } & Couvil          & Planta         \\
+\textit{Crataeva palmeri              } & Crapal          & Planta         \\
+\textit{Crescenti alata               } & Creala          & Planta         \\
+\textit{Crescentia cujete             } & Crecuj          & Planta         \\
+\textit{Cucurbita argyirosperma       } & Cucarg          & Planta         \\
+\textit{Cyathula prostrata            } & Cyapro          & Planta         \\
+\textit{Cynometra retusa              } & Cynret          & Planta         \\
+\textit{Dendrocereus nudiflorus       } & Dennud          & Planta         \\
+\textit{Dendropanax arboreus          } & Denarb          & Planta         \\
+\textit{Dichrostachys cinerea         } & Diccin          & Planta         \\
+\textit{Diospyros ebenaster           } & Dioebe          & Planta         \\
+\textit{Diospyros kaki                } & Diokak          & Planta         \\
+\textit{Diospyros mabolo              } & Diomab          & Planta         \\
+\textit{Diospyros nigra               } & Dionig          & Planta         \\
+\textit{Dipteryx odorata              } & Dipodo          & Planta         \\
+\textit{Dipteryx oleifera             } & Dipole          & Planta         \\
+\textit{Dipteryx panamensis           } & Dippan          & Planta         \\
+\textit{Drymonia rubra                } & Dryrub          & Planta         \\
+\textit{Dypsis lutescens              } & Dyplut          & Planta         \\
+\textit{Dyssochroma viridiflora       } & Dysvir          & Planta         \\
+\textit{Emmotum nitens                } & Emmnit          & Planta         \\
+\textit{Encholirium glaziovii         } & Encgla          & Planta         \\
+\textit{Eperua falcata                } & Epefal          & Planta         \\
+\textit{Epiphyllum hookeri            } & Epihoo          & Planta         \\
+\textit{Eriobotrya japonica           } & Erijap          & Planta         \\
+\textit{Eriolarynx lorentzii          } & Erilor          & Planta         \\
+\textit{Eugenia acapulcensis          } & Eugaca          & Planta         \\
+\textit{Eugenia nesiotica             } & Eugnes          & Planta         \\
+\textit{Eugenia uniflora              } & Euguni          & Planta         \\
+\textit{Euterpe edulis                } & Eutedu          & Planta         \\
+\textit{Ficus altissima               } & Ficalt          & Planta         \\
+\textit{Ficus aurea                   } & Ficaur          & Planta         \\
+\textit{Ficus benjamina               } & Ficben          & Planta         \\
+\textit{Ficus cahuitensis             } & Ficcah          & Planta         \\
+\textit{Ficus citrifolia              } & Ficcit          & Planta         \\
+\textit{Ficus colubrinae              } & Ficcol          & Planta         \\
+\textit{Ficus costaricana             } & Ficcos          & Planta         \\
+\textit{Ficus cotinifolia             } & Ficcot          & Planta         \\
+\textit{Ficus crassinervia            } & Ficcra          & Planta         \\
+\textit{Ficus crocata                 } & Ficcro          & Planta         \\
+\textit{Ficus eximia                  } & Ficexi          & Planta         \\
+\textit{Ficus hartwegii               } & Fichar          & Planta         \\
+\textit{Ficus insipida                } & Ficins          & Planta         \\
+\textit{Ficus luschnatiana            } & Ficlus          & Planta         \\
+\textit{Ficus matiziana               } & Ficmat          & Planta         \\
+\textit{Ficus maxima                  } & Ficmax          & Planta         \\
+\textit{Ficus nymphaefolia            } & Ficnym          & Planta         \\
+\textit{Ficus obtusifolia             } & Ficobt          & Planta         \\
+\textit{Ficus paraensis               } & Ficpar          & Planta         \\
+\textit{Ficus pertusa                 } & Ficper          & Planta         \\
+\textit{Ficus popenoei                } & Ficpop          & Planta         \\
+\textit{Ficus religiosa               } & Ficrel          & Planta         \\
+\textit{Ficus retusa                  } & Ficret          & Planta         \\
+\textit{Ficus skytinodermis           } & Ficsky          & Planta         \\
+\textit{Ficus tonduzii                } & Ficton          & Planta         \\
+\textit{Ficus trigonata               } & Fictri          & Planta         \\
+\textit{Ficus yoponensis              } & Ficyop          & Planta         \\
+\textit{Flacourtia indica             } & Flaind          & Planta         \\
+\textit{Garcinia intermedia           } & Garint          & Planta         \\
+\textit{Guazuma ulmifolia             } & Guaulm          & Planta         \\
+\textit{Guettarda foliacea            } & Guefol          & Planta         \\
+\textit{Gurania acuminata             } & Guracu          & Planta         \\
+\textit{Gurania lobata                } & Gurlob          & Planta         \\
+\textit{Gustavia superba              } & Gussup          & Planta         \\
+\textit{Harpochilus neesianus         } & Harnee          & Planta         \\
+\textit{Hawkesiophyton ulei           } & Hawule          & Planta         \\
+\textit{Helicteris baruensis          } & Helbar          & Planta         \\
+\textit{Hernandia didymantha          } & Herdid          & Planta         \\
+\textit{Hibiscus elatus               } & Hibela          & Planta         \\
+\textit{Hillia illustris              } & Hilill          & Planta         \\
+\textit{Hohenbergia penduliflora      } & Hohpen          & Planta         \\
+\textit{Hura polyandra                } & Hurpol          & Planta         \\
+\textit{Hylocereus lemairei           } & Hyllem          & Planta         \\
+\textit{Hylocereus undatus            } & Hylund          & Planta         \\
+\textit{Hymenaea courbaril            } & Hymcou          & Planta         \\
+\textit{Hymenaea stigonocarpa         } & Hymsti          & Planta         \\
+\textit{Inga eriocarpa                } & Ingeri          & Planta         \\
+\textit{Inga vera                     } & Ingver          & Planta         \\
+\textit{Ipomea ampullacea             } & Ipoamp          & Planta         \\
+\textit{Karwinskia calderonii         } & Karcal          & Planta         \\
+\textit{Kigelia africana              } & Kigafr          & Planta         \\
+\textit{Lafoensia glyptocarpa         } & Lafgly          & Planta         \\
+\textit{Lafoensia pacari              } & Lafpac          & Planta         \\
+\textit{Lafoensia vandelliana         } & Lafvan          & Planta         \\
+\textit{Lecythis zabucajo             } & Leczab          & Planta         \\
+\textit{Leptocereus arboreus          } & Leparb          & Planta         \\
+\textit{Leptocereus santamarinae      } & Lepsan          & Planta         \\
+\textit{Leptocereus wrightii          } & Lepwri          & Planta         \\
+\textit{Licania arborea               } & Licarb          & Planta         \\
+\textit{Livistona chinensis           } & Livchi          & Planta         \\
+\textit{Lycianthes glandulosa         } & Lycgla          & Planta         \\
+\textit{Lycianthes multiflora         } & Lycmul          & Planta         \\
+\textit{Lysiloma latisiliquum         } & Lyslat          & Planta         \\
+\textit{Mabea occidentalis            } & Mabocc          & Planta         \\
+\textit{Maclura tinctoria             } & Mactin          & Planta         \\
+\textit{Malpighia glabra              } & Malgla          & Planta         \\
+\textit{Mammea americana              } & Mamame          & Planta         \\
+\textit{Manfreda scabra               } & Mansca          & Planta         \\
+\textit{Mangifera indica              } & Manind          & Planta         \\
+\textit{Manilkara bidentata           } & Manbid          & Planta         \\
+\textit{Manilkara zapota              } & Manzap          & Planta         \\
+\textit{Marcgravia coriacea           } & Marcor          & Planta         \\
+\textit{Marcgravia mexicana           } & Marmex          & Planta         \\
+\textit{Marcgravia nepenthoides       } & Marnep          & Planta         \\
+\textit{Marcgravia nervosa            } & Marner          & Planta         \\
+\textit{Marcgravia pittieri           } & Marpit          & Planta         \\
+\textit{Marcgravia polyantha          } & Marpol          & Planta         \\
+\textit{Marcgravia serrae             } & Marser          & Planta         \\
+\textit{Marcgravia trinitatis         } & Martri          & Planta         \\
+\textit{Markea neurantha              } & Marneu          & Planta         \\
+\textit{Matisia bracteolosa           } & Matbra          & Planta         \\
+\textit{Matisia cordata               } & Matcor          & Planta         \\
+\textit{Matisia ochrocalyx            } & Matoch          & Planta         \\
+\textit{Melicoccus bijugatus          } & Melbij          & Planta         \\
+\textit{Meriania pichinchensis        } & Merpic          & Planta         \\
+\textit{Merinthopodium neuranthum     } & Merneu          & Planta         \\
+\textit{Mimosa lewisii                } & Mimlew          & Planta         \\
+\textit{Mimusops elengi               } & Mimele          & Planta         \\
+\textit{Morinda royoc                 } & Morroy          & Planta         \\
+\textit{Morus nigra                   } & Mornig          & Planta         \\
+\textit{Mucuna holtonii               } & Muchol          & Planta         \\
+\textit{Mucuna urens                  } & Mucure          & Planta         \\
+\textit{Muntingia calabura            } & Muncal          & Planta         \\
+\textit{Musa acuminata                } & Musacu          & Planta         \\
+\textit{Musa paradisiaca              } & Muspar          & Planta         \\
+\textit{Myrcia paivae                 } & Myrpai          & Planta         \\
+\textit{Myrciaria jaboticaba          } & Myrjab          & Planta         \\
+\textit{Nectandra ambigens            } & Necamb          & Planta         \\
+\textit{Neobuxbaumia tetetzo          } & Neotet          & Planta         \\
+\textit{Ochroma pyramidale            } & Ochpyr          & Planta         \\
+\textit{Oenocarpus distichus          } & Oendis          & Planta         \\
+\textit{Pachycereus pecten-aboriginum } & Pacpec          & Planta         \\
+\textit{Pachycereus pringlei          } & Pacpri          & Planta         \\
+\textit{Pachycereus weberi            } & Pacweb          & Planta         \\
+\textit{Parkia cachimboensis          } & Parcac          & Planta         \\
+\textit{Parkia igneiflora             } & Parign          & Planta         \\
+\textit{Parkia nitida                 } & Parnit          & Planta         \\
+\textit{Parkia pendula                } & Parpen          & Planta         \\
+\textit{Parkia platycephala           } & Parpla          & Planta         \\
+\textit{Parmentiera aculeata          } & Paracu          & Planta         \\
+\textit{Passiflora amethystina        } & Pasame          & Planta         \\
+\textit{Passiflora mucronata          } & Pasmuc          & Planta         \\
+\textit{Passiflora penduliflora       } & Paspen          & Planta         \\
+\textit{Passiflora punctata           } & Paspun          & Planta         \\
+\textit{Passiflora quadrangularis     } & Pasqua          & Planta         \\
+\textit{Passiflora unipetala          } & Pasuni          & Planta         \\
+\textit{Peltophorum adnatum           } & Peladn          & Planta         \\
+\textit{Persea americana              } & Perame          & Planta         \\
+\textit{Phenakospermum guyannense     } & Pheguy          & Planta         \\
+\textit{Philodendron appendiculatum   } & Phiapp          & Planta         \\
+\textit{Philodendron cuneatum         } & Phicun          & Planta         \\
+\textit{Phoenix dactylifera           } & Phodac          & Planta         \\
+\textit{Phytolacca rivinoides         } & Phyriv          & Planta         \\
+\textit{Pilocarpus pinnatus           } & Pilpin          & Planta         \\
+\textit{Pilosocereus chrysacanthus    } & Pilchr          & Planta         \\
+\textit{Pilosocereus lanuginosus      } & Pillan          & Planta         \\
+\textit{Pilosocereus moritzianus      } & Pilmor          & Planta         \\
+\textit{Pilosocereus tillianus        } & Piltil          & Planta         \\
+\textit{Pilosocereus tuberculatus     } & Piltub          & Planta         \\
+\textit{Pimenta racemosa              } & Pimrac          & Planta         \\
+\textit{Piper aduncum                 } & Pipadu          & Planta         \\
+\textit{Piper aequale                 } & Pipaeq          & Planta         \\
+\textit{Piper amalago                 } & Pipama          & Planta         \\
+\textit{Piper arboreum                } & Piparb          & Planta         \\
+\textit{Piper augustum                } & Pipaug          & Planta         \\
+\textit{Piper auritum                 } & Pipaur          & Planta         \\
+\textit{Piper bisasperatum            } & Pipbis          & Planta         \\
+\textit{Piper carrilloanum            } & Pipcar          & Planta         \\
+\textit{Piper cenocladum              } & Pipcen          & Planta         \\
+\textit{Piper colonense               } & Pipcol          & Planta         \\
+\textit{Piper cordulatum              } & Pipcor          & Planta         \\
+\textit{Piper crassinervium           } & Pipcra          & Planta         \\
+\textit{Piper cyrtopodon              } & Pipcyr          & Planta         \\
+\textit{Piper darienense              } & Pipdar          & Planta         \\
+\textit{Piper dilatatum               } & Pipdil          & Planta         \\
+\textit{Piper divaricatum             } & Pipdiv          & Planta         \\
+\textit{Piper dotanum                 } & Pipdot          & Planta         \\
+\textit{Piper epigynium               } & Pipepi          & Planta         \\
+\textit{Piper friedrichsthalii        } & Pipfri          & Planta         \\
+\textit{Piper gaudichaudianum         } & Pipgau          & Planta         \\
+\textit{Piper geniculatum             } & Pipgen          & Planta         \\
+\textit{Piper gibbosum                } & Pipgib          & Planta         \\
+\textit{Piper glabrescens             } & Pipgla          & Planta         \\
+\textit{Piper glabrum                 } & Pipgla          & Planta         \\
+\textit{Piper grande                  } & Pipgra          & Planta         \\
+\textit{Piper hieronymi               } & Piphie          & Planta         \\
+\textit{Piper hispidum                } & Piphis          & Planta         \\
+\textit{Piper hostmannianum           } & Piphos          & Planta         \\
+\textit{Piper jacquemontianum         } & Pipjac          & Planta         \\
+\textit{Piper lanceifolium            } & Piplan          & Planta         \\
+\textit{Piper lapathifolium           } & Piplap          & Planta         \\
+\textit{Piper marginatum              } & Pipmar          & Planta         \\
+\textit{Piper mollicarium             } & Pipmol          & Planta         \\
+\textit{Piper multiplinervium         } & Pipmul          & Planta         \\
+\textit{Piper obliquum                } & Pipobl          & Planta         \\
+\textit{Piper peltatum                } & Pippel          & Planta         \\
+\textit{Piper phytolaccifolium        } & Pipphy          & Planta         \\
+\textit{Piper reticulatum             } & Pipret          & Planta         \\
+\textit{Piper sanctum                 } & Pipsan          & Planta         \\
+\textit{Piper secundum                } & Pipsec          & Planta         \\
+\textit{Piper trigonum                } & Piptri          & Planta         \\
+\textit{Piper tuberculatum            } & Piptub          & Planta         \\
+\textit{Piper tucumanum               } & Piptuc          & Planta         \\
+\textit{Piper umbellatum              } & Pipumb          & Planta         \\
+\textit{Pitcairnia brongniartiana     } & Pitbro          & Planta         \\
+\textit{Plinia pinnata                } & Plipin          & Planta         \\
+\textit{Poraqueiba sericea            } & Porser          & Planta         \\
+\textit{Poulsenia armata              } & Pouarm          & Planta         \\
+\textit{Pouteria caimito              } & Poucai          & Planta         \\
+\textit{Pouteria campechiana          } & Poucam          & Planta         \\
+\textit{Pouteria multiflora           } & Poumul          & Planta         \\
+\textit{Pouteria reticulata           } & Pouret          & Planta         \\
+\textit{Pouteria sapota               } & Pousap          & Planta         \\
+\textit{Prestoea acuminata            } & Preacu          & Planta         \\
+\textit{Protium araguense             } & Proara          & Planta         \\
+\textit{Prunus persica                } & Pruper          & Planta         \\
+\textit{Pseudanamomis umbellulifera   } & Pseumb          & Planta         \\
+\textit{Pseudobombax ellipticum       } & Pseell          & Planta         \\
+\textit{Pseudobombax grandiflorum     } & Psegra          & Planta         \\
+\textit{Pseudobombax septenatum       } & Psesep          & Planta         \\
+\textit{Pseudolmedia glabrata         } & Psegla          & Planta         \\
+\textit{Psidium guajava               } & Psigua          & Planta         \\
+\textit{Psidium guianense             } & Psigui          & Planta         \\
+\textit{Psychotria carthagenensis     } & Psycar          & Planta         \\
+\textit{Putranjiva roxburghii         } & Putrox          & Planta         \\
+\textit{Quararibea asterolepis        } & Quaast          & Planta         \\
+\textit{Quararibea funebris           } & Quafun          & Planta         \\
+\textit{Quararibea parvifolia         } & Quapar          & Planta         \\
+\textit{Randia armata                 } & Ranarm          & Planta         \\
+\textit{Rhizophora mangle             } & Rhiman          & Planta         \\
+\textit{Rollinia mucosa               } & Rolmuc          & Planta         \\
+\textit{Roystonea oleracea            } & Royole          & Planta         \\
+\textit{Roystonea regia               } & Royreg          & Planta         \\
+\textit{Rubus brasiliensis            } & Rubbra          & Planta         \\
+\textit{Sabal palmetto                } & Sabpal          & Planta         \\
+\textit{Sacoglottis guianensis        } & Sacgui          & Planta         \\
+\textit{Sapindus saponaria            } & Sapsap          & Planta         \\
+\textit{Saurauia montana              } & Saumon          & Planta         \\
+\textit{Schultesianthus venosus       } & Schven          & Planta         \\
+\textit{Senna bacillaris              } & Senbac          & Planta         \\
+\textit{Senna fructicosa              } & Senfru          & Planta         \\
+\textit{Senna undulata                } & Senund          & Planta         \\
+\textit{Sideroxylon capiri            } & Sidcap          & Planta         \\
+\textit{Sideroxylon foetidissimum     } & Sidfoe          & Planta         \\
+\textit{Siphocampylus sulfureus       } & Sipsul          & Planta         \\
+\textit{Socratea exorrhiza            } & Socexo          & Planta         \\
+\textit{Solanum aligerum              } & Solali          & Planta         \\
+\textit{Solanum aphyodendron          } & Solaph          & Planta         \\
+\textit{Solanum arboreum              } & Solarb          & Planta         \\
+\textit{Solanum argenteum             } & Solarg          & Planta         \\
+\textit{Solanum asperolanatum         } & Solasp          & Planta         \\
+\textit{Solanum asperum               } & Solasp          & Planta         \\
+\textit{Solanum caavurana             } & Solcaa          & Planta         \\
+\textit{Solanum cinnamomeum           } & Solcin          & Planta         \\
+\textit{Solanum confusum              } & Solcon          & Planta         \\
+\textit{Solanum donianum              } & Soldon          & Planta         \\
+\textit{Solanum erianthum             } & Soleri          & Planta         \\
+\textit{Solanum grandiflorum          } & Solgra          & Planta         \\
+\textit{Solanum granuloso-leprosum    } & Solgra          & Planta         \\
+\textit{Solanum hayesii               } & Solhay          & Planta         \\
+\textit{Solanum hazenii               } & Solhaz          & Planta         \\
+\textit{Solanum hirtum                } & Solhir          & Planta         \\
+\textit{Solanum jamaicense            } & Soljam          & Planta         \\
+\textit{Solanum lanceolatum           } & Sollan          & Planta         \\
+\textit{Solanum leucocarpon           } & Solleu          & Planta         \\
+\textit{Solanum megalochiton          } & Solmeg          & Planta         \\
+\textit{Solanum nigricans             } & Solnig          & Planta         \\
+\textit{Solanum paniculatum           } & Solpan          & Planta         \\
+\textit{Solanum paranense             } & Solpar          & Planta         \\
+\textit{Solanum pseudocapsicum        } & Solpse          & Planta         \\
+\textit{Solanum pseudoquina           } & Solpse          & Planta         \\
+\textit{Solanum riparium              } & Solrip          & Planta         \\
+\textit{Solanum rovirosanum           } & Solrov          & Planta         \\
+\textit{Solanum rudepannum            } & Solrud          & Planta         \\
+\textit{Solanum rufescens             } & Solruf          & Planta         \\
+\textit{Solanum rugosum               } & Solrug          & Planta         \\
+\textit{Solanum sanctaecatharinae     } & Solsan          & Planta         \\
+\textit{Solanum scuticum              } & Solscu          & Planta         \\
+\textit{Solanum subinerme             } & Solsub          & Planta         \\
+\textit{Solanum subsylvestre          } & Solsub          & Planta         \\
+\textit{Solanum swartzianum           } & Solswa          & Planta         \\
+\textit{Solanum symmetricum           } & Solsym          & Planta         \\
+\textit{Solanum tenuispinum           } & Solten          & Planta         \\
+\textit{Solanum trichoneuron          } & Soltri          & Planta         \\
+\textit{Solanum umbellatum            } & Solumb          & Planta         \\
+\textit{Solanum variabile             } & Solvar          & Planta         \\
+\textit{Souroubea guianensis          } & Sougui          & Planta         \\
+\textit{Spondias dulcis               } & Spodul          & Planta         \\
+\textit{Spondias mombin               } & Spomom          & Planta         \\
+\textit{Spondias purpurea             } & Spopur          & Planta         \\
+\textit{Spondias radlkoferi           } & Sporad          & Planta         \\
+\textit{Stenocereus griseus           } & Stegri          & Planta         \\
+\textit{Stenocereus queretaroensis    } & Steque          & Planta         \\
+\textit{Stenocereus stellatus         } & Steste          & Planta         \\
+\textit{Stenocereus thurberi          } & Stethu          & Planta         \\
+\textit{Subpilocereus horrispinus     } & Subhor          & Planta         \\
+\textit{Swartzia panacoco             } & Swapan          & Planta         \\
+\textit{Syagrus romanzoffiana         } & Syarom          & Planta         \\
+\textit{Symphonia globulifera         } & Symglo          & Planta         \\
+\textit{Syzygium cumini               } & Syzcum          & Planta         \\
+\textit{Syzygium jambos               } & Syzjam          & Planta         \\
+\textit{Syzygium lineatum             } & Syzlin          & Planta         \\
+\textit{Syzygium malaccense           } & Syzmal          & Planta         \\
+\textit{Talipariti elatum             } & Talela          & Planta         \\
+\textit{Terminalia catappa            } & Tercat          & Planta         \\
+\textit{Tetrastylis ovalis            } & Tetova          & Planta         \\
+\textit{Theobroma cacao               } & Thecac          & Planta         \\
+\textit{Thoracocarpus bissectus       } & Thobis          & Planta         \\
+\textit{Thunbergia grandiflora        } & Thugra          & Planta         \\
+\textit{Thyrsodium guianense          } & Thygui          & Planta         \\
+\textit{Thyrsodium spruceanum         } & Thyspr          & Planta         \\
+\textit{Trema micrantha               } & Tremic          & Planta         \\
+\textit{Trichanthera gigantea         } & Trigig          & Planta         \\
+\textit{Turpinia occidentalis         } & Turocc          & Planta         \\
+\textit{Vassobia breviflora           } & Vasbre          & Planta         \\
+\textit{Vismia baccifera              } & Visbac          & Planta         \\
+\textit{Vismia cayennensis            } & Viscay          & Planta         \\
+\textit{Vismia duckei                 } & Visduc          & Planta         \\
+\textit{Vismia glabra                 } & Visgla          & Planta         \\
+\textit{Vismia guianensis             } & Visgui          & Planta         \\
+\textit{Vismia latifolia              } & Vislat          & Planta         \\
+\textit{Vismia lauriformis            } & Vislau          & Planta         \\
+\textit{Vismia macrophylla            } & Vismac          & Planta         \\
+\textit{Vismia panamensis             } & Vispan          & Planta         \\
+\textit{Vismia sessilifolia           } & Visses          & Planta         \\
+\textit{Vismia tormentosa             } & Vistor          & Planta         \\
+\textit{Vitis vinifera                } & Vitvin          & Planta         \\
+\textit{Vriesea bituminosa            } & Vribit          & Planta         \\
+\textit{Vriesea imperialis            } & Vriimp          & Planta         \\
+\textit{Vriesea longiscapa            } & Vrilon          & Planta         \\
+\textit{Vriesea moehringiana          } & Vrimoe          & Planta         \\
+\textit{Vriesea sazimae               } & Vrisaz          & Planta         \\
+\textit{Weberbauerocereus weberbaueri } & Webweb          & Planta         \\
+\textit{Weberocereus biolleyi         } & Webbio          & Planta         \\
+\textit{Weberocereus trichophorus     } & Webtri          & Planta         \\
+\textit{Weberocereus tunilla          } & Webtun          & Planta         \\
+\textit{Werauhia gladioliflora        } & Wergla          & Planta         \\
+\textit{Xanthosoma microrhiza         } & Xanmic          & Planta         \\
+\textit{Zapoteca formosa              } & Zapfor          & Planta         \\
+\hline
+
+\end{supertabular}
+
+\pagebreak
+\clearpage
+
+# Anexo II - Tabela de referência entre códigos e nomes científicos das espécies da rede Formiga-Planta
+\centering
+\footnotesize
+\tablefirsthead{\toprule Nome científico & Código & Taxon \\ \midrule}
+
+\tablehead{%
+\multicolumn{3}{c}%
+{{\bfseries  Continuação da página anterior}} \\
+\toprule Nome científico & Código & Taxon\\ \midrule}
+
+\tabletail{%
+\midrule \multicolumn{3}{r}{{Continua na próxima página}} \\ \midrule}
+\tablelasttail{%
+\\\midrule
+\multicolumn{3}{r}{{Final}} \\ \bottomrule}
+\begin{supertabular}{lll}
+
+\textit{Atta Attlae}             & Attlae & Formiga \\
+\textit{Brachymyrmex Bracor}     & Bracor & Formiga \\
+\textit{Brachymyrmex Brapic}     & Brapic & Formiga \\
+\textit{Brachymyrmex Brasp1}     & Brasp1 & Formiga \\
+\textit{Camponotus Cambla}       & Cambla & Formiga \\
+\textit{Camponotus Camcra}       & Camcra & Formiga \\
+\textit{Camponotus Camley}       & Camley & Formiga \\
+\textit{Camponotus Camruf}       & Camruf & Formiga \\
+\textit{Camponotus Camtra}       & Camtra & Formiga \\
+\textit{Camponotus Camvit}       & Camvit & Formiga \\
+\textit{Camponotus Camwes}       & Camwes & Formiga \\
+\textit{Cephalotes Cepedu}       & Cepedu & Formiga \\
+\textit{Cephalotes Ceppus}       & Ceppus & Formiga \\
+\textit{Crematogaster Crecri}    & Crecri & Formiga \\
+\textit{Crematogaster Creere}    & Creere & Formiga \\
+\textit{Dorymyrmex Dorgoe}       & Dorgoe & Formiga \\
+\textit{Dorymyrmex Dorsp1}       & Dorsp1 & Formiga \\
+\textit{Dorymyrmex Dorsp2}       & Dorsp2 & Formiga \\
+\textit{Ectatomma Ectede}        & Ectede & Formiga \\
+\textit{Ectatomma Ecttub}        & Ecttub & Formiga \\
+\textit{Linepithema Linmic}      & Linmic & Formiga \\
+\textit{Linepithema Linsp1}      & Linsp1 & Formiga \\
+\textit{Nesomyrmex Nessp1}       & Nessp1 & Formiga \\
+\textit{Nesomyrmex Nesspi}       & Nesspi & Formiga \\
+\textit{Pheidole Pheoxy}         & Pheoxy & Formiga \\
+\textit{Pheidole Phetri}         & Phetri & Formiga \\
+\textit{Pseudomyrmex Psegra}     & Psegra & Formiga \\
+\textit{Pseudomyrmex Psepal}     & Psepal & Formiga \\
+\textit{Pseudomyrmex Pseter}     & Pseter & Formiga \\
+\textit{Wasmannia Wasaur}        & Wasaur & Formiga \\
+\textit{Aspilia Aspjol}          & Aspjol & Planta  \\
+\textit{Baccharis Baccon}        & Baccon & Planta  \\
+\textit{Banisteriopsis Banang}   & Banang & Planta  \\
+\textit{Banisteriopsis Bancam}   & Bancam & Planta  \\
+\textit{Barbacenia Barfla}       & Barfla & Planta  \\
+\textit{Bernardia Bersim}        & Bersim & Planta  \\
+\textit{Bionia Biocor}           & Biocor & Planta  \\
+\textit{Byrsonima Byrsp1}        & Byrsp1 & Planta  \\
+\textit{Byrsonima Byrvar}        & Byrvar & Planta  \\
+\textit{Camptosema Camcor}       & Camcor & Planta  \\
+\textit{Chamaecrista Chacip}     & Chacip & Planta  \\
+\textit{Chamaecrista Chades}     & Chades & Planta  \\
+\textit{Chamaecrista Chapap}     & Chapap & Planta  \\
+\textit{Chamaecrista Charam}     & Charam & Planta  \\
+\textit{Chromolaena Chrsp1}      & Chrsp1 & Planta  \\
+\textit{Coccoloba Cocacr}        & Cocacr & Planta  \\
+\textit{Coccoloba Coccer}        & Coccer & Planta  \\
+\textit{Croton Crosp1}           & Crosp1 & Planta  \\
+\textit{Cuphea Cuperi}           & Cuperi & Planta  \\
+\textit{Dalbergia Dalmis}        & Dalmis & Planta  \\
+\textit{Dasyphyllum Dasret}      & Dasret & Planta  \\
+\textit{Davila Davell}           & Davell & Planta  \\
+\textit{Declieuxia Decdel}       & Decdel & Planta  \\
+\textit{Dioidia Diomel}          & Diomel & Planta  \\
+\textit{Diplusodon Diporb}       & Diporb & Planta  \\
+\textit{Echinocoryne Echsch}     & Echsch & Planta  \\
+\textit{Eriope Erihyp}           & Erihyp & Planta  \\
+\textit{Erythroxylum Erycam}     & Erycam & Planta  \\
+\textit{Gaylussacia Gaymon}      & Gaymon & Planta  \\
+\textit{Guapira Guanox}          & Guanox & Planta  \\
+\textit{Hyptis Hypsp1}           & Hypsp1 & Planta  \\
+\textit{Kielmeyera Kiepet}       & Kiepet & Planta  \\
+\textit{Kielmeyera Kiereg}       & Kiereg & Planta  \\
+\textit{Lamiaceae Lamsp1}        & Lamsp1 & Planta  \\
+\textit{Lavoisiera Lavcon}       & Lavcon & Planta  \\
+\textit{Lavoisiera Lavcor}       & Lavcor & Planta  \\
+\textit{Lavoisiera Lavsp1}       & Lavsp1 & Planta  \\
+\textit{Lessingianthus Leswar}   & Leswar & Planta  \\
+\textit{Lippia Lipflo}           & Lipflo & Planta  \\
+\textit{Lippia Lipsp1}           & Lipsp1 & Planta  \\
+\textit{Luxemburgia Luxsch}      & Luxsch & Planta  \\
+\textit{Lychnophora Lycram}      & Lycram & Planta  \\
+\textit{Lychnophora Lycrup}      & Lycrup & Planta  \\
+\textit{Melastomataceae Melsp1}  & Melsp1 & Planta  \\
+\textit{Miconia Micfer}          & Micfer & Planta  \\
+\textit{Microlicia Micful}       & Micful & Planta  \\
+\textit{Mikania Mikita}          & Mikita & Planta  \\
+\textit{Mikania Mikneu}          & Mikneu & Planta  \\
+\textit{Myrsine Myrmon}          & Myrmon & Planta  \\
+\textit{Myrcia Myrsp1}           & Myrsp1 & Planta  \\
+\textit{Neea Neethe}             & Neethe & Planta  \\
+\textit{Ouratea Oursem}          & Oursem & Planta  \\
+\textit{Paepalanthus Paevel}     & Paevel & Planta  \\
+\textit{Palicourea Palrig}       & Palrig & Planta  \\
+\textit{Peixotoa Peitom}         & Peitom & Planta  \\
+\textit{Philodendron Phicip}     & Phicip & Planta  \\
+\textit{Pilosocereus Pilcip}     & Pilcip & Planta  \\
+\textit{Pseudobrickellia Pseang} & Pseang & Planta  \\
+\textit{Qualea Quacor}           & Quacor & Planta  \\
+\textit{Remijia Remfer}          & Remfer & Planta  \\
+\textit{Roupala Roumon}          & Roumon & Planta  \\
+\textit{Ruellia Ruevil}          & Ruevil & Planta  \\
+\textit{Sabiceae Sabbra}         & Sabbra & Planta  \\
+\textit{Sapium Sapgla}           & Sapgla & Planta  \\
+\textit{sp1 sp1}                 & sp1    & Planta  \\
+\textit{Spigelia Spisel}         & Spisel & Planta  \\
+\textit{Syagrus Syagla}          & Syagla & Planta  \\
+\textit{Symphyopappus Symret}    & Symret & Planta  \\
+\textit{Tetrapiterys Tetmic}     & Tetmic & Planta  \\
+\textit{Tibouchina Tibcar}       & Tibcar & Planta  \\
+\textit{Trembleya Trelan}        & Trelan & Planta  \\
+\textit{Trigonia Tricip}         & Tricip & Planta  \\
+\textit{Vellozia Velala}         & Velala & Planta  \\
+\textit{Vellozia Velalo}         & Velalo & Planta  \\
+\textit{Vellozia Velcor}         & Velcor & Planta  \\
+\textit{Vellozia Velnan}         & Velnan & Planta  \\
+\textit{Vellozia Velniv}         & Velniv & Planta  \\
+\textit{Vochysia Vocthy}         & Vocthy & Planta  \\
+\hline
+
+\end{supertabular}
+

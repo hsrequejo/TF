@@ -1,14 +1,14 @@
 # Compara os nos mais centrais da rede monocamada com os noh obtidos traves de Gnorm
 
-load("./RDatas_allCentr_sep/bats_bats_allCentr.RData")
+load("./RDatas_allCentr_sep/bats_plants_allCentr.RData")
 
-clo = clo_bats
-btw = btw_bats
-eig = eig_bats
+clo = clo_plants
+btw = btw_plants
+eig = eig_plants
 eig
-deg = deg_bats
+deg = deg_plants
 deg
-Gnorm = Gnorm_bats
+Gnorm = Gnorm_plants
 
 # 1=clo  2=btw   3=eig   4=deg   5=Gnorm
 centr_list = list(clo, btw, eig, deg, Gnorm)
